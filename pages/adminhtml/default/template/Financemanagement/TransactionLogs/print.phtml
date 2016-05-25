@@ -1,0 +1,146 @@
+<?php
+ob_start();
+session_start();
+include_once('function.php');
+if(isset($_GET['transction']))
+{
+	$getTrans = $_GET['transction'];
+}
+?>
+
+<style type="text/css">
+.warp_grid{
+	width:70%;
+	margin:0 auto;
+	border:1px solid rgba(0,0,0,.1);
+	min-height:350px;
+}
+table.get_payment,table{
+	width:100%;
+	margin-top:20px;
+}
+table.get_payment > thead th,.color_bg{
+	background:rgba(0,0,0,.1);
+	text-align:left;
+}
+table.get_payment > tbody td,table.get_payment > thead th,table.get_payment > tfoot td{
+	padding:5px 10px;
+}
+.left_box{
+	width:40%;
+	float:left;
+}
+.right_box{
+	width:40%;
+	float:right;
+}
+.row{
+	width:100%;
+}
+#print{
+	margin:0 auto;
+	display:block;
+	margin-top:20px;
+}
+</style>
+
+<div class="warp_grid">
+
+
+<?php
+$output=setCurlCallRequest("student_admission/getDetails/".$_SESSION['admission']);
+$data=$output['data'];
+echo '<pre>';
+print_r($data);
+echo '</pre>';
+
+$feeoutput=setCurlCallRequest("transaction_logs/getDetails/?dataType=json&cur_list_academicyear_id=".$_SESSION['acyearcode']."&student_admission_id=".$_SESSION['admission']);		
+$feeData=$feeoutput['paymentData'];
+$totAmount = $feeoutput['totalData'];	 
+ 
+foreach($feeData as $key => $value)
+{
+	if($value['transactionno']==$getTrans){
+   $tab_data =  '<tr><td>'.$value['transactionno'].'</td><td>'.$value['feereceiptno'].'</td><td>'.$value['transactiondate'].'</td><td>'.$value['amount'].'</td></tr>';
+   $amount = $value['amount'];
+	}
+}
+?>
+
+<p>{fullname}</p>
+<p>{fothername}</p>
+<p>{mothername}</p>
+<p>{email}</p>
+<p>{phoneno}</p>
+
+
+
+
+<div class="row">
+<div class="left_box">
+<table>
+<tbody>
+<tr><td>Academic Year</td><td>{Academic Year}</td></tr>
+<tr><td>Branch</td><td>{Branch}</td></tr>
+<tr><td>Class</td><td>{Class}</td></tr>
+<tr><td>Section</td><td>{Section}</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="right_box">
+<table>
+<tbody>
+<tr><td>Transaction ID</td><td>{Transaction ID}</td></tr>
+<tr><td>Receipt No</td><td>{Receipt No}</td></tr>
+<tr><td>Date</td><td>{Date}</td></tr>
+<tr><td>Total Amount</td><td>{Amount}</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+
+
+
+
+<table class="get_payment">
+<thead>
+<th>Transaction ID</th>	<th>Receipt No</th>	<th>Date</th>	<th>Amount</th>
+</thead>
+<?php
+echo '<tbody>';	
+echo $tab_data;
+echo '</tbody><tfoot>';
+echo '<tr><td colspan="2"></td><td>Total</td><td>'.$amount.'</td></tr>';
+echo '<tr><td colspan="2"></td><td>Amount Paid</td><td>'.$amount.'</td></tr>';
+echo '<tr><td colspan="2"></td><td class="color_bg">Amount Due</td><td class="color_bg">0.00</td></tr>';
+echo '</tfoot>';
+?>
+
+</table>
+</div>
+
+
+
+
+<button name="print" id="print" >Print</button>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/jQuery.print.js"></script>
+<script type='text/javascript'>
+                                    //<![CDATA[
+                                    $(function() {
+                                        $("#print").on('click', function() {
+                                            $.print(".warp_grid");
+                                        });
+                                       
+                                       
+                                        // Fork https://github.com/sathvikp/jQuery.print for the full list of options
+                                    });
+                                    //]]>
+        </script>
+
+
+

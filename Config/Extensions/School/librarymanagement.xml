@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<academics>
+    <status>active</status>
+    <filename>librarymanagement</filename>
+    <name>librarymanagement</name>
+    <displayname>librarymanagement</displayname>
+    <rootmodule>false</rootmodule>
+    <codemodule>false</codemodule>
+    <moduledisplay>false</moduledisplay>
+    <sort_value>2</sort_value>
+    <setuppath>Modules/librarymanagement/Setup</setuppath>
+    <datapath>Modules/librarymanagement/Data</datapath>
+	<schemaversion>1.0.0</schemaversion>
+    <dataversion>1.0.0</dataversion>
+    </academics>

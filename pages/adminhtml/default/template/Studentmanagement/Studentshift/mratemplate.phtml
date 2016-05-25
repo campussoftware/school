@@ -1,0 +1,74 @@
+<?php 
+	$controllerObj=$this->_controllerObj;
+	
+    $ActionYearDetails=$controllerObj->getAcademicYearDetails();
+    $branchDetails=$controllerObj->getBranchDetails();
+?>
+<div class="control-group" id="row_cur_list_academicyear_id">
+                    <label class="control-label" id="label_list_branch_id"><?php echo $controllerObj->getLabel('cur_list_academicyear_id');?> </label>
+                    <div class="controls" id="value_list_branch_id">
+                        <select  id="cur_list_academicyear_id" name="cur_list_academicyear_id" onchange="getbranchclasess();">
+                        <option value="">Select <?php echo $controllerObj->getLabel('cur_list_academicyear_id');?> </option>   
+                        <?php
+                        if(count($ActionYearDetails)>0)
+                        {
+                            foreach ($ActionYearDetails as $AcademicYear) 
+                            {
+                                echo "<option value='".$AcademicYear[short_code]."'>".$AcademicYear[academicyear]."</option>";
+                            }
+                        }
+                        ?>
+                      </select>                      
+                    </div><span class="error_message" id="error_list_branch_id"></span>
+                  </div>
+<div class="control-group" id="row_list_branch_id">
+                    <label class="control-label" id="label_list_branch_id">Branch </label>
+                    <div class="controls" id="value_list_branch_id">
+                      <select  id="list_branch_id" name="list_branch_id" onchange="getbranchcourses();" >
+                        <option value="">Select <?php echo $controllerObj->getLabel('list_branch_id');?> </option>
+                      <?php
+                        if(count($branchDetails)>0)
+                        {
+                            foreach ($branchDetails as $branchData) 
+                            {
+                                echo "<option value='".$branchData[id]."'>".$branchData[name]."</option>";
+                            }
+                        }
+                        ?>
+                         </select>
+                      
+                    </div>
+                    <span class="error_message" id="error_list_branch_id"></span>
+                  </div>
+                  <div class="control-group" id="row_cur_branch_orientation_id">
+                    <label class="control-label" id="label_cur_branch_orientation_id">Branch Course </label>
+                    <span class="error_message" id="error_cur_branch_orientation_id"></span>
+                    <div class="controls" id="mra_cur_branch_orientation_id">
+                      <select  id="cur_branch_orientation_id" name="cur_branch_orientation_id" >
+                          <option value="">Select <?php echo $controllerObj->getLabel('cur_branch_orientation_id');?> </option>              
+                      </select>
+                      
+                    </div>
+                    
+                  </div>    
+                    <div class="control-group" id="row_cur_branch_class_id">
+                    <label class="control-label" id="label_cur_branch_class_id">Branch Class</label>
+                    <span class="error_message" id="error_cur_branch_class_id"></span>
+                    <div class="controls" id="mra_cur_branch_class_id">
+                      <select  id="cur_branch_class_id" name="cur_branch_class_id" >
+                        <option value="">Select <?php echo $controllerObj->getLabel('cur_branch_class_id');?> </option>              
+                      </select>
+                      
+                    </div>
+                    
+                  </div>
+                  <div class="control-group" id="row_cur_branch_class_section_id">
+                    <label class="control-label" id="label_cur_branch_class_section_id">Section </label>
+                    <div class="controls" id="mra_cur_branch_class_section_id">
+                      <select  id="cur_branch_class_section_id" name="cur_branch_class_section_id" >
+                        <option value="">Select <?php echo $controllerObj->getLabel('cur_branch_class_section_id');?> </option>              
+                      </select>
+                      
+                    </div>
+                    <span class="error_message" id="error_cur_branch_class_section_id"></span>
+                  </div>
