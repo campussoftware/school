@@ -1,0 +1,367 @@
+/* CSS Document */
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700);
+body, html {
+	height: 100%;
+	background: #f8f7f7;
+}
+.row, p, h1, h2, h3, h4, h5, h6, div, span, section {
+	padding: 0px;
+	margin: 0px;
+}
+table {
+	border: none;
+}
+.container {
+	padding: 0px;
+}
+.body-container {
+    padding: 150px 10px;
+}
+.login-bg {
+	height: 100%;
+	background-repeat: no-repeat;
+	background: -webkit-linear-gradient(90deg, #16222A 10%, #3A6073 90%); /* Chrome 10+, Saf5.1+ */
+	background: -moz-linear-gradient(90deg, #16222A 10%, #3A6073 90%); /* FF3.6+ */
+	background: -ms-linear-gradient(90deg, #16222A 10%, #3A6073 90%); /* IE10 */
+	background: -o-linear-gradient(90deg, #16222A 10%, #3A6073 90%); /* Opera 11.10+ */
+	background: linear-gradient(90deg, #16222A 10%, #3A6073 90%); /* W3C */
+        background-image: linear-gradient(to top right,#fc7279 10%, #ff7b9c 65%, #ffc019 125%);
+        background: #fff;
+    min-height: 100vh;
+}
+.card-container.card {
+	max-width: 350px;
+	padding: 40px 40px;
+}
+.btn {
+	font-weight: 700;
+	height: 36px;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+/*
+ * Card component
+ */
+.card {
+	background-color: #ffffff;
+	/* just in case there no content*/
+	padding: 20px 25px 30px;
+	margin: 0 auto 25px;
+	margin-top: 20px;
+	/* shadows and rounded borders */
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;
+	-moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	-webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+	box-shadow: 2px 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+.profile-img-card {
+	width: 96px;
+	height: 96px;
+	margin: 0 auto 10px;
+	display: block;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	border-radius: 50%;
+}
+/*
+ * Form styles
+ */
+.profile-name-card {
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	margin: 10px 0 0;
+	min-height: 1em;
+}
+.reauth-email {
+	display: block;
+	color: #404040;
+	line-height: 2;
+	margin-bottom: 10px;
+	font-size: 14px;
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.form-signin #inputEmail, .form-signin #inputPassword {
+	direction: ltr;
+	height: 44px;
+	font-size: 16px;
+}
+.form-signin input[type=email], .form-signin input[type=password], .form-signin input[type=text], .form-signin button {
+	width: 100%;
+	display: block;
+	margin-bottom: 10px;
+	z-index: 1;
+	position: relative;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+.form-signin .form-control:focus {
+	border-color: rgb(104, 145, 162);
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgb(104, 145, 162);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgb(104, 145, 162);
+}
+.btn.btn-signin {
+	/*background-color: #4d90fe; */
+	background-color: rgb(104, 145, 162);
+	/* background-color: linear-gradient(rgb(104, 145, 162), rgb(12, 97, 33));*/
+	padding: 0px;
+	font-weight: 700;
+	font-size: 14px;
+	height: 36px;
+        margin-top: 10px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: none;
+	-o-transition: all 0.218s;
+	-moz-transition: all 0.218s;
+	-webkit-transition: all 0.218s;
+	transition: all 0.218s;
+}
+.btn.btn-signin:hover, .btn.btn-signin:active, .btn.btn-signin:focus {
+	background-color: rgb(12, 97, 33);
+}
+.forgot-password {
+	color: rgb(104, 145, 162);
+}
+.forgot-password:hover, .forgot-password:active, .forgot-password:focus {
+	color: rgb(12, 97, 33);
+}
+.header {
+	background: #38b7be;
+	font-family: 'Roboto Condensed', sans-serif;
+}
+#menu {
+	background: #4e4e4e;
+}
+.navbar, .container-fluid {
+	margin: 0px;
+	padding: 0px;
+}
+#menu ul > li > a {
+	font-family: 'Roboto Condensed', sans-serif;
+	color: #fff;
+	letter-spacing: 1.2px;
+	font-size: 15px;
+}
+#menu ul > li:hover > a {
+	color: #097c82;
+}
+.footer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #1F2533;
+    padding: 10px 10px;
+    text-align: center;
+     box-shadow: 5px 6px 5px 9px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+.footer p {
+	color: #fff;
+}
+#page-nav {
+	margin: 10px 0px;
+}
+#page-nav ul {
+	float: right;
+}
+#page-nav ul li {
+	display: inline-block;
+	padding-left: 10px;
+}
+#page-nav ul li a {
+	font-size: 12px;
+	color: rgba(0,0,0,1);
+}
+img#profile-pic {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	display: block;
+	margin: 0px auto;
+	z-index: 9999999;
+	position: relative;
+	border: 5px solid rgba(0,0,0,.51);
+	padding: 7px;
+}
+.main-grid {
+	position: relative;
+	margin-top: -80px;
+}
+.grid-bg {
+	background: #fff;
+	margin-bottom: 25px;
+	min-height: 400px;
+	-webkit-box-shadow: 0px 0px 11px 0px rgba(133,133,133,.21);
+	-moz-box-shadow: 0px 0px 11px 0px rgba(133,133,133,.21);
+	box-shadow: 0px 0px 11px 0px rgba(133,133,133,.21);
+	-o-box-shadow: 0px 0px 11px 0px rgba(133,133,133,.21);
+	-ms-box-shadow: 0px 0px 11px 0px rgba(133,133,133,.21);
+	border-top: 3px solid #38B7BE;
+	padding: 10px;
+	border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	-o-border-radius: 5px 5px 0px 0px;
+	-ms-border-radius: 5px 5px 0px 0px;
+}
+.main-grid .table > thead > tr > th {
+	text-align: center;
+	border: none;
+	font-family: 'Roboto Condensed', sans-serif;
+	margin-bottom: 15px;
+	font-size: 18px;
+	color: #38B7BE;
+}
+.main-grid .table > tbody > tr > td {
+	border: 0px;
+	border-bottom: 1px solid rgba(0,0,0,.21);
+}
+.fee-but .btn {
+	padding: 5px 10px;
+	border: 1px solid #38B7BE;
+	color: #38B7BE;
+	font-family: 'Roboto Condensed', sans-serif;
+	cursor: pointer;
+}
+
+.top-header {
+    background: #04b000;;
+    padding: 12px 10px;
+    padding-top: 18px;
+    color: #fff;
+    box-shadow: 0px 6px 5px 0px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+.logo img{
+    height:30px;
+    margin: 0 auto;
+}
+.top-header p{
+    margin-top: 6px;
+}
+.form-signin .form-control{
+    border-radius: 0px;
+    margin-bottom: 5px;
+}
+
+/*==================================================
+=            Bootstrap 3 Media Queries             =
+==================================================*/
+
+
+
+
+    /*==========  Mobile First Method  ==========*/
+
+    /* Custom, iPhone Retina */ 
+@media only screen and (min-width : 768px) {
+.navbar-brand {
+	display: none;
+}
+}
+ @media only screen and (min-width : 992px) {
+#comp {
+	float: right;
+}
+}    
+    
+
+
+
+
+
+
+
+
+    /* Large Devices, Wide Screens */
+ @media only screen and (max-width : 1200px) {
+}
+ 
+    /* Medium Devices, Desktops */
+@media only screen and (max-width : 992px) {
+#page-nav {
+	display: none;
+}
+.grid-bg {
+	margin-top: 15px;
+}
+}
+    /* Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+img#profile-pic {
+	width: 100px;
+	height: 100px;
+	border: 2px solid rgba(0,0,0,.51);
+	padding: 4px;
+}
+.main-grid {
+	margin-top: -40px;
+}
+img.module_banner {
+    display: none;
+}
+}
+    /* Extra Small Devices, Phones */ 
+@media only screen and (max-width : 480px) {
+.header h1 {
+	font-size: 15px;
+}
+.top-header {    
+    padding: 10px 4px;
+}
+.top-header h1 {
+    font-size: 16px;
+}
+.top-header p {
+    margin-top: 0px;
+}
+.body-container {
+    padding: 25px 10px;
+}
+.card-container.card {
+    max-width: 235px;
+    padding: 28px 24px;
+}
+.card{
+    margin-top: 34px;
+}
+}
+@media only screen and (max-width : 320px) {
+.header h1 {
+	font-size: 15px;
+}
+.top-header {    
+    padding: 10px 4px;
+}
+.top-header h1 {
+    font-size: 16px;
+}
+.top-header p {
+    margin-top: 0px;
+}
+.body-container {
+    padding: 25px 10px;
+}
+.card-container.card {
+    max-width: 235px;
+    padding: 28px 24px;
+}
+.card{
+    margin-top: 34px;
+}
+}

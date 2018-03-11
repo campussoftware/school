@@ -37,9 +37,9 @@
  * @version $Id: class.phpmailer.php 447 2009-05-25 01:36:38Z codeworxtech $
  * @license http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License
  */
-
-if (version_compare(PHP_VERSION, '5.0.0', '<') ) exit("Sorry, this version of PHPMailer will only run on PHP version 5 or greater!\n");
 namespace Core\Email;
+if (version_compare(PHP_VERSION, '5.0.0', '<') ) exit("Sorry, this version of PHPMailer will only run on PHP version 5 or greater!\n");
+
 class Mailer 
 {
 
@@ -470,7 +470,7 @@ class Mailer
       $this->SetError($this->Lang('invalid_address').': '. $address);
       if ($this->exceptions) 
 	  {
-        throw new Core_Email_MailerException($this->Lang('invalid_address').': '.$address);
+        throw new \Core\Email\MailerException($this->Lang('invalid_address').': '.$address);
       }
       echo $this->Lang('invalid_address').': '.$address;
       return false;
@@ -508,7 +508,7 @@ class Mailer
     if (!self::ValidateAddress($address)) {
       $this->SetError($this->Lang('invalid_address').': '. $address);
       if ($this->exceptions) {
-        throw new Core_Email_MailerException($this->Lang('invalid_address').': '.$address);
+        throw new \Core\Email\MailerException($this->Lang('invalid_address').': '.$address);
       }
       echo $this->Lang('invalid_address').': '.$address;
       return false;
@@ -565,7 +565,7 @@ class Mailer
     {
       if ((count($this->to) + count($this->cc) + count($this->bcc)) < 1)
       {
-        throw new Core_Email_MailerException($this->Lang('provide_address'), self::STOP_CRITICAL);
+        throw new \Core\Email\MailerException($this->Lang('provide_address'), self::STOP_CRITICAL);
         }
 
       // Set whether the message is multipart/alternative
@@ -581,7 +581,7 @@ class Mailer
 
       if (empty($this->Body)) 
       {
-        throw new Core_Email_MailerException($this->Lang('empty_message'), self::STOP_CRITICAL);
+        throw new \Core\Email\MailerException($this->Lang('empty_message'), self::STOP_CRITICAL);
       }
 
       // digitally sign with DKIM if enabled
@@ -602,7 +602,7 @@ class Mailer
           return $this->MailSend($header, $body);
       }
 
-    } catch (Core_Email_MailerException $e) {
+    } catch (\Core\Email\MailerException $e) {
       $this->SetError($e->getMessage());
       if ($this->exceptions) {
         throw $e;
@@ -628,7 +628,7 @@ class Mailer
     if ($this->SingleTo === true) {
       foreach ($this->SingleToArray as $key => $val) {
         if(!@$mail = popen($sendmail, 'w')) {
-          throw new Core_Email_MailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
+          throw new \Core\Email\MailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
         }
         fputs($mail, "To: " . $val . "\n");
         fputs($mail, $header);
@@ -638,12 +638,12 @@ class Mailer
         $isSent = ($result == 0) ? 1 : 0;
         $this->doCallback($isSent,$val,$this->cc,$this->bcc,$this->Subject,$body);
         if($result != 0) {
-          throw new Core_Email_MailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
+          throw new \Core\Email\MailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
         }
       }
     } else {
       if(!@$mail = popen($sendmail, 'w')) {
-        throw new Core_Email_MailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
+        throw new \Core\Email\MailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
       }
       fputs($mail, $header);
       fputs($mail, $body);
@@ -652,7 +652,7 @@ class Mailer
       $isSent = ($result == 0) ? 1 : 0;
       $this->doCallback($isSent,$this->to,$this->cc,$this->bcc,$this->Subject,$body);
       if($result != 0) {
-        throw new Core_Email_MailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
+        throw new \Core\Email\MailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
       }
     }
     return true;
@@ -708,7 +708,7 @@ class Mailer
       ini_set('sendmail_from', $old_from);
     }
     if(!$rt) {
-      throw new Core_Email_MailerException($this->Lang('instantiate'), self::STOP_CRITICAL);
+      throw new \Core\Email\MailerException($this->Lang('instantiate'), self::STOP_CRITICAL);
     }
     return true;
   }
@@ -729,12 +729,12 @@ class Mailer
 
     if(!$this->SmtpConnect()) 
     {
-      throw new Core_Email_MailerException($this->Lang('smtp_connect_failed'), self::STOP_CRITICAL);
+      throw new \Core\Email\MailerException($this->Lang('smtp_connect_failed'), self::STOP_CRITICAL);
     }
     $smtp_from = ($this->Sender == '') ? $this->From : $this->Sender;
     if(!$this->smtp->Mail($smtp_from)) 
     {
-      throw new Core_Email_MailerException($this->Lang('from_failed') . $smtp_from, self::STOP_CRITICAL);
+      throw new \Core\Email\MailerException($this->Lang('from_failed') . $smtp_from, self::STOP_CRITICAL);
     }
 
     // Attempt to send attach all recipients
@@ -786,11 +786,11 @@ class Mailer
     if (count($bad_rcpt) > 0 ) 
         { //Create error message for any bad addresses
       $badaddresses = implode(', ', $bad_rcpt);
-      throw new Core_Email_MailerException($this->Lang('recipients_failed') . $badaddresses);
+      throw new \Core\Email\MailerException($this->Lang('recipients_failed') . $badaddresses);
     }
     if(!$this->smtp->Data($header . $body)) 
                 {
-      throw new Core_Email_MailerException($this->Lang('data_not_accepted'), self::STOP_CRITICAL);
+      throw new \Core\Email\MailerException($this->Lang('data_not_accepted'), self::STOP_CRITICAL);
     }
     if($this->SMTPKeepAlive == true) {
       $this->smtp->Reset();
@@ -809,7 +809,7 @@ class Mailer
   {
     if(is_null($this->smtp)) 
     {
-      $this->smtp = new Core_Email_SMTP();
+      $this->smtp = new \Core\Email\SMTP();
     }
 
     $this->smtp->do_debug = $this->SMTPDebug;
@@ -839,7 +839,7 @@ class Mailer
 
           if ($tls) {
             if (!$this->smtp->StartTLS()) {
-              throw new Core_Email_MailerException($this->Lang('tls'));
+              throw new \Core\Email\MailerException($this->Lang('tls'));
             }
 
             //We must resend HELO after tls negotiation
@@ -849,17 +849,17 @@ class Mailer
           $connection = true;
           if ($this->SMTPAuth) {
             if (!$this->smtp->Authenticate($this->Username, $this->Password)) {
-              throw new Core_Email_MailerException($this->Lang('authenticate'));
+              throw new \Core\Email\MailerException($this->Lang('authenticate'));
             }
           }
         }
         $index++;
         if (!$connection) {
-          throw new Core_Email_MailerException($this->Lang('connect_host'));
+          throw new \Core\Email\MailerException($this->Lang('connect_host'));
         }
       }
     } 
-    catch (Core_Email_MailerException $e) 
+    catch (\Core\Email\MailerException $e) 
     {
       $this->smtp->Reset();
       throw $e;
@@ -1286,9 +1286,9 @@ class Mailer
         } else {
           @unlink($file);
           @unlink($signed);
-          throw new Core_Email_MailerException($this->Lang("signing").openssl_error_string());
+          throw new \Core\Email\MailerException($this->Lang("signing").openssl_error_string());
         }
-      } catch (Core_Email_MailerException $e) {
+      } catch (\Core\Email\MailerException $e) {
         $body = '';
         if ($this->exceptions) {
           throw $e;
@@ -1387,7 +1387,7 @@ class Mailer
   public function AddAttachment($path, $name = '', $encoding = 'base64', $type = 'application/octet-stream') {
     try {
       if ( !@is_file($path) ) {
-        throw new Core_Email_MailerException($this->Lang('file_access') . $path, self::STOP_CONTINUE);
+        throw new \Core\Email\MailerException($this->Lang('file_access') . $path, self::STOP_CONTINUE);
       }
       $filename = basename($path);
       if ( $name == '' ) {
@@ -1405,7 +1405,7 @@ class Mailer
         7 => 0
       );
 
-    } catch (Core_Email_MailerException $e) {
+    } catch (\Core\Email\MailerException $e) {
       $this->SetError($e->getMessage());
       if ($this->exceptions) {
         throw $e;
@@ -1502,7 +1502,7 @@ class Mailer
   private function EncodeFile($path, $encoding = 'base64') {
     try {
       if (!is_readable($path)) {
-        throw new Core_Email_MailerException($this->Lang('file_open') . $path, self::STOP_CONTINUE);
+        throw new \Core\Email\MailerException($this->Lang('file_open') . $path, self::STOP_CONTINUE);
       }
       if (function_exists('get_magic_quotes')) {
         function get_magic_quotes() {
@@ -2191,7 +2191,7 @@ class Mailer
       if (isset($this->$name) ) {
         $this->$name = $value;
       } else {
-        throw new Core_Email_MailerException($this->Lang('variable_set') . $name, self::STOP_CRITICAL);
+        throw new \Core\Email\MailerException($this->Lang('variable_set') . $name, self::STOP_CRITICAL);
       }
     } catch (Exception $e) {
       $this->SetError($e->getMessage());
@@ -2354,12 +2354,5 @@ class Mailer
   }
 }
 
-class Core_Email_MailerException extends Exception 
-{
-  public function errorMessage() 
-  {
-    $errorMsg = '<strong>' . $this->getMessage() . "</strong><br />\n";
-    return $errorMsg;
-  }
-}
+
 ?>

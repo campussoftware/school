@@ -10,15 +10,17 @@ else
 <?php
 }
 ?>
-<script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/4.7.1/standard/ckeditor.js"></script>
 <script>
-      $(function () {
-        var <?php echo $this->_idName;?>editor = CKEDITOR.replace( '<?php echo $this->_idName;?>' );
-
-        // The "change" event is fired whenever a change is made in the editor.
-        <?php echo $this->_idName;?>editor.on( 'change', function( evt ) {
-            $("#<?php echo $this->_idName;?>").html(evt.editor.getData());
-
-        });
+    CKEDITOR.replace('<?php echo $this->_idName;?>');    
+    
+    require(['config'], function () {
+    require(["jquery"],function($){
+        timer = setInterval(updateDiv,100);
+        function updateDiv(){
+            var editorText = CKEDITOR.instances.<?php echo $this->_idName;?>.getData();
+            $('#<?php echo $this->_idName;?>').html(editorText);
+        }
       });
+    }); 
     </script>

@@ -25,7 +25,7 @@ class CoreAppSettings
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"App Settings Id",
-                "prmiary"=>1,
+                "primary"=>1,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"int",

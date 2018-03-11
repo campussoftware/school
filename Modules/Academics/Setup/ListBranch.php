@@ -26,7 +26,7 @@ class ListBranch
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Student Id",
-                "prmiary"=>1,                 
+                "primary"=>1,                 
                 "default"=>NULL,
                 "type"=>"int",
                 "size"=>"11", 

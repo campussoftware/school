@@ -25,7 +25,7 @@ class CoreQueryclause
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Query Clause Id",
-                "prmiary"=>false,
+                "primary"=>false,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"int",
@@ -42,7 +42,7 @@ class CoreQueryclause
             $setup->addColumnName(array(
                 "name"=>"short_code",
                 "displayValue"=>"Short Code",
-                "prmiary"=>1,
+                "primary"=>1,
                 "type"=>"varchar",
                 "size"=>"255"                
             ));           

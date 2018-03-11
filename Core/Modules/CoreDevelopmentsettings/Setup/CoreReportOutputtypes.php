@@ -25,7 +25,7 @@ class CoreReportOutputtypes
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Profile Id",
-                "prmiary"=>1,
+                "primary"=>1,
                 "default"=>NULL,
                 "type"=>"int",
                 "size"=>"11",

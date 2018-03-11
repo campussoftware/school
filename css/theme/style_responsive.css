@@ -209,7 +209,7 @@
 @media (max-width: 767px) { 
 	/* body */
 	body {
-	 	padding: 0px 5px 5px 5px !important;
+	 	/*padding: 0px 5px 5px 5px !important;*/
 	}
     #header .brand {
         margin-top: -5px !important;
@@ -508,6 +508,13 @@
         border-bottom-color: #FFF !important;
         border-top-color: #FFF !important;
     }
+    .header img{
+       width:150px;
+    }
+.control-wrap {
+    width: 245px;
+}
+
 }
 
 /* Landscape phones and down */

@@ -12,7 +12,7 @@ class SendMail extends Mailer
     protected $_attachmentFiles=array();
     function __construct() 
     {
-        $emailSettings=CoreClass::getModel("core_email_settings");
+        $emailSettings=\CoreClass::getModel("core_email_settings");
         $emailSettings->addCustomFilter("active_status='1'");
         $emailSettings->getCollection();
                 
@@ -154,7 +154,7 @@ $headers .= 'From: <'.$this->_emailSettings['fromemail'].'>' . "\r\n";
             $this->Send();
           return "Message Sent OK</p>\n";
         }
-        catch (Core_Email_MailerException $e)
+        catch (\Core\Email\MailerException $e)
         {
           return $e->errorMessage(); //Pretty error messages from PHPMailer
         }

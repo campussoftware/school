@@ -1,6 +1,6 @@
 /* CSS Document */
 .treeview i{
-	padding-right:10px;
+	margin-right: 10px;
 }
 .form-actions {
     background:none;
@@ -28,4 +28,334 @@ form {
   width: 250px;
   height: 170px;
   overflow: hidden;
+}
+.nav>li>a>img {
+    max-width: 35px;
+    height: 30px;
+}
+.span.pull-right
+{
+	background-image: url('../../../img/ui.totop.white.png');
+    background-size: 38px;
+    background-position-y: 14px;
+    background-repeat: no-repeat;
+    width: 39px;
+    position: fixed;
+    bottom: 15px;
+    right: 36px;
+    height: 51px;
+    z-index: 9999;
+}
+.content-header > h1 {
+    text-align: center;
+}
+.image_display {
+    display: none;
+}
+.thumb_admin {
+    width: 35px;
+    height: 35px;
+}
+
+/* =========== Admin Side navigation =================*/
+
+  ul.treeview-menu.menu-open {
+    overflow: initial ! important;
+}
+
+
+/*===============  Dash Board CSS================*/
+#notifications-bar{
+	overflow: hidden;
+}
+.search-btn{
+	float: left;
+}
+#notifications-bar input{
+width: 86%;
+border: 1px solid #ddd;
+    padding: 10px 5px;
+    float: left;
+}
+#search_ic{
+	border: 1px solid #ddd;
+	padding: 11px 20px;
+	color: #000;
+	float: left;
+}
+#admin-con{
+	float: right;
+}
+#admin-con ul li{
+	padding: 10px 0px;
+} 
+#admin-con ul li i{
+	margin:3px 6px; 
+	font-size: 18px;
+}
+#Notif{
+	float: left;
+}
+
+#Notif a{
+	color: #000;
+	font-size: 18px;
+	padding:0px 33px;
+}
+#Notif i{
+	margin: 11px 0px;
+}
+
+.admin-side{
+	float: right;
+}
+.dashbord{
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+.dashboard-bg-orange{
+	background: #6BD9EC;
+}
+.dashboard-bg-pink{
+background: #AF2F7A;
+}
+.dashboard-bg-green{
+	background: #1B998B;
+}
+.dashboard-bg-blue{
+	background: #4D7EDA;
+}
+.dashboard-body{
+	padding: 20px;
+	background-color: inherit;
+	position: relative;
+		color: #fff;
+
+}
+.dashboard-body i{
+font-size: 50px;
+}
+.dashboard-body h2{
+	font-size: 35px;
+	margin: 0;
+}
+.dashboard-body p{
+	text-align: center;
+	padding: 10px 0px;
+}
+#nav-tab_sch{
+	margin-top: 10px;
+}
+#nav-tab_sch li a{
+padding: 0px 0px;
+    margin-left: 7px;
+    border-radius: 0px;
+    color: #000;
+    text-align: center;
+    background: #FF6C00;
+}
+#nav-tab_sch li{
+	border-radius: none;
+}
+#nav-tab_sch span{
+    font-size: 16px;
+    color: #fff;
+}
+#nav-tab_sch p{
+	text-align: center;
+padding-top: 5px;
+background: #FFF;
+padding: 19px 10px;
+}
+#nav-tab_sch li span .fa{
+    padding: 12px 60px;
+    font-size: 20px;
+}
+#nav-tab_sch .nav-pills>li>a{
+    border-top: none;
+}
+#nav-tab_sch li.active::after{
+    top: 87%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(194, 225, 245, 0);
+    border-top-color: #fff;
+    border-width: 15px;
+    margin-left: -12px;
+    display: block;
+
+}
+#tab-cnt{
+    background: #9a9a9a;
+    margin-top: -68px;
+    padding-top: 70px;
+}
+#tab-cnt .tab-pane{
+    padding: 0px 10px;
+    overflow: hidden;
+}
+
+
+/*---------task manager---------------*/
+.task_mngr h2{
+	margin: 0;
+    font-size: 18px;
+    background: #CB2027;
+    padding: 14px 38px;
+    color: #fff;
+}
+   .task_mngr  .panel-group .panel {
+        border-radius: 0;
+        box-shadow: none;
+        border-color: #EEEEEE;
+    }
+
+    .task_mngr .panel-default > .panel-heading {
+        padding: 0;
+        border-radius: 0;
+        color: #212121;
+        background-color: #FAFAFA;
+        border-color: #EEEEEE;
+    }
+
+    .task_mngr .panel-title {
+        font-size: 14px;
+    }
+
+    .task_mngr .panel-title > a {
+        display: block;
+        padding: 15px;
+        text-decoration: none;
+    }
+
+    .more-less {
+        float: right;
+        color: #212121;
+        font-size: 10px;
+    }
+
+    .task_mngr .panel-default > .panel-heading + .panel-collapse > .panel-body {
+        border-top-color: #EEEEEE;
+    }
+    #tab-cnt h3{
+        text-align: center;
+        background: #4CAF50;
+        padding: 6px 0px;
+        color: #fff;
+    }
+    .event-list,.hol-list{
+        background: #fff;
+    }
+    .event-list h4,.hol-list h4{
+        background: #FF6C00;
+        padding: 8px 0px;
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 0px;
+        color: #fff;
+    }
+    .time-table{
+        background: #fff;
+        margin-top: 20px;
+    }
+    .time-table-hd{
+        background: #FF6C00;
+        overflow: hidden;
+        color:#fff;
+    }
+    .time-table-hd form{
+        margin:0px;
+    }
+    .time-table-hd .form-group{
+        margin-bottom: 0px;
+    }
+    .time-table-hd .form-control{
+        height: 30px;
+        margin-top: 5px;
+    }
+    .time-table-hd .form-horizontal .control-label {
+    padding-top: 10px;
+    }
+    .time-table-hd .form-horizontal .control-label:after{
+    content: ":";
+    color: #fff;
+    margin-left: 4px;
+    }
+    
+   .skin-blue .wrapper, .skin-blue .main-sidebar, .skin-blue .left-side {
+    background-color: #056c89;
+    }
+    .skin-blue .sidebar a {
+        color: #fff;
+    }
+    .skin-blue .sidebar-menu>li:hover>a, .skin-blue .sidebar-menu>li.active>a {
+    color: #fff;
+    background: #F2B33F;
+    border-left-color: #FF6C00;
+   }
+   .skin-blue .sidebar-menu>li>.treeview-menu {
+    margin: 0 0px;
+    background: rgba(29, 141, 29, 0.95);
+    }
+   .skin-blue .treeview-menu>li>a{
+       color:#fff;
+   }
+   .sidebar-menu .treeview-menu .treeview-menu {
+    border: 0px;
+    background: #c64040;
+    }
+    .dropdown-menu>li>a:hover {
+        background-color: #F2B33F;
+    }
+    .box-header.with-border {
+    border-bottom: 0px ;
+    background-color: #056c89;
+    color: #fff;
+    }
+    .box.box-primary {
+    border-top:0px;
+   }
+   .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover{
+       background-color: #F2B33F;
+    }
+    
+    .form-horizontal .control-label{
+        text-align: left;
+    }
+    .tab-content .form-horizontal input, .tab-content .form-horizontal select, .tab-content .form-horizontal textarea{
+        width: 280px;
+    }
+    input[type="checkbox"] {
+    width: 17px !important;
+    height: 17px;
+    }
+    .time-table-hd .form-horizontal select {
+    width: auto;
+   }
+   li.user.user-menu a {
+    padding: 10px 10px;
+   }
+   #core_access .panel-group .panel{
+       border-radius: 0px;
+   }
+   #core_access .panel-default>.panel-heading{
+       background: none;
+   }
+   #core_access .panel-heading{
+       padding: 6px 10px;
+   }
+   
+   
+   
+   #result_studentshift .dataTables_filter tr {
+    float: left;
+    margin: 5px 10px;
+   }
+   #result_studentshift .dataTables_filter td {
+    padding: 10px 10px;
 }

@@ -38,7 +38,10 @@ class RameshAbstract extends PageLayout {
     public $_joinList = array();
     public $_customSelectFields = array();
     public $_urlMetaInfor = array();
+    public $_urlMetaDescription;
+    public $_methodType = "REQUEST";
     public $defaultOnchangeEvents=[];
+        
     public function setAPI($apiMethod) {
         $this->_isAPI = $apiMethod;
     }
@@ -80,6 +83,18 @@ class RameshAbstract extends PageLayout {
 
     public function getMetaUrlInfo() {
         return $this->_urlMetaInfor;
+    }
+    
+    public function setMetaUrlDescription($urlMetaDescription) {
+        $this->_urlMetaDescription = $urlMetaDescription;
+    }
+    
+    public function setMethodType($methodType) {
+        $this->_methodType = $methodType;
+    }
+
+    public function getMetaUrlDescription() {
+        return $this->_urlMetaDescription;
     }
 
     public function setCurrentSelector($currentSelector) {

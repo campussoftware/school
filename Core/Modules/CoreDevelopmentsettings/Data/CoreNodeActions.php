@@ -120,15 +120,7 @@ class CoreNodeActions
             $nodeActionController->setNodeActionShortCode("import");
             $nodeActionController->setNodeActionType("SN");
             $nodeActionController->setNodeActionSortNo("7");            
-            $nodeActionController->dataSave();
-            
-            
-            $nodeActionController->setNodeActionName("MRA");
-            $nodeActionController->setNodeActionShortCode("MRA");
-            $nodeActionController->setNodeActionType("SN");
-            $nodeActionController->setNodeActionSortNo("4");            
-            $nodeActionController->dataSave();
-            
+            $nodeActionController->dataSave();                        
             
             $nodeActionController->setNodeActionName("Verified");
             $nodeActionController->setNodeActionShortCode("VFY");

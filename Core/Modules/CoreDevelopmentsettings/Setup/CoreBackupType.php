@@ -42,7 +42,7 @@ class CoreBackupType
                 "name"=>"short_code",
                 "displayValue"=>"Short Code",            
                 "default"=>false,  
-                "prmiary"=>1,
+                "primary"=>1,
                 "type"=>"varchar",
                 "size"=>"255"          
             ));

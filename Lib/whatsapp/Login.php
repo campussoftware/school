@@ -51,7 +51,7 @@ class Login
       }
 
       if ($this->parent->getLoginStatus() === Constants::DISCONNECTED_STATUS) {
-          throw new LoginFailureException();
+          throw new \LoginFailureException();
       }
 
       $this->parent->logFile('info', '{number} successfully logged in', ['number' => $this->phoneNumber]);

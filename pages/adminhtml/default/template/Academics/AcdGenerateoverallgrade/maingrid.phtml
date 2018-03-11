@@ -1,0 +1,86 @@
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                    <div class="widget-title">
+                            <h4><i class="icon-reorder"></i><?php echo $this->_currentAction;?></h4>
+                                                    <span class="tools">
+                                                    <a href="javascript:;" class="icon-chevron-down"></a>
+                                                    </span>
+                    </div>
+                    <div class="widget-body" >
+                       <div id="reportengine_div" name="reportengine_div" class="form-horizontal">
+            <form name="acd_generateoverallgrade" id="acd_generateoverallgrade" class="form_acd_generateoverallgrade" method="post" enctype="multipart/form-data" action="genarate">
+            <input type="hidden" id="node" name="node" value="acd_generateoverallgrade">
+						<input type="hidden" id="action" name="action" value="edit">
+						<input type="hidden" id="action_id" name="action_id" value="edit">                                          
+						<input type="hidden" id="id" name="id" value="215">
+              <div class="control-group">
+                <label class="control-label">Academic Year </label>
+                <div class="controls">
+                  <select data-placeholder="Select year" class="chosen-with-diselect  chzn-done" tabindex="-1" id="academic" name="academic" >
+                    <option>Select Report </option>
+                    <option>Select56 Reportj </option>
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Course</label>
+                <div class="controls">
+                  <select data-placeholder="Select course" class="chosen-with-diselect  chzn-done" tabindex="-1" id="course" name="course" >
+                    <option>Select course </option>
+                    <option>Select56 course </option>
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Class </label>
+                <div class="controls">
+                  <select data-placeholder="Select class" class="chosen-with-diselect  chzn-done" tabindex="-1" id="class" name="class" >
+                    <option>Select class </option>
+                    <option>Select56 class </option>
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label">Exam Group </label>
+                <div class="controls">
+                  <select data-placeholder="Select exam_group" class="chosen-with-diselect  chzn-done" tabindex="-1" id="exam_group" name="exam_group" >
+                    <option>Select exam_group </option>
+                    <option>Select56 exam_group </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn btn-small btn-success formsubmit" id="save" name="save" onclick="return getformsubmit();" ><i class="icon-ok icon-white"></i> Save </button>
+              </div>
+            </form>
+          </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

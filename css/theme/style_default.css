@@ -1,6 +1,7 @@
 body {
     color: #868686;
-    background: #32C2CD url(../img/bg-default.jpg) !important;
+    /*background: #32C2CD url(../img/bg-default.jpg); */
+    background: url(../img/m1.green.png) top center !important;
 }
 #main-content {
     box-shadow: 0 0 10px #757575;
@@ -16,7 +17,7 @@ ul.faq-list li a:hover, ul.faq-list li a.active{
 }
 #header.navbar-inverse .navbar-inner {
     
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e4e4e',endColorstr='#4e4e4e',GradientType=0)
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e4e4e',endColorstr='#4e4e4e',GradientType=0);
     border-width: 0;
 }
 

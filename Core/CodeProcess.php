@@ -12,24 +12,19 @@ class CodeProcess {
 
     public function convertEncryptDecrypt($action, $string) {
         $output = false;
-
         $encrypt_method = "AES-256-CBC";
         $secret_key = 'ENCRYPTION_KEY';
         $secret_iv = 'ENCRYPTION_KEY';
-
         // hash
         $key = hash('sha256', $secret_key);
-
         // iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
         $iv = substr(hash('sha256', $secret_iv), 0, 16);
-
         if ($action == 'encrypt') {
             $output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
             $output = base64_encode($output);
         } else if ($action == 'decrypt') {
             $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
         }
-
         return $output;
     }
 
@@ -64,11 +59,26 @@ class CodeProcess {
         }
         rmdir($dir);
     }
-
+	
     function createZipFile($path, $targetfilepath) {
+		$zip = new \ZipArchive();
+		if (!$zip->open($targetfilepath, \ZIPARCHIVE::CREATE)) {
+			return false;
+		}
+		 if (!\Core::isArray($path)) {
+            $path = array($path);
+        }
+        if (\Core::countArray($path) > 0) {
+            foreach ($path as $singlefolder) {
+			$this->addFiletoZip($singlefolder, $zip);
+			}
+		}
+		$zip->close();
+		return true;
         $zip_name = "temfolder.zip";
-        $zip = new ZipArchive();
-        if ($zip->open($zip_name, ZIPARCHIVE::CREATE) !== TRUE) {
+		global $rootObj;
+        $zip = new \ZipArchive();
+        if ($zip->open($zip_name, \ZIPARCHIVE::CREATE) !== TRUE) {
             $error .= "* Sorry ZIP creation failed at this time";
         }
         if (!\Core::isArray($path)) {
@@ -78,7 +88,10 @@ class CodeProcess {
             foreach ($path as $singlefolder) {
 
                 $valid_files = $this->dirToArray($singlefolder);
-
+				echo "<pre>";
+					print_r($valid_files);
+					echo "</pre>";
+				$foldername=str_replace($rootObj->documentRoot,"",$singlefolder);
                 foreach ($valid_files as $key => $file) {
                     if (is_array($file)) {
                         foreach ($file as $subfile) {
@@ -94,13 +107,50 @@ class CodeProcess {
                         }
                     }
                 }
+				
             }
+			die;
             $zip->close();
             rename($zip_name, $targetfilepath . ".zip");
             return true;
         }
     }
+	function addFiletoZip($source, $zip)
+	{
+		global $rootObj;
+		$source = str_replace('\\', '/', realpath($source));
 
+		if (is_dir($source) === true)
+		{
+			$files = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($source), \RecursiveIteratorIterator::SELF_FIRST);
+
+			foreach ($files as $file)
+			{
+				
+				$file = str_replace('\\', '/', $file);
+				$file=str_replace($rootObj->documentRoot,"",$file);
+				// Ignore "." and ".." folders
+				if( in_array(substr($file, strrpos($file, '/')+1), array('.', '..')) )
+					continue;
+
+				$file = realpath($file);
+
+				if (is_dir($file) === true)
+				{
+					$zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
+				}
+				else if (is_file($file) === true)
+				{
+					$zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
+				}
+			}
+		}
+		else if (is_file($source) === true)
+		{
+			$zip->addFromString(basename($source), file_get_contents($source));
+		}
+		return ;
+	}
     public function searchDirectory($directoryPath) {
         $directoryList = [];
         $dirs = array();
@@ -108,7 +158,17 @@ class CodeProcess {
         foreach ($objects as $file) {
             if ($file->isDir()) {
                 $item = substr($file->getPathname(), strlen(getcwd()));
-                if ($this->endsWith($item, $directoryPath)) {
+                $flag=TRUE;
+                $excludesFolders=array("sessiondata","uploads","Var");
+                foreach($excludesFolders as $excludesFolder)
+                {
+                        if(strpos($item,$excludesFolder))
+                        {
+                                $flag=false;
+                                break;
+                        }
+                }
+                if ($flag && $this->endsWith($item, $directoryPath)) {
                     $directoryList[] = $item;
                 }
             }
@@ -123,10 +183,20 @@ class CodeProcess {
         $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(getcwd()), \RecursiveIteratorIterator::SELF_FIRST);
         foreach ($objects as $file) {
             if ($file->isFile()) {
-                $item = substr($file->getPathname(), strlen(getcwd()));
-                if ($this->endsWith($item, $filePath)) {
-                    $fileList[] = $rootObj->documentRoot.ltrim($item,DIRECTORY_SEPARATOR);
-                }
+                $item = substr($file->getPathname(), strlen(getcwd())); 
+		$flag=TRUE;
+		$excludesFolders=array("sessiondata","uploads","Var");
+		foreach($excludesFolders as $excludesFolder)
+		{
+			if(strpos($item,$excludesFolder))
+			{
+				$flag=false;
+				break;
+			}
+		}
+		if ($flag && $this->endsWith($item, $filePath)) {
+				$fileList[] = $rootObj->documentRoot.ltrim($item,DIRECTORY_SEPARATOR);
+			}
             }
         }
         return $fileList;
@@ -179,6 +249,5 @@ class CodeProcess {
             }
         }        
         return $results;
-    }
-
+   }
 }

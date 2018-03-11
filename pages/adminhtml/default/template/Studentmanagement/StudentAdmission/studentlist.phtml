@@ -1,0 +1,103 @@
+<?php
+$controllerObj = $this->_controllerObj;
+if ($controllerObj->_totalRecordsCount < 1) {
+    $controllerObj->_totalRecordsCount = 1;
+}
+$studentData=$this->getStudentList();
+$cp = new \Core\CodeProcess();
+?>
+<div id="total_<?php echo $controllerObj->_nodeName; ?>" name="total_<?php echo $controllerObj->_nodeName; ?>">    
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title"><?php echo $controllerObj->getLabel($controllerObj->_currentAction); ?></h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="icon-chevron-down"></i></button>
+            </div>
+        </div>
+        <div class=" box-body chart-responsive" style="margin-top:15px; overflow-x:auto; overflow-y:hidden;">
+            <div>
+                <div class="dataTables_filter" id="sample_1_filter">
+                    <label></label>
+                </div>
+            </div>
+            <div class="default-table">
+            <table class="table table-bordered"> 
+                <thead>
+                    <tr> 
+                        <th><label><input type="checkbox"></label></th> 
+                        <th style="min-width: 110px;">Admission No</th> 
+                        <th style="min-width: 80px;">Roll No</th> 
+                        <th>Image</th> 
+                        <th style="min-width:150px;">Student Name</th> 
+                        <th style="min-width:80px;">Class</th>
+                        <th style="min-width:80px;">Section</th>
+                        <th>Address</th> 
+                        <th>options</th>
+                     </tr> 
+                </thead> 
+                <tbody>                    
+                        <?php
+                        if(\Core::countArray($studentData)>0){
+                            foreach ($studentData as $key => $value) {                                
+                                if(\Core::getValueFromArray($value, "address")!=""){
+                                    $_addseperator=",";
+                                }else{
+                                   $_addseperator=""; 
+                                }
+                                if(\Core::getValueFromArray($value, "city")!=""){
+                                    $_seperator=",";
+                                }else{
+                                   $_seperator=""; 
+                                }
+                                $address=\Core::getValueFromArray($value, "address").$_addseperator.\Core::getValueFromArray($value, "city").$_seperator.\Core::getValueFromArray($value, "state");
+                                echo '<tr>';
+                                ?>
+                                <td>
+                                    <label><input type="checkbox"></label>
+                                </td> 
+                                <td><?php echo \Core::getValueFromArray($value, "admission_no")?></td> 
+                                <td><?php echo \Core::getValueFromArray($value, "roll_no")?></td> 
+                                <?php
+                                    $imageData=\Core::getValueFromArray($value, "image");
+                                    echo '<td><img src="'.\Core::getValueFromArray($imageData, "image").'" alt="'.\Core::getValueFromArray($imageData, "title").'" class="img-reponsive"> </td> ';
+                                ?>
+                                <td><?php echo \Core::getValueFromArray($value, "student_name")?></td> 
+                                <td><?php echo \Core::getValueFromArray($value, "classname")?></td> 
+                                <td><?php echo \Core::getValueFromArray($value, "section")?></td> 
+                                <td><?php echo $address?></td> 
+                                <td>
+                                    <div class="profile-actions">
+                                        <div class="col-md-3"><button class="btn btn-default btn-info" type="submit" onclick="(function () { require('studentmng').sendSms()})()"><span><i class="fa fa-mobile" aria-hidden="true"></i></span>SMS</button></div>
+                                        <div class="col-md-3"><button class="btn btn-default btn-success" type="submit"><span><i class="fa fa-user-o" aria-hidden="true"></i></span>Promote</button></div>
+                                        <div class="col-md-3"><button class="btn btn-default btn-info" type="submit"><span><i class="fa fa-user-o" aria-hidden="true"></i></span>Profile</button></div>
+                                        <div class="col-md-3"><button class="btn btn-default btn-danger" type="submit"><span><i class="fa fa-wrench" aria-hidden="true"></i></span>Edit</button></div>
+                                        <div class="col-md-3"><button class="btn btn-default btn-info" type="submit"><span><i class="fa fa-envelope-o" aria-hidden="true"></i></span>Email</button></div>
+                                        <div class="col-md-3"><button class="btn btn-default btn-success" type="submit"><span><i class="fa fa-id-card" aria-hidden="true"></i></span>Id Card</button></div>
+                                        <div class="col-md-3"><button class="btn btn-default btn-info" type="submit"><span><i class="fa fa-file-text" aria-hidden="true"></i></span>Marks Sheet</button></div>
+                                        <div class="col-md-3"><button class="btn btn-default btn-danger" type="submit"><span><i class="fa fa-trash" aria-hidden="true"></i></span>Delete</button></div>        
+                                    </div>
+                                </td> 
+                                
+                        <?php   echo'</tr>';  }
+                        }
+                        ?>  
+                </tbody>
+            </table> 
+            <div>
+        </div>
+    </div>	
+      
+      <div class="modal fade" id="stu-management" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content project-forms">
+            
+        </div>
+    </div>
+</div>      
+            
+</div><script>
+    require(['config'], function () {
+        require(['jquery', 'studentmng'], function ($) {
+        });        
+    });
+</script>

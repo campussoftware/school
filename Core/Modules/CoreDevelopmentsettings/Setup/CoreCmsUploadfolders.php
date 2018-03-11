@@ -34,7 +34,7 @@ class CoreCmsUploadfolders
             $setup->addColumnName(array(
                 "name"=>"name",
                 "displayValue"=>"Folder Name", 
-                "prmiary"=>1,
+                "primary"=>1,
                 "default"=>NULL,                
                 "type"=>"varchar",
                 "size"=>"255"          

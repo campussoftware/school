@@ -19,6 +19,7 @@ class From extends Block
     public $_defaultAcdAttributes=array();
     public $_accordionFields=array();
     public $_tabList=array();
+    public $_mainTabList=[];
     public $_tabFields=array();
     //put your code here
     public function getFromTabs()
@@ -41,7 +42,11 @@ class From extends Block
             $blockProperties=\Core::processXmlData($layoutContent,'//tab');
             $blockProperties=$this->sortXmlTagData($blockProperties);  
             $this->_tabList=$blockProperties;
-        }        
+            
+            $blockProperties=\Core::processXmlData($layoutContent,'//maintab');
+            $blockProperties=$this->sortXmlTagData($blockProperties);  
+            $this->_mainTabList=$blockProperties;
+        }
     }
     function sortXmlTagData($blockProperties)
     {      
@@ -123,5 +128,5 @@ class From extends Block
                 }                
             }
         }
-    }
+    }    
 }

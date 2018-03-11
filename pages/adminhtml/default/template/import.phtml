@@ -1,0 +1,63 @@
+<?php
+$controllerObj = $this->_controllerObj;
+
+$mandotoryAttributes = $controllerObj->mandotatoryAttributes();
+$np = new \Core\Controllers\AccessController();
+$nodeOTMRelations = $np->NodeCheckForProfile($controllerObj->_nodeOTMRelations);
+?>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                <div class="widget-body">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><?php echo $controllerObj->getLabel($controllerObj->_currentAction); ?></h3>    
+                        </div>
+                        <div class="box-body chart-responsive">
+                            <form name="<?php echo $controllerObj->_nodeName; ?>" id="<?php echo $controllerObj->_nodeName; ?>" class="form-horizontal form_<?php echo $controllerObj->_nodeName; ?> ng-pristine ng-valid" action="" method="POST" enctype="multipart/form-data">
+
+                                <input id="node" name="node" value="<?php echo $controllerObj->_nodeName; ?>" type="hidden">
+                                <input id="action" name="action" value="importdata" type="hidden">
+                                <input id="actionflag" name="actionflag" value="importdata" type="hidden">
+                                <input id="action_id" name="action_id" value="importdata" type="hidden">
+                                <div class="form-group" id="row_importfile">
+                                    <label class="col-sm-3 control-label">
+                                        <span id="label_importfile">File</span>
+                                    </label>
+                                    <div class="col-sm-9">
+                                        <div class="controls" id="value_importfile">    
+
+                                            <div class="" id="value_importfile">        
+                                                <input name="importfile" id="importfile"  accept=".xlsx"  type="file">
+                                            </div> 
+                                        </div>
+                                        <span class="error_message" id="error_importfile"></span>
+                                    </div>
+                                </div>
+                                 <div id="error_div" name="error_div" style="color: black;
+
+max-height: 500px;
+overflow: auto;
+">
+
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" id="import" name="import" class="btn btn-small btn-success formsubmit " onclick="return getformsubmit('import');">Import </button>
+                                    
+                                    <button type="button" id="importprocess" name="importprocess" class="btn btn-small btn-success formsubmit " onclick="return getformsubmit('importprocess');">Import Process </button>
+
+                                    <a href="<?php echo $controllerObj->_websiteHostUrl; ?> ">
+                                        <button style="margin-left:4px;" type="button" class="btn btn-primary">  <i class="icon-arrow-left"></i> BACK</button>
+                                    </a>
+                                </div>
+                        </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

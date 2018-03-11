@@ -1,0 +1,17 @@
+#Std_leave_request li{
+	border-radius: 0px;
+}
+#Std_leave_request li a{
+	color: #000;
+	font-size: 15px;
+}
+#Std_leave_request li.active{
+		border-top: 3px solid orange;
+border-radius: 0px;
+}
+#Std_leave_request li a:hover{
+	background: #fff!important;
+}
+#text_right{
+	text-align: right;
+}

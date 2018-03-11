@@ -1,0 +1,24 @@
+#input_style input,select{
+width: 100%;
+border-radius: 0px!important;
+}
+.search_button{
+    padding: 7px 10px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+#Issue_book_form{
+	margin-top: 67px;
+}
+#std_books_table thead tr th{
+	padding: 20px 10px;
+}
+#std_books_table tbody tr td{
+	padding: 15px 10px;
+}
+#std_books_table img {
+    width: 65px;
+    height: 50px;
+    margin: 0 auto;
+}

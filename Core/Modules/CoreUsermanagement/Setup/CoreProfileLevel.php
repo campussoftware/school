@@ -26,7 +26,7 @@ class CoreProfileLevel
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Access Id",
-                "prmiary"=>false,
+                "primary"=>false,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"bigint",
@@ -39,7 +39,7 @@ class CoreProfileLevel
                 "default"=>false,                
                 "type"=>"int",
                 "size"=>"11",
-                 "prmiary"=>1,
+                 "primary"=>1,
             ));               
             $setup->addColumnName(array(
                 "name"=>"createdby",

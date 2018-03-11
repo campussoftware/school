@@ -49,7 +49,7 @@ class CoreWeekDetails
             $setup->addColumnName(array(
                 "name"=>"short_code",
                 "displayValue"=>"Short Code",
-                "prmiary"=>1,   
+                "primary"=>1,   
                 "type"=>"varchar",
                 "size"=>"255"          
             ));

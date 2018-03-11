@@ -1,0 +1,61 @@
+/* CSS Document */
+.warper{
+    z-index: 999;
+    height: 100%;    
+    /*position: absolute;
+    right: 0px;
+    width: calc(100% - 230px);*/
+   
+}
+#page_header_block{
+	background:#dcdcdc;
+	padding:8px 25px;
+}
+#page_links ul li{
+	display:inline-block;
+}
+#page_links ul li a{
+	padding:0px 6px;
+}
+#page_links ul li a i.fa{
+	margin-right:8px;
+}
+#exam_schedule_modal .modal-body{
+    overflow: hidden;
+}
+#std_books_table{
+    margin-top: 10px;
+}
+.site_nav{
+    margin-bottom: 12px;
+}
+.bottom-list-nav{
+    margin-top: 12px;
+}
+.default-list{
+    margin-top: 12px;
+    padding: 10px;
+    margin-bottom: 12px;
+}
+.default-list h3 {
+    font-size: 18px;
+}
+#send_Leave_request .control-label{
+    text-align: left;
+}
+.modal-backdrop{
+    z-index: -9999;
+}
+#notification_details h1 {
+    font-size: 20px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 18px;
+}
+#notification_details p {
+    line-height: 24px;
+}
+.per_atdnce p{
+    float: left;
+    margin: 0px 10px;
+}

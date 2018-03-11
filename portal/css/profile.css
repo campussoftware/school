@@ -1,0 +1,69 @@
+@charset "utf-8";
+/* CSS Document */
+.profile .row ,.row.cls_tech_info, .row.tech_info{
+	margin: 0px;
+}
+.st_img {
+    border: 1px solid #dedede;
+    padding: 4px;
+    border-radius: 3px;
+}
+.st_data {
+    text-align: center;
+    margin-top: 24px;
+}
+.st_data h4{
+	font-weight: 600;
+	font-size: 20px;
+	margin-bottom: 5px;
+}
+.stu_info{
+	border-left: 5px solid #d96236;
+    padding: 8px 20px;
+    margin: 15px 20px;
+}
+.stu_info h4{
+	color: #333333;
+	font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.stu_info p{
+	color: #2a91ad;
+	margin: 0 0 10px;
+}
+.stu_info .fa{
+	margin-right: 7px;
+}
+.st_col_mod .col-md-6,.st_col_mod .col-md-4{
+	margin: 0px;
+	padding: 0px;
+}
+
+
+
+
+
+
+/* Teachers List */
+.cls_tech_info h3,.tech_info h3{
+	font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 10px;
+	border-bottom: 6px solid #fc6900;
+    display: inline;
+	}
+.cls_tech_info h4{
+	color:#046d87;
+	font-weight: 600;
+	
+}
+.cls_tech_info p{
+	font-weight: 600;
+    margin: 2px 0px;
+    font-size: 16px;
+}
+.cls_tech_info hr, .tech_info hr{
+	margin-top: 11px;
+    border-top: 1px solid #cbc4c4;
+}

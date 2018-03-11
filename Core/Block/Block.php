@@ -26,13 +26,16 @@ class Block extends PageLayout
     public $_accordionFields=array();
     public $_partentObject;
 
-    function __construct($controller)
+    function __construct($controller=null)
     {
-        global $rootObj;
-	$this->_websiteSettings=$rootObj;
-        $this->_controllerObj=$controller;
-        $this->_defaultAcdAttributes=$controller->_showAttributes;
-        parent::__construct($controller);
+    	if(is_object($controller))
+	{
+        	global $rootObj;
+		$this->_websiteSettings=$rootObj;
+	        $this->_controllerObj=$controller;
+        	$this->_defaultAcdAttributes=$controller->_showAttributes;
+	        parent::__construct($controller);
+	}
     }
     public function setLayout($layout)
     {

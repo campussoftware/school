@@ -31,6 +31,13 @@ class CoreSmsSettings
                 "auto_increment"=>1,           
             ));
             $setup->addColumnName(array(
+                "name"=>"identity",
+                "displayValue"=>"Identity",            
+                "default"=>false,
+                "type"=>"varchar",
+                "size"=>"50"
+            ));
+            $setup->addColumnName(array(
                 "name"=>"gateway",
                 "displayValue"=>"Gate Way Url",            
                 "default"=>NULL,                

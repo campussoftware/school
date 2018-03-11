@@ -25,7 +25,7 @@ class Modules_Expensemanagement_Setup_ExpenseDetails
                 "name"=>"id",
                 "displayValue"=>"Expense Id",                            
                 "default"=>NULL,
-		"prmiary"=>1,
+		"primary"=>1,
                 "type"=>"int",
                 "size"=>"11",
 		"auto_increment"=>1,  

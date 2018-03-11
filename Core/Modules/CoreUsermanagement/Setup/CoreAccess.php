@@ -26,12 +26,12 @@ class CoreAccess
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Access Id",
-                "prmiary"=>false,
+                "primary"=>false,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"bigint",
                 "size"=>"11",
-                "prmiary"=>1,
+                "primary"=>1,
                 "auto_increment"=>1            
             ));
             $setup->addColumnName(array(

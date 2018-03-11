@@ -25,7 +25,7 @@ class CoreAttendanceStatus
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Id",
-                "prmiary"=>false,
+                "primary"=>false,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"int",
@@ -42,7 +42,7 @@ class CoreAttendanceStatus
                 "name"=>"short_code",
                 "displayValue"=>"Short Code",            
                 "default"=>false,
-                "prmiary"=>1,
+                "primary"=>1,
                 "type"=>"varchar",
                 "size"=>"255"          
             ));

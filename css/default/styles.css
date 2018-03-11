@@ -1,0 +1,27 @@
+/* CSS Document */
+
+.default-table img {
+    width: 40px;
+}
+.default-table thead{
+    background: #3c8dbc;
+    color: #fff;
+}
+.default-table .table-bordered>thead>tr {
+    border: 1px solid #3c8dbc;
+}
+.default-table .table-bordered>tbody>tr>td,.default-table .table-bordered>tfoot>tr>td {
+    border: 1px solid #3c8dbc;
+}
+.default-table .table-bordered>thead>tr>th,.default-table .table-bordered>tbody>tr>th{
+    border: 1px solid #0b659a;
+}
+.profile-actions .btn-default {
+    margin-bottom: 8px;
+    color: #fff;
+    padding: 4px 10px;
+    min-width: 130px;
+}
+.profile-actions .fa {
+    margin-right: 10px;
+}

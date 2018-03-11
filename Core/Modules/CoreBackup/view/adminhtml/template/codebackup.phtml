@@ -1,0 +1,54 @@
+<?php
+$controllerObj=$this->_controllerObj;
+?>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                    
+                    <div class="widget-body" >
+<div class="box box-primary">
+
+    <div class="box-header with-border">
+        <h3 class="box-title">Save</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="collapse"><i class="icon-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body chart-responsive widget-body">
+        <form id="<?php echo $controllerObj->_nodeName;?>" name="<?php echo $controllerObj->_nodeName;?>" class="form-horizontal">
+            <input type="hidden" id="node" name="node" value="<?php echo $controllerObj->_nodeName;?>">
+            <input type="hidden" id="action" name="action" value="savedbtosever">
+            <input type="hidden" id="action_id" name="action_id" value="savedbtosever">
+            <div id="error_div" name="error_div" style="color: red;font-weight: bold;"></div>
+            <div class="form-group" id="row_exporttype">
+                <label class="col-sm-3 control-label">
+                    <span id="label_exporttype">Type</span>
+                    <span id="req_name" style="display:none" class="">
+									<img src="http://localhost/newschool/img/required_field.gif">
+								</span>
+                </label>
+                <div class="col-sm-9">
+                    <div class="controls" id="value_exporttype">
+                        <select name="exporttype" id="exporttype">
+                            <option value="CODE">CODE</option>
+                            <option value="UP"> Upload </option>
+                        </select>
+                    </div>
+                    <span class="error_message" id="error_db_table"></span>
+
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn btn-success formsubmit " id="datasubmit" name="datasubmit" onclick="return getformsubmit();"><i class="icon-save"></i> Save to Server</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+            </div>
+        </div>
+    </div>
+</div>

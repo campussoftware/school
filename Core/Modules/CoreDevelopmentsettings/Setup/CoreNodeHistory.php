@@ -17,7 +17,8 @@ class CoreNodeHistory
     //put your code here
     function execute()
     {
-        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
+        $cc = new \CoreClass();         
+	$setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_node_history");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -25,7 +26,7 @@ class CoreNodeHistory
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"User Id",
-                "prmiary"=>1,
+                "primary"=>1,
                 "default"=>NULL,
                 "type"=>"int",
                 "size"=>"11",

@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* CSS Document */
+
+.basic_form .form-control{
+	border: 1px solid #b0a6a6;
+    border-radius: 0px;
+	box-shadow: none;
+}
+.basic_form label{
+	color: #6a6161;
+	margin-bottom: 12px;
+}
+.btn_submit {
+    background: #056d87;
+    border-radius: 0px;
+    color: #fff;
+    padding: 10px 34px;
+    font-size: 16px;
+}
+.btn_cancel {
+    background: #878787;
+    border-radius: 0px;
+    color: #fff;
+    padding: 10px 34px;
+    font-size: 16px;
+}

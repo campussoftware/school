@@ -1,3 +1,367 @@
-<div style="font-size: 24px; padding: 25px; text-align: center; color: rgb(17, 17, 17);">
-        Welcome To EMS
+<?php
+$totalStudents=$this->getstudentList();
+$totalStaff=$this->getstaffList();
+$totalCourses = $this->getcourseList();
+$classList = $this->getclassList();
+$eventList=$this->getEventList();
+$holidayList=$this->getHolidayList();
+?>
+
+<div class="col-md-12">
+<div class="row dashbord">
+   <div class="col-md-3">
+     <div class="dashboard-bg-orange">
+       <div class="dashboard-body">
+         <div class="row">
+           <div class="col-lg-6">
+             <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+
+           </div>
+            <div class="col-lg-6">
+              <h2><?php echo count($totalStudents);?></h2>
+            </div>
+
+         </div>
+         <p>Total Students</p>
+       </div>
+     </div>
+   </div>
+      <div class="col-md-3">
+         <div class="dashboard-bg-pink">
+       <div class="dashboard-body">
+         <div class="row">
+           <div class="col-lg-6">
+
+             <i class="fa fa-user" aria-hidden="true"></i>
+
+
+           </div>
+            <div class="col-lg-6">
+              <h2><?php echo count($totalStaff);?></h2>
+            </div>
+
+         </div>
+         <p>Total Employees</p>
+       </div>
+     </div>
+      </div>
+
+   <div class="col-md-3">
+
+      <div class="dashboard-bg-green">
+       <div class="dashboard-body">
+         <div class="row">
+           <div class="col-lg-6">
+
+            <i class="fa fa-book" aria-hidden="true"></i>
+
+
+
+           </div>
+            <div class="col-lg-6">
+              <h2><?php echo count($totalCourses);?></h2>
+            </div>
+
+         </div>
+         <p>Total Courses</p>
+       </div>
+     </div>
+   </div>
+
+   <div class="col-md-3">
+     <div class="dashboard-bg-blue">
+       <div class="dashboard-body">
+         <div class="row">
+           <div class="col-lg-6">
+            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+           </div>
+            <div class="col-lg-6">
+              <h2><?php echo count($classList);?></h2>
+            </div>
+         </div>
+         <p>Total Batch</p>
+       </div>
+     </div>
+   </div>
+
+ </div>
+<!--tabs-->
+<div class="row">
+  <div class="col-md-9">
+    <ul class="nav nav-pills" id="nav-tab_sch">
+
+
+    <li class="active" role="presentation" ><a data-toggle="pill" href="#home"><span> <i class="fa fa-tasks" aria-hidden="true"></i> </span> <p>Activity</p> </a></li>
+    <li><a data-toggle="pill" href="#menu1"><span> <i class="fa fa-bar-chart" aria-hidden="true"></i> </span> <p>Fee reports</p> </a></li>
+    <li><a data-toggle="pill" href="#menu2"><span> <i class="fa fa-newspaper-o" aria-hidden="true"></i> </span> <p>Events And Holidays</p> </a></li>
+    <li><a data-toggle="pill" href="#menu3"><span> <i class="fa fa-calendar" aria-hidden="true"></i> </span> <p>Time Table</p> </a></li>
+
+  </ul>
+
+  <div class="tab-content" id="tab-cnt">
+    <div id="home" class="tab-pane fade in active">
+      <h3>HOME</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+    <div id="menu1" class="tab-pane fade">
+      <h3>Menu 1</h3>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+        <div class="row"><h3>Upcoming Events And Holidays</h3>
+            <div class="col-md-6">
+                <div class="event-list">
+                <h4>Event List</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Event Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if(Core::countArray($eventList)>0){
+                            foreach ($eventList as $key => $value) {
+                                echo '<tr>
+                                    <td>' . Core::getValueFromArray($value, title) . '</td>
+                                    <td>' . Core::getValueFromArray($value, start_date) . '</td>
+                                     </tr>';
+                            }
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="col-md-6">
+                <div class="hol-list">
+                    <h4>Holiday List</h4>
+                  <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Holiday Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if(Core::countArray($holidayList)>0)
+                        {
+                            foreach ($holidayList as $key => $value) {
+                                echo' <tr>
+                                <td>' . Core::getValueFromArray($value, title) . '</td>
+                                <td>' . Core::getValueFromArray($value, start_date) . '</td>
+                                </tr>';
+                            }
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="time-table">
+                    <div class="time-table-hd">
+                        <div class="col-md-3">
+                            <h4>Time Table</h4>
+                        </div>
+                        <div class="col-md-5">
+                         <form class="form-horizontal">
+                             <div class="form-group">
+                                 <label for="classname" class="col-sm-2 control-label">Class</label>
+                                 <div class="col-sm-10">
+                                     <select class="form-control">
+                                         <option>Class I</option>
+                                         <option>Class II</option>
+                                         <option>Class VIII</option>
+                                         <option>Class IX</option>
+                                         <option>Class X</option>
+                                     </select>
+                                 </div>
+                             </div>
+                         </form>
+                        </div>
+                        <div class="col-md-4">
+                              <form class="form-horizontal">
+                             <div class="form-group">
+                                 <label for="classname" class="col-sm-3 control-label">Section</label>
+                                 <div class="col-sm-9">
+                                     <select class="form-control">
+                                         <option>A</option>
+                                         <option>B</option>
+                                         <option>C</option>
+                                         <option>D</option>
+                                         <option>E</option>
+                                     </select>
+                                 </div>
+                             </div>
+                         </form>
+                        </div>
+                    </div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>1St Period</th>
+                            <th>2Nd Period</th>
+                            <th>3Rd Period</th>
+                            <th>4Th Period</th>
+                            <th>5Th Period</th>
+                            <th>6Th Period</th>
+                            <th>7Th Period</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monday</td>
+                            <td>Telugu</td>
+                            <td>Science</td>
+                            <td>Physics</td>
+                            <td>English</td>
+                            <td>Social</td>
+                            <td>Maths</td>
+                            <td>Hindi</td>
+                        </tr>
+                        <tr>
+                            <td>Tuesday</td>
+                            <td>Telugu</td>
+                            <td>Science</td>
+                            <td>Physics</td>
+                            <td>English</td>
+                            <td>Social</td>
+                            <td>Maths</td>
+                            <td>Hindi</td>
+                        </tr>
+                        <tr>
+                            <td>Wednesday</td>
+                            <td>Telugu</td>
+                            <td>Science</td>
+                            <td>Physics</td>
+                            <td>English</td>
+                            <td>Social</td>
+                            <td>Maths</td>
+                            <td>Hindi</td>
+                        </tr>
+                        <tr>
+                            <td>Thusday</td>
+                            <td>Telugu</td>
+                            <td>Science</td>
+                            <td>Physics</td>
+                            <td>English</td>
+                            <td>Social</td>
+                            <td>Maths</td>
+                            <td>Hindi</td>
+                        </tr>
+                        <tr>
+                            <td>Friday</td>
+                            <td>Telugu</td>
+                            <td>Science</td>
+                            <td>Physics</td>
+                            <td>English</td>
+                            <td>Social</td>
+                            <td>Maths</td>
+                            <td>Hindi</td>
+                        </tr>
+                        <tr>
+                            <td>Saterday</td>
+                            <td>Telugu</td>
+                            <td>Science</td>
+                            <td>Physics</td>
+                            <td>English</td>
+                            <td>Social</td>
+                            <td>Maths</td>
+                            <td>Hindi</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+  </div>
+  </div>
+  <div class="col-md-3">
+    <div class="task_mngr">
+<h2>Task Manager</h2>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <i class="more-less glyphicon glyphicon-plus"></i>
+                        Task 1
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <i class="more-less glyphicon glyphicon-plus"></i>
+                        Task 2
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute.
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <i class="more-less glyphicon glyphicon-plus"></i>
+                        Task 3
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat.
+            </div>
+        </div>
+         <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingFour">
+                <h4 class="panel-title">
+                    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        <i class="more-less glyphicon glyphicon-plus"></i>
+                        Task 4
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                <div class="panel-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                </div>
+            </div>
+        </div>
+
+    </div><!-- panel-group -->
+
+
+</div><!-- container -->
+  </div>
+</div>
+
+</div>
 </div>

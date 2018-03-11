@@ -1,0 +1,131 @@
+/* CSS Document */
+.sideBar_toggle{
+	width:50px;
+	float:left;
+}
+.sideBar_toggle a{
+	display:block;
+	text-align:center;
+	font-size: 25px;
+}
+.sideBar_toggle a i.fa{
+	line-height:50px;
+}
+.nav{
+	margin-right:15px;
+}
+.nav>li{
+	display:inline-block;
+}
+.nav li a,.nav li a i.fa{
+	font-size:18px;
+}
+.user-title{
+	padding:0px 10px;
+	font-size:15px;
+}
+.icon_count{
+	position: relative;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    line-height: 20px;
+    top: -10px;
+    left: -5px;
+}
+.academic-year{
+	width:200px;
+	float:left;
+	margin-left:25px;
+	padding:8px 5px;
+	border-radius:5px;
+	-webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	-ms-border-radius:5px;
+	-o-border-radius:5px;
+	margin-top: 10px;
+}
+.academic-year p{
+	text-align:center;
+}
+.nav .dropdown-menu{
+	border-radius:0px;
+	box-shadow:none;
+	width:180px;
+	padding:0px;
+}
+.nav .dropdown-menu.user-profile li{
+	height:38px;
+}
+.nav .dropdown-menu.user-profile li.dropdown-header{
+}
+.nav .dropdown-menu.user-profile li a{
+	font-size:14px;
+	border-bottom: 1px solid #cfd8dc;
+}
+.nav .dropdown-menu.user-profile li a,.nav .dropdown-menu.user-profile li a i.fa{
+	line-height:32px;
+}
+.nav .dropdown-menu.user-profile li a i.fa{
+	margin-right:15px;
+}
+.nav .dropdown-menu.user-profile li.dropdown-header{
+	padding: 8px 20px;
+    background: #eceff1;
+    border-bottom: 1px solid #cfd8dc;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+}
+.nav .dropdown-menu.toggle-alert{
+	width:300px;
+}
+.nav .dropdown-menu.toggle-alert .alert-header,.nav .dropdown-menu.toggle-alert .alert-footer{
+	height: 35px;
+    text-align: center;
+    padding: 10px 15px;
+    
+}
+.nav .dropdown-menu.toggle-alert .alert-header,.nav .dropdown-menu.toggle-alert .alert-footer a{
+	font-size: 14px;
+}
+.nav .dropdown-menu.toggle-alert .alert-footer a:hover{
+	background:none;
+}
+.nav .dropdown-menu.toggle-alert .alert-header{
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.nav .dropdown-menu.toggle-alert .alert-footer{
+	border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+.nav .dropdown-menu.toggle-alert .alert-body li{
+	padding:10px;
+	border-bottom:1px solid rgba(0, 0, 0, 0.05);
+}
+.nav .dropdown-menu.toggle-alert .alert-body{
+	height:200px;
+	overflow-y:scroll;
+	overflow-x:hidden;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li:last-child{
+	border-bottom:none;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li h4{
+	font-size:15px;
+	margin-bottom:5px;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li p{
+	font-size:12px;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li h4 small{
+	float:right;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li h4 small,.nav .dropdown-menu.toggle-alert .alert-body li h4 small i.fa{
+	font-size:10px;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li h4 small i.fa{
+	margin-right:2px;
+}

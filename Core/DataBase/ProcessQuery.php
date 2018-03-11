@@ -28,7 +28,7 @@ class ProcessQuery extends BuildQuery {
             $tempresult = $output['result'];
             $i = 0;
             while ($rs = mysqli_fetch_assoc($tempresult)) {
-                if ($key != "") {
+                if ($key != "" && isset($rs[$key])) {
                     if ($value != "") {
                         $this->result[$rs[$key]] = \Core::getStripslashes($rs[$value]);
                     } else {
@@ -40,7 +40,7 @@ class ProcessQuery extends BuildQuery {
                 $i++;
             }
             return $this->result;
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             \Core::Log($ex->getMessage());
         }
     }
@@ -58,7 +58,7 @@ class ProcessQuery extends BuildQuery {
                 $this->result = $rs;
             }
             return $this->result;
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             \Core::Log($ex->getMessage());
         }
     }
@@ -93,7 +93,7 @@ class ProcessQuery extends BuildQuery {
                 }
                 return $this->result;
             }
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             \Core::Log($ex->getMessage());
         }
     }
@@ -108,7 +108,7 @@ class ProcessQuery extends BuildQuery {
             } else {
                 return true;
             }
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             \Core::Log($ex->getMessage());
         }
     }
@@ -123,7 +123,7 @@ class ProcessQuery extends BuildQuery {
             }
             $output['tables'] = $tables;
             return $output;
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             \Core::Log($ex->getMessage());
         }
         return false;
@@ -140,7 +140,7 @@ class ProcessQuery extends BuildQuery {
             if ($result) {
                 return $result[1];
             }
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             \Core::Log($ex->getMessage());
         }
         return false;
@@ -153,7 +153,7 @@ class ProcessQuery extends BuildQuery {
             $db = $cc->getObject("\Core\DataBase\DbConnect");
             $output = $db->executeQuery($query);
             return true;
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             \Core::Log($ex->getMessage());
         }
         return false;

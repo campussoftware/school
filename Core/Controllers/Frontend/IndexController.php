@@ -20,9 +20,9 @@ class IndexController extends Render
     }
     public function  returnJsonResponse($output)
     {
-        ob_clean();
+        ob_start();
         header('Content-Type: application/json');
-        echo json_encode($output);  
+        echo json_encode($output); exit;  
     }
     public function removeFrontendSessionValue() {
         $session =  new \Core\Session();

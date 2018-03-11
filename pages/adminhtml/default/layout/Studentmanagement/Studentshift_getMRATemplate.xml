@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<page>
+    <body>
+          
+            <block name="studentshiftmra" class="Core_Block_Block" template="mratemplate" />
+    </body>
+</page>

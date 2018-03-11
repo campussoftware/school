@@ -1,0 +1,78 @@
+/* CSS Document */
+.container_body .col-md-3.sideNavigation{
+	position: absolute;
+    top: 0px;
+    left: 0px;
+}
+.container_body .col-md-3.sideNavigation,.container_body .col-md-3 .footer_navigation{
+	float:left;
+}
+.container_body .col-md-3.sideNavigation,.container_body .col-md-3 .footer_navigation{
+	position:absolute;
+}
+.nav_title{
+	padding:0px 15px;
+}
+.nav_title a{
+	font-size:22px;
+}
+.nav_title a i.fa{
+	font-size:20px;
+	padding-right:10px;
+}
+.nav_title a i.fa,.nav_title a span{
+	line-height:50px;
+}
+.container_body .col-md-3 .footer_navigation{
+	position:fixed;
+	height:40px;
+	bottom:0px;
+	left:0px;
+}
+.main_navigation{}
+.main_navigation ul li a{
+	padding: 13px 15px 12px;
+	display:block;
+}
+.main_navigation ul li a i.fa{
+	margin-right:10px;
+}
+.main_navigation ul li a.active,.main_navigation ul li a:hover,.main_navigation ul li a:focus{
+	text-shadow: rgba(0,0,0,.25) 0 -1px 0;
+    box-shadow: rgba(0,0,0,.25) 0 1px 0, inset rgba(255,255,255,.16) 0 1px 0;
+}
+.main_navigation ul li a.active,.main_navigation ul li a:hover,.main_navigation ul li a:focus,.main_navigation ul li a{
+	border-left:4px solid transparent;
+}
+.main_navigation .caret{
+	display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 5px solid transparent;
+    border-left: 10px solid #fff;
+    border-bottom: 5px solid transparent;
+	float:right;
+}
+.main_navigation .dropdown-menu{
+	left: 100%;
+    top: 0px;
+    border-radius: 0px;
+    margin: 0px;
+    padding: 0px;
+    width: 200px;
+	background: #0182a7;
+}
+.footer_navigation{
+	display:block;
+}
+.footer_navigation a{
+	width:24%;
+	text-align:center;
+	display: inline-block;
+	font-size:20px;
+}
+.footer_navigation a,.footer_navigation a i.fa,.main_navigation .caret{
+	line-height:40px;
+}

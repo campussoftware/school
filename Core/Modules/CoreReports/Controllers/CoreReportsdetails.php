@@ -20,7 +20,7 @@ class CoreReportsdetails extends NodeController
     {
         $requestedData=$this->_requestedData;
         $nodeOTMRelations=$this->_nodeOTMRelations;
-        $node=new Core_Model_Node();
+        $node=new \Core\Model\Node();
         $node->setNodeName($requestedData['node_id']);
         $reportNodeRelations=$node->_nodeMTORelations;
         $reportNode=$requestedData['node_id'];
@@ -35,7 +35,7 @@ class CoreReportsdetails extends NodeController
             }
         }
         
-        $db= new Core_DataBase_ProcessQuery();
+        $db= new \Core\DataBase\ProcessQuery();
         $db->setTable("core_reportsdetails_settings");
         $db->addField("core_queryclause_id");
         $db->addField("core_orderclausetype_id");
@@ -48,7 +48,7 @@ class CoreReportsdetails extends NodeController
         $db->addOrderBy("sortno ASC");
         $reportNodeSettings=$db->getRows();
         
-        $db=new Core_DataBase_ProcessQuery();
+        $db=new \Core\DataBase\ProcessQuery();
         $db->setTable($node->_tableName,$reportNode);
         
         $selectFields=array();
@@ -65,7 +65,7 @@ class CoreReportsdetails extends NodeController
                         if(\Core::keyInArray($SettingsData['fieldsdata'],$reportNodeRelations))
                         {
                             $relationcol=$SettingsData['fieldsdata'];
-                            $tempnode=new Core_Model_Node();
+                            $tempnode=new \Core\Model\Node();
                             $tempnode->setNodeName($reportNodeRelations[$relationcol]);
                             $db->addJoin($relationcol,$tempnode->_tableName,$relationcol,$reportNode.".".$relationcol."=".$relationcol.".".$tempnode->_primaryKey);
                             $db->addFieldArray(array($relationcol.".".$tempnode->_descriptor=>"'".$SettingsData['displayname']."'"));
@@ -77,7 +77,7 @@ class CoreReportsdetails extends NodeController
                     }
                     else
                     {
-                        $tempnode=new Core_Model_Node();
+                        $tempnode=new \Core\Model\Node();
                         $tempnode->setNodeName($SettingsData['node_id']);
                         $relationcol=$nodeToCol[$SettingsData['node_id']];
                         
@@ -85,7 +85,7 @@ class CoreReportsdetails extends NodeController
                         if(\Core::keyInArray($tempnode->_descriptor, $tempnode->_nodeMTORelations))
                         {
                             $parentColNode=$tempnode->_nodeMTORelations[$tempnode->_descriptor];
-                            $tempparentnode=new Core_Model_Node();
+                            $tempparentnode=new \Core\Model\Node();
                             $tempparentnode->setNodeName($parentColNode);
                             $db->addJoin($tempnode->_descriptor."pk",$tempparentnode->_tableName,$parentColNode.$tempnode->_descriptor,$relationcol.".".$tempnode->_descriptor."=".$parentColNode.$tempnode->_descriptor.".".$tempparentnode->_primaryKey);
                             $db->addFieldArray(array($parentColNode.$tempnode->_descriptor.".".$tempparentnode->_descriptor=>"'".$SettingsData['displayname']."'")); 
@@ -103,7 +103,7 @@ class CoreReportsdetails extends NodeController
             $reportFolder=\Core::createFolder($reportNode, "R");
             \Core::createFile($reportFolder.$requestedData['id']."_query.log", 1, $querysql);
             \Core::createFile($reportFolder.$requestedData['id']."_selectfields.log", 1, \Core::convertArrayToJson($selectFields));            
-            $db=new Core_DataBase_ProcessQuery();
+            $db=new \Core\DataBase\ProcessQuery();
             $db->setTable("core_reportsdetails");
             $db->addFieldArray(array("is_custom"=>"1"));
             $db->addWhere("core_reportsdetails.id='".$requestedData['id']."'");

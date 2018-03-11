@@ -27,6 +27,8 @@ class Node extends RameshAbstract {
     public $_preDefaultGroupBy = NULL;
     protected $_sql;
     public $_removeTotalCollection = 0;
+    public $savingData;
+    public $isRemoveIndex=false;
 
     public function __construct($node = null, $model = NULL) {
         $this->setNodeName($node);
@@ -75,7 +77,7 @@ class Node extends RameshAbstract {
         $this->_currentAction;
         $defaulthideAttributes = $this->_defaulthideAttributes;
         $action = $this->_currentAction;
-        if (strtolower($action) == 'adminrefresh') {
+        if (strtolower($action) == 'adminrefresh' || strtolower($action=="gridresultjson")) {
             $action = "admin";
         }
         $hide_column = "hide_" . strtolower($action);
@@ -119,36 +121,29 @@ class Node extends RameshAbstract {
     }
 
     public function setShowAttributes() {
-        $this->getFieldsForNode();        
-        if($this->_currentAction=='admin' || $this->_currentAction=='adminRefresh')
-        {
-             $fileName=\Core::createFolder("","C")."adminTemplates".DIRECTORY_SEPARATOR.\Core::convertStringToFileName($this->_currentNodeModule).DIRECTORY_SEPARATOR.\Core::convertStringToFileName($this->_nodeName)."_admin.xml"; 
-            if(\Core::fileExists($fileName))
-            {            
-                $i=0;
+        $this->getFieldsForNode();
+        if ($this->_currentAction == 'admin' || $this->_currentAction == 'adminRefresh' ||  $this->_currentAction == 'gridResultJson') {
+            $fileName = \Core::createFolder("", "C") . "adminTemplates" . DIRECTORY_SEPARATOR . \Core::convertStringToFileName($this->_currentNodeModule) . DIRECTORY_SEPARATOR . \Core::convertStringToFileName($this->_nodeName) . "_admin.xml";
+            if (\Core::fileExists($fileName)) {
+                $i = 0;
                 $configFileContent = \Core::getFileContent($fileName);
-                $configFileContentSettings = \Core::convertXmlToArray($configFileContent,"columns");
-                
-                $columnsData=array();
-                if(\Core::countArray($configFileContentSettings)>0)
-                {
-                    foreach ($configFileContentSettings as $key=>$data)
-                    {
+                $configFileContentSettings = \Core::convertXmlToArray($configFileContent, "columns");
+
+                $columnsData = array();
+                if (\Core::countArray($configFileContentSettings) > 0) {
+                    foreach ($configFileContentSettings as $key => $data) {
 
                         $i++;
-                        if($key=='column')
-                        {
-                            if(isset($data[0]))
-                            {
-                                foreach ($data as  $coldata)
-                                {
-                                    $columnsData[]=$coldata;
+                        if ($key == 'column') {
+                            if (isset($data[0])) {
+                                foreach ($data as $coldata) {
+                                    $columnsData[] = $coldata;
                                 }
-                            }                            
+                            }
                         }
                     }
                 }
-                
+
                 foreach ($columnsData as $columnData) {
                     $this->_showAttributes[] = $columnData['@attributes']['name'];
                 }
@@ -157,7 +152,7 @@ class Node extends RameshAbstract {
             }
         } else {
             $this->_showAttributes = array_diff(array_keys($this->_NodeFieldsList), $this->hideAttributes());
-        }        
+        }
     }
     public function getRecordLoad() {
         $db = new \Core\DataBase\ProcessQuery();
@@ -168,10 +163,10 @@ class Node extends RameshAbstract {
         $this->_sql = $db->sql;
         if (\Core::countArray($this->_record) > 0) {
             foreach ($this->_record as $key => $value) {
-                if (!\Core::inArray($this->_NodeFieldsList[$key], array("longtext", 'mediumtext'))) {
+                if (!\Core::inArray(\Core::getValueFromArray($this->_NodeFieldsList,$key), array("longtext", 'mediumtext'))) {
                     $this->_jsonrecord[$key] = $value;
                 } else {
-                    if (\Core::keyInArray($key, $this->_NodeFieldAttributes)) {
+                    if (\Core::keyInArray($key, $this->_NodeFieldAttributes) && $this->_NodeFieldAttributes[$key]!="fck") {
                         $this->_jsonrecord[$key] = $value;
                     }
                 }
@@ -179,10 +174,9 @@ class Node extends RameshAbstract {
         }
     }
 
-    public function getCollection($selectSql=FALSE) {
+    public function getCollection($selectSql = FALSE) {
         try {
-            if($this->_removeTotalCollection!=1 && !$selectSql)
-            {
+            if ($this->_removeTotalCollection != 1 && !$selectSql) {
                 $this->getTotalResultCount();
             }
             $db = new \Core\DataBase\ProcessQuery();
@@ -321,12 +315,20 @@ class Node extends RameshAbstract {
             $this->_sql = $db->sql;
             if(!$selectSql)
             {
+                if($this->isRemoveIndex)
+                {
+                    $indexKey=null;                
+                }
                 $this->_collections = $db->getRows($indexKey);
             }
         } catch (Exception $ex) {
             \Core::Log($ex->getMessage(), "collections.log");
         }
         return $this;
+    }
+    public function setRemoveIndex()
+    {
+        $this->isRemoveIndex=true;
     }
 
     public function buildSelectCollection() {
@@ -454,7 +456,6 @@ class Node extends RameshAbstract {
                 $attribute->setFolderPath($filePath);
                 if (\Core::keyInArray($FieldName, $onchangeEvents)) {
 
-                    
                     $attribute->setOnchange($onchangeEvents[$FieldName]);
                 }
                 if (in_array($FieldName, $mandotatoryAttributes)) {
@@ -532,13 +533,13 @@ class Node extends RameshAbstract {
                             $parentNodeStructure = $np->currentNodeStructure();
                             $this->_whereCon .= $FieldName . $relationNodeDR . "." . $parentNodeStructure['descriptor'] . " like '%" . $requestedData[$FieldName] . "%'";
                         } else {
-                            $this->_whereCon .= $FieldName . "." . $parentStructure['descriptor'] . " like '%" . $requestedData[$FieldName] . "%'";
+                            $this->_whereCon .= $FieldName . "." . $parentStructure['descriptor'] . " like '%" . trim($requestedData[$FieldName]) . "%'";
                         }
                     } else {
                         if (\Core::getValueFromArray($this->_NodeFieldAttributes, $FieldName) == 'bool' && $requestedData[$FieldName] == "0") {
                             $this->_whereCon .= "(" . $this->_nodeName . "." . $FieldName . " is NULL || " . $this->_nodeName . "." . $FieldName . "='0' || " . $this->_nodeName . "." . $FieldName . "='')";
                         } else {
-                            $this->_whereCon .= $this->_nodeName . "." . $FieldName . " like '%" . $requestedData[$FieldName] . "%'";
+                            $this->_whereCon .= $this->_nodeName . "." . $FieldName . " like '%" . trim($requestedData[$FieldName]) . "%'";
                         }
                     }
                 }
@@ -708,24 +709,27 @@ class Node extends RameshAbstract {
         }
         return Core::getValueFromArray(Core::getValuesFromArray($this->_record), 0);
     }
-    public function addCustomFilterExpression($fieldName,$condition)
-    {
-        if(!strpos($fieldName, "."))
-        {
-            $fieldName= $this->_nodeName.".".$fieldName;
+
+    public function addCustomFilterExpression($fieldName, $condition) {
+        if (!strpos($fieldName, ".")) {
+            $fieldName = $this->_nodeName . "." . $fieldName;
         }
-        if(\Core::isArray($condition))
-        {
-            
-        }
-        else {            
-            $whereCondition=$fieldName."='".$condition."'";
+        if (\Core::isArray($condition)) {
+            if (\Core::countArray($condition) == 1) {
+                foreach ($condition as $clause => $value) {
+                    if ($clause == 'in') {
+                        $whereCondition = $fieldName . " in ('" . \Core::convertArrayToString($value, "','") . "')";
+                    }
+                }
+            }
+        } else {
+            $whereCondition = $fieldName . "='" . $condition . "'";
         }
         $this->addCustomFilter($whereCondition);
     }
-    public function getSelectSql()
-    {
-        $this->getCollection(true);        
+
+    public function getSelectSql() {
+        $this->getCollection(true);
         return $this->_sql;
     }
 

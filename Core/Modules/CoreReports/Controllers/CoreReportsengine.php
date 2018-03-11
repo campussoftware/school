@@ -27,7 +27,7 @@ class CoreReportsengine extends NodeController
     public function adminAction($param=NULL) 
     {
         $this->getReportDetails();
-        $this->loadLayout("reportengine.phtml");
+        parent::adminAction();
     }
     public function getReportDetails()
     {

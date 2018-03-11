@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>   
+    <tabs>
+        <maintab name="search_settings" title="Search Information"  class="\Core\Block\Block" template="extrainformation" defaultfields="1" sort_value="0" ></maintab>
+        
+    </tabs> 
+</config>

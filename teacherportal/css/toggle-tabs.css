@@ -1,0 +1,106 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* Toggle Tabs */
+
+.toggle_tabs{
+	padding: 20px 0px;
+}
+.toggle_tabs .tab-content{
+	background: #fff;
+	overflow: hidden;
+	padding: 20px 0px;
+}
+.toggle_tabs .nav-tabs > li.active > a,.toggle_tabs .nav-tabs > li.active > a:hover,.toggle_tabs .nav-tabs > li.active > a:focus{
+	border: 0px;
+	border-radius: 0px;
+	border-top: 4px solid #fc6900;
+	background: #fff;
+}
+.toggle_tabs .nav-tabs > li > a {    
+    font-size: 18px;
+    font-weight: 600;
+	padding: 10px 24px;
+	border-top: 4px solid transparent;
+	margin-right: 0px;
+	color: #337ab7;
+}
+.toggle_tabs .nav-tabs{
+	border-bottom: 0px;
+}
+.toggle_tabs .nav-tabs > li > a:hover{
+	background: none;
+	border-radius: 0px;
+}
+
+
+/* inner Tabs With in the Toggle Tabs */
+.inner_toggle_tabs .nav-tabs {
+    border-bottom: 1px solid #ddd;
+	margin: 0px;
+}
+.inner_toggle_tabs .nav-tabs > li > a {
+	border-radius: 0px;
+	background: #2daab3;
+    color: #fff;
+	font-weight: 600;
+	font-size: 12px;
+	border-top:0px;
+	margin-right: 2px;
+}
+
+.inner_toggle_tabs .nav-tabs > li.active > a, .inner_toggle_tabs .nav-tabs > li.active > a:hover, .inner_toggle_tabs .nav-tabs > li.active > a:focus{
+	border: 1px solid #dbdbdb;
+	border-bottom-color: transparent;
+	background-color: #fff;
+	color: #535452;
+}
+.inner_toggle_tabs .tab-content{
+	background: #fff;
+    border: 1px solid #dbdbdb;
+	border-top-color:transparent;
+}
+
+.inner_toggle_tabs .nav-tabs > li > a:hover{
+	background: #2daab3;
+    color: #fff;
+}
+
+/* Vertical Nav Tabs */
+
+.vert_nav_tabs .nav-tabs {
+    background: #f0f7fa;
+	border-left: 3px solid #dbb9b9;
+}
+.vert_nav_tabs .nav-tabs > li{
+	float: none;
+	display: block;
+}
+.vert_nav_tabs .nav-tabs > li > a {
+	border-radius: 0px;
+	background: none;
+	color: #957d7d;
+	font-weight: 600;
+	font-size: 12px;
+	border:0px;
+	margin-right: 0px;
+	padding: 10px;
+}
+.vert_nav_tabs .nav-tabs > li > a:hover{
+	background: #16a1f2;
+	color: #fff;
+	border:0px;
+}
+
+.vert_nav_tabs .nav-tabs > li.active > a, .vert_nav_tabs .nav-tabs > li.active > a:hover, .vert_nav_tabs .nav-tabs > li.active > a:focus{
+	border-top:0px;
+	background: #16a1f2;
+	color: #fff;
+	padding: 10px;
+}
+.vert_nav_tabs .fa{
+	width: 40px;
+    font-size: 18px;
+	margin-right: 8px;
+}
+

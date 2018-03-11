@@ -1,4 +1,5 @@
 <?php
+ob_start();
 date_default_timezone_set('Asia/Kolkata');
 header('Access-Control-Allow-Origin: *');
 error_reporting(0);
@@ -7,7 +8,7 @@ register_shutdown_function("fatal_handler");
 session_save_path('sessiondata');
 ini_set('session.gc_probability', 1);
 global $sessionData;
-
+$labelModel=new \Core\Model\Language();
 session_start();
 
 $cc = new \CoreClass();
@@ -33,8 +34,7 @@ function fatal_handler() {
             $errstr = $error["message"];
             try {
                 try {
-
-                echo    $errorContent = (format_error($errno, $errstr, $errfile, $errline));
+               echo $errorContent = (format_error($errno, $errstr, $errfile, $errline));
                /* $e = new \Exception();
                 $trace = explode("\n", $e->getTraceAsString());
                 // reverse array to make steps line up chronologically
@@ -94,23 +94,26 @@ function format_error($errno, $errstr, $errfile, $errline) {
 
     return $content;
 }
-
+function __($label)
+{
+    global $labelModel;
+    return $labelModel->getLabel($label);    
+}
 function __autoload($class_name) {
 
-    $filename = str_replace("_", "/", $class_name);
-    $filename = str_replace("\\", DIRECTORY_SEPARATOR, $filename);
+    $filename = str_replace("_", DIRECTORY_SEPARATOR, $class_name);
+
+    $filename = str_replace("\\",DIRECTORY_SEPARATOR, $filename);
     $filename.=".php";
-     try {
+    try {
         if (file_exists($filename)) {
-			
             require_once($filename);
             return 1;
         } else {
-            $filename = str_replace('\"', "/", $class_name);
-            $filename = "./lib/*/" . $filename . ".php";
-            $files = glob($filename);
-            if (Core::countArray($files) > 0) {
-                foreach ($files as $filename) {
+		$codeProcess = new \Core\CodeProcess();
+		$fileList= $codeProcess->searchFiles($filename);	
+            if (Core::countArray($fileList) > 0) {
+                foreach ($fileList as $filename) {
                     require_once($filename);
                     return 1;
                 }

@@ -63,11 +63,12 @@ class CoreDbbackfile extends NodeController
             $fp=  fopen($folderPath."create.sql", "w+");            
             fwrite($fp, $createQuery);
             fclose($fp);
-            unlink($folderPath."data.sql");
+			
+            \Core::deleteFile($folderPath."data.sql");
             $db=new \Core\DataBase\ProcessQuery();
             $db->setTable($tableName);
-            $db->getTableDataQuery($folderPath."data.sql");
-            $content=file_get_contents($folderPath."data.sql");
+            $db->getTableDataQuery($folderPath."data.sql");			
+            $content=\Core::getFileContent($folderPath."data.sql");
             
             if($content)
             {
@@ -87,7 +88,7 @@ class CoreDbbackfile extends NodeController
         try
         {   
             $targetfilepath=\Core::createFolder("DATABASE",'B').$folderName;
-            $codeProcess=new Core_CodeProcess();
+            $codeProcess=new \Core\CodeProcess();
             $codeProcess->createZipFile(\Core::createFolder($datetime, "B"), $targetfilepath);            
             $folderPath=substr_replace(\Core::createFolder($datetime,'B'), "", -1);
             $codeProcess->rmdir_recursive($folderPath);
@@ -101,7 +102,7 @@ class CoreDbbackfile extends NodeController
             $nodeSave->save();            
             
         }
-        catch (Exception $ex)
+        catch (\Exception $ex)
         {
             \Core::Log(__METHOD__.$ex->getMessage());
         }        

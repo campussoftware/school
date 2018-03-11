@@ -41,7 +41,7 @@ class CorePaymentType
             $setup->addColumnName(array(
                 "name"=>"short_code",
                 "displayValue"=>"Short Code",
-                "prmiary"=>1,
+                "primary"=>1,
                 "default"=>NULL,  
                 "type"=>"varchar",
                 "size"=>"255"         

@@ -1,0 +1,113 @@
+/* CSS Document */
+body{
+	background:#f5f5f5;
+}
+.sideNavigation,.academic-year {
+	background: #056c89;
+}
+.nav_title {
+	background: #e36304;
+}
+.nav_title a, .nav_title a i.fa, .main_navigation ul li a, .main_navigation .dropdown-menu li a:hover, .sideBar_toggle a, 
+.nav>li>a,.academic-year p{
+	color: #fff;
+}
+.footer_navigation {
+	background: #00475a;
+}
+.footer_navigation a {
+	color: #0887ab;
+}
+.footer_navigation a:hover {
+	background: #0f5a6f;
+}
+.main_navigation ul li a.active, .main_navigation ul li a:hover, .main_navigation ul li a:focus {
+	background: #0184a9;
+}
+.main_navigation ul li a.active, .main_navigation ul li a:hover, .main_navigation ul li a:focus {
+	border-color: #ff6c00 !important;
+}
+.top_header {
+	background: #ff6c00;
+}
+.icon-notification{
+	background:#000;
+}
+.icon-message{
+	background:#000;
+}
+.nav li a:hover,.nav li a:focus,.nav .open>a, .nav .open>a:focus, .nav .open>a:hover{
+	background: #e06206;
+}
+.nav .dropdown-menu.user-profile li a{
+	color:#6b6b6b;
+}
+.nav .dropdown-menu.user-profile li a i.fa{
+	color: #d4d4d4;
+}
+.nav .dropdown-menu.user-profile li a:hover{
+	background:rgba(0,0,0,0.05);
+}
+.nav .dropdown-menu.toggle-alert .alert-header,.nav .dropdown-menu.toggle-alert .alert-footer{
+	background:#FAFAFA;
+}
+.nav .dropdown-menu.toggle-alert .alert-header,.nav .dropdown-menu.toggle-alert .alert-footer a{
+	color: #666666;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li:hover{
+	background:rgba(0,0,0,0.02);
+}
+.nav .dropdown-menu.toggle-alert .alert-body li h4{
+	color:#444444;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li p{
+	color:#888888;
+}
+#page_links ul li a{
+	color:#000;
+}
+
+
+
+
+/* Study Material color */
+.mtr_list thead {
+    background-color: #f59547;
+    color: #fff;
+}
+.mtr_list .table-bordered {
+    border: 1px solid #f59547;
+}
+.mtr_list .table>tbody>tr>td,.mtr_list .table>tbody>tr>th{
+	border: 1px dotted #f59547;
+}
+.mtr_list .table .fa-pencil{
+	background-color: #ab8ce4;
+	color: #fff;
+}
+.mtr_list .table .fa-trash-o{
+	background-color: #E34E50;
+	color: #fff;
+}
+.inline-form  .control-label {
+    color: #8b7c7c;
+}
+
+
+
+/* Profile */
+.st_img ,.tech_img {
+    border: 1px solid #dedede;
+}
+.tech_info{
+	border-left: 5px solid #d96236;
+}
+.tech_info h4{
+	color: #333333;
+}
+.tech_info p{
+	color: #2a91ad;
+}
+.tech_data p span{
+	color: #2a91ad;
+}

@@ -9,30 +9,39 @@ if (isset($argv)|| (\Core::keyInArray("dev_command_type", $_REQUEST) && \Core::g
         $params=\Core::getValuesFromArray($_REQUEST);
     }
     unset($params[0]);
-    $cmd=new \Core\Command();
+    $cmd = new \Core\Command();
     $cmd->setInputParameters($params);
     $cmd->execute();
 } else {
-   
-    $extension = substr(Core::getValueFromArray($_REQUEST,'reditectpath'), -3);
-    if (Core::inArray($extension, array(".js", "css", "png", "jpg", "gif"))) {
-        header("HTTP/1.0 404 File Not Exists"); 
-        exit;
-    }    
+    $reDirectPath = \Core::getValueFromArray($_REQUEST, 'reditectpath');
+    if ($reDirectPath != "" && strpos($reDirectPath, ".")) {
+        $list = \Core::convertStringToArray($reDirectPath, ".");
+        $extension = $list[count($list) - 1];
+        if (Core::inArray($extension, array("js", "css", "png", "jpg", "gif", "phtml")) || ($extension == "html" && !strpos($reDirectPath, "html/"))) {
+            header("HTTP/1.0 404 File Not Exists");
+            exit;
+        }
+    }
+
     global $globalnode_settings_details;
     global $nodefiledetails;
     global $currentNode;
     global $currentNodePropertices;
     global $actionRequestFrom;
     try {
-        
-        $currentNodePropertices = new \Core\Model\AdminSettings($_REQUEST, $_FILES);
+
+        $currentNodePropertices = new \Core\Model\AdminSettings($_REQUEST, $_FILES);        
+        if ($currentNodePropertices->_htmlContent == 1) {
+            $actionRequestFrom = $currentNodePropertices->_actionSource;
+            $pageLayout = new \Core\Pages\PageLayout();
+            $pageLayout->loadHtmlTemplate($currentNodePropertices->templatePath);
+        }
         $parentNode = $currentNodePropertices->_parentNode;
         $parentValue = $currentNodePropertices->_parentValue;
         $parentAction = $currentNodePropertices->_parentAction;
         $currentNode = $currentNodePropertices->_currentNode;
         $currentAction = $currentNodePropertices->_currentAction;
-        $action=$currentAction;
+        $action = $currentAction;
         $currentModule = Core::getValueFromArray($currentNodePropertices->_nodeDetails, 'module');
         $currentModuleDisplay = Core::getValueFromArray($currentNodePropertices->_nodeDetails, 'moduledisplay');
         $currentRootModule = Core::getValueFromArray($currentNodePropertices->_nodeDetails, 'rootmodule');
@@ -40,19 +49,20 @@ if (isset($argv)|| (\Core::keyInArray("dev_command_type", $_REQUEST) && \Core::g
         $methodType = $currentNodePropertices->_methodType;
         $apiMethod = $currentNodePropertices->_isAPI;
         $actionRequestFrom = $currentNodePropertices->_actionSource;
+	if($actionRequestFrom=="frontend")
+	{
+		if($rootObj->isOnAdminInstance)
+		{
+			\Core::redirectUrl($rootObj->websiteAdminUrl);
+		}
+	}	
         $childNode = $currentNodePropertices->_childNode;
         $requestedData = $currentNodePropertices->_requestedData;
         $filesData = $currentNodePropertices->_filesData;
         $cc = new \CoreClass();
-        $session=$cc->getObject("\Core\Session");        
-        /*if ($methodType != 'POST' && $apiMethod == 1) {
-            echo json_encode(array("status" => "error", "message" => "Please Provide Valid Ur123l"));
-            exit;
-        }
-        else */
-        if($apiMethod==1)
-        {
-            $apiController=new \Core\Controllers\Api\IndexController($currentNode, $currentAction);
+        $session = $cc->getObject("\Core\Session");
+        if ($apiMethod == 1) {
+            $apiController = new \Core\Controllers\Api\IndexController($currentNode, $currentAction);
             $apiController->setNodeName($currentNode);
             $apiController->setActionName($action);
             $apiController->setParentNode($parentNode);
@@ -62,17 +72,16 @@ if (isset($argv)|| (\Core::keyInArray("dev_command_type", $_REQUEST) && \Core::g
             $apiController->setCurrentSelector($currentSelector);
             $apiController->setRequestedData($requestedData);
             $apiController->setFilesData($filesData);
-            $record=$apiController->validateApiCredentials();
-            if(!\Core::isArray($record))
-            {
-                $output=array("status" => "error", "message" => "Please Provide Valid Credentials");
+            $record = $apiController->validateApiCredentials();
+            if (!\Core::isArray($record)) {
+                $output = array("status" => "error", "message" => "Please Provide Valid Credentials");
                 $apiController->returnJsonResponse($output);
             }
         }
-        
-        $sessionData = $session->getSessionData();  
+
+        $sessionData = $session->getSessionData();
         $session->setFrontendSessionValue("prevurl", $session->getFrontendSessionValue('currenturl'));
-        $session->setFrontendSessionValue("currenturl", Core::getValueFromArray($requestedData,'reditectpath'));
+        $session->setFrontendSessionValue("currenturl", Core::getValueFromArray($requestedData, 'reditectpath'));
         $currentProfileCode = Core::getValueFromArray($sessionData, 'profile_id');
         $header = true;
         $navigation = true;
@@ -88,34 +97,55 @@ if (isset($argv)|| (\Core::keyInArray("dev_command_type", $_REQUEST) && \Core::g
             }
         }
         if ($actionRequestFrom == 'frontend') {
-                           
-            $controller= \Core::getDefaultController();
-            $frontend=\Core::getValueFromArray($controller, "frontend");
-
-            if(\Core::getValueFromArray($frontend, "node") && !$session->getFrontendSessionValue("targetKey"))
-            {
-                $currentNode=\Core::getValueFromArray($frontend, "node");
+            
+            $controller = \Core::getDefaultController();
+            $frontend = \Core::getValueFromArray($controller, "frontend");
+            if (\Core::getValueFromArray($frontend, "node") && !$session->getFrontendSessionValue("targetKey")) {
+                $currentNode = \Core::getValueFromArray($frontend, "node");
                 $np = new \Core\Model\RameshAbstract();
                 $np->setNodeName($currentNode);
                 $currentModule = $np->_currentNodeModule;
-                $action=\Core::getValueFromArray($frontend, "action");
-            }              
-            $frontController = CoreClass::getFrontController($currentNode, $currentModule, $action);
+                $action = \Core::getValueFromArray($frontend, "action");
+            }
+            if ($_POST) {
+                $methodType = "POST";
+            }
+            $frontController = \CoreClass::getFrontController($currentNode, $currentModule, $action);
             $frontController->setNodeName($currentNode);
             $frontController->setActionName($action);
             $frontController->setParentNode($parentNode);
             $frontController->setParentValue($parentValue);
             $frontController->setParentAction($parentAction);
+            $frontController->setMethodType($methodType);
             $frontController->setMetaUrlInfo($currentNodePropertices->_metaUrlInfo);
+            $frontController->setMetaUrlDescription($currentNodePropertices->_urlMetaDescription);
             $frontController->setCurrentSelector($currentSelector);
             $frontController->setRequestedData($requestedData);
             $frontController->setFilesData($filesData);
             $functionName = $action . "Action";
-
             if (method_exists($frontController, $functionName)) {
                 $frontController->$functionName();
             } else {
                 $frontController->indexAction();
+            }
+        } else if ($apiMethod == 1) {
+            $node = CoreClass::getApiController($currentNode, $currentModule, $action);
+            $node->setNodeName($currentNode);
+            $node->setAPI($apiMethod);
+            $node->setChildNode($childNode);
+            $node->setActionName($action);
+            $node->setParentNode($parentNode);
+            $node->setParentValue($parentValue);
+            $node->setParentAction($parentAction);
+            $node->setCurrentSelector($currentSelector);
+            $node->setMethodType($methodType);
+            $node->setRequestedData($requestedData);
+            $node->setFilesData($filesData);
+            $functionName = $action . "ApiAction";
+            if (method_exists($node, $functionName)) {
+                $node->$functionName();
+            } else {
+                $node->indexApiAction();
             }
         } else {
 
@@ -131,13 +161,10 @@ if (isset($argv)|| (\Core::keyInArray("dev_command_type", $_REQUEST) && \Core::g
             }
 
             if ($currentNode != "") {
-                if($apiMethod==1)
-                {                    
-                    $node=CoreClass::getApiController($currentNode,$currentModule,$action);
-                }
-                else 
-                {
-                    $node=CoreClass::getController($currentNode,$currentModule,$action);
+                if ($apiMethod == 1) {
+                    $node = CoreClass::getApiController($currentNode, $currentModule, $action);
+                } else {
+                    $node = CoreClass::getController($currentNode, $currentModule, $action);
                 }
                 $node->setNodeName($currentNode);
                 $node->setAPI($apiMethod);
@@ -150,20 +177,18 @@ if (isset($argv)|| (\Core::keyInArray("dev_command_type", $_REQUEST) && \Core::g
                 $node->setMethodType($methodType);
                 $node->setRequestedData($requestedData);
                 $node->setFilesData($filesData);
-                $node->checkSession();                
+                $node->checkSession();
+				
                 $functionName = $action . "Action";
-                if($apiMethod)
-                {
+                if ($apiMethod) {
                     $functionName = $action . "ApiAction";
                 }
                 if (method_exists($node, $functionName)) {
                     $node->$functionName();
                 } else {
-                    if($apiMethod)
-                    {
-                       $node->indexApiAction(); 
-                    }
-                    else if ($methodType == 'REQUEST') {
+                    if ($apiMethod) {
+                        $node->indexApiAction();
+                    } else if ($methodType == 'REQUEST') {
                         $node->noAction();
                     } else {
                         
@@ -171,9 +196,9 @@ if (isset($argv)|| (\Core::keyInArray("dev_command_type", $_REQUEST) && \Core::g
                 }
             } else {
                 $cc = new \CoreClass();
-                $session=$cc->getObject("\Core\Session");
+                $session = $cc->getObject("\Core\Session");
                 $session = $session->getSessionMaganager();
-                $homeController =$cc->getObject("\Core\Controllers\AdminController");
+                $homeController = $cc->getObject("\Core\Controllers\AdminController");
                 $homeController->setNodeName($currentNode);
                 $homeController->setActionName($action);
                 $homeController->setRequestedData($requestedData);
@@ -186,7 +211,7 @@ if (isset($argv)|| (\Core::keyInArray("dev_command_type", $_REQUEST) && \Core::g
                 }
             }
         }
-    } catch (Exception $ex) {
-        echo $e->getMessage();
+    } catch (\Exception $ex) {
+        \Core::Log($ex->getMessage());
     }
 }

@@ -41,7 +41,7 @@ class Modules_Expensemanagement_Setup_ExpenseStatus
                 "name"=>"short_code",
                 "displayValue"=>"Short Code",            
                 "default"=>NULL,   
-		        "prmiary"=>1,
+		        "primary"=>1,
                 "type"=>"varchar",
                 "size"=>"255"          
             ));	

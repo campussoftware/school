@@ -1,0 +1,18 @@
+.transport_headng{
+	font-size: 18px;
+    font-weight: bold;
+    padding: 11px 0px; 
+}
+#moda_hdr{
+	background: orange;
+text-align: center;
+color: #fff;
+    padding: 5px;
+}
+.stage_colr{
+	font-weight: bold;
+	font-size: 20px!important;
+	}
+#madal_child div{
+	font-size: 17px!important;
+}

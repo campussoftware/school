@@ -26,7 +26,7 @@ class CoreWebsiteloginhistory
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Id",
-                "prmiary"=>1,
+                "primary"=>1,
                 "key"=>"primary",
                 "default"=>NULL,
                 "type"=>"int",

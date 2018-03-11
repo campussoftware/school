@@ -1,12 +1,11 @@
 <?php
-	//echo "<pre>";		print_r($this); 	echo "</pre>";
     if($this->_action=='admin')
     {
         echo $this->_Value;
     }
     else
     {
-        if($this->_readonly || $this->_isAjaxLoader)
+        if($this->_readonly)
         {
             $type="hidden";
         }

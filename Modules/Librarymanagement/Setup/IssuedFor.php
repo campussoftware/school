@@ -24,7 +24,7 @@ class Modules_Librarymanagement_Setup_IssuedFor
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Issued For Id",
-                "prmiary"=>1,
+                "primary"=>1,
                 "default"=>NULL,
                 "type"=>"int",
                 "size"=>"15",

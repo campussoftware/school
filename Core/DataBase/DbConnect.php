@@ -61,4 +61,3 @@ namespace Core\DataBase;
             return mysqli_insert_id($this->default);
         }
     }
-?>

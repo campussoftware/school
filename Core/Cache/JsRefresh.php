@@ -17,7 +17,7 @@ class JsRefresh {
 
     //put your code here
     public function refreshVarAdminJs() {
-        $this->moveJsBaseFiles(1);
+        
         $cc = new \CoreClass();
         $cp = $cc->getObject("\Core\CodeProcess");
         $fileSearch = "view" . DIRECTORY_SEPARATOR . "adminhtml" . DIRECTORY_SEPARATOR . "web" . DIRECTORY_SEPARATOR . "require_config.js";
@@ -25,13 +25,18 @@ class JsRefresh {
         $tempconfile = \Core::getTempAdminThemePath() . "js" . DIRECTORY_SEPARATOR . "requirejs" . DIRECTORY_SEPARATOR . "config.js";
         \Core::deleteFile($tempconfile);
         global $wp;
-        $content = "(function () {
-    
-    var config = {
-        baseUrl: '" . \Core::getTempAdminThemeUrl() . "js'  
-    };
-    require.config(config);
-})();";
+        $content = "(function () {    
+			var config = {
+				baseUrl: '" . \Core::getTempAdminThemeUrl() . "js'  
+			};
+			require.config(config);
+		})();";
+        $baseRequireJs=$wp->documentRoot . "js".DIRECTORY_SEPARATOR."lib".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR."require_config.js";
+        $baseRequireContent=\Core::getFileContent($baseRequireJs);
+        $content.=$baseRequireContent;
+        $baseRequireJs=$wp->documentRoot . "js".DIRECTORY_SEPARATOR."lib".DIRECTORY_SEPARATOR."adminhtml".DIRECTORY_SEPARATOR."require_config.js";
+        $baseRequireContent=\Core::getFileContent($baseRequireJs);
+        $content.=$baseRequireContent;
         if (\Core::countArray($filesList) > 0) {
             foreach ($filesList as $file) {
                 $content .= \Core::getFileContent($file);
@@ -39,8 +44,10 @@ class JsRefresh {
             \Core::createFolder(\Core::getTempAdminThemePath() . "js" . DIRECTORY_SEPARATOR . "requirejs");
             \Core::createFile($tempconfile, 0, $content);
         }
+		$this->moveJsBaseFiles(1);
         $this->moveJsAdminFiles();
-        //$this->moveJsAdminThemeFiles();
+		$this->moveJsAdminThemeFiles();
+        $this->resetAngularjsConfig();
     }
 
     public function refreshVarFrontendJs() {
@@ -59,6 +66,12 @@ class JsRefresh {
     };
     require.config(config);
 })();";
+        $baseRequireJs=$wp->documentRoot . "js".DIRECTORY_SEPARATOR."lib".DIRECTORY_SEPARATOR."base".DIRECTORY_SEPARATOR."require_config.js";
+        $baseRequireContent=\Core::getFileContent($baseRequireJs);
+        $content.=$baseRequireContent;
+        $baseRequireJs=$wp->documentRoot . "js".DIRECTORY_SEPARATOR."lib".DIRECTORY_SEPARATOR."frontend".DIRECTORY_SEPARATOR."require_config.js";
+        $baseRequireContent=\Core::getFileContent($baseRequireJs);
+        $content.=$baseRequireContent;
         if (\Core::countArray($filesList) > 0) {
             foreach ($filesList as $file) {
                 $content .= \Core::getFileContent($file);
@@ -68,6 +81,7 @@ class JsRefresh {
         }
         $this->moveJsFrontendFiles();
         $this->moveJsFrontendThemeFiles();
+		$this->resetAngularjsFrontendConfig();
     }
 
     public function moveJsAdminFiles() {
@@ -77,20 +91,20 @@ class JsRefresh {
         $directorySearch = "view" . DIRECTORY_SEPARATOR . "adminhtml" . DIRECTORY_SEPARATOR . "web" . DIRECTORY_SEPARATOR . "js";
         $directoryList = $cp->searchDirectory($directorySearch);
         if (\Core::countArray($directoryList) > 0) {
-            foreach ($directoryList as $directory) {                
-                $list = \Core::convertStringToArray(ltrim(str_replace(DIRECTORY_SEPARATOR . $directorySearch, "", $directory),DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR);
-                $moduleName = \Core::getValueFromArray($list, count($list)-1);                
-                $directorySearch = $wp->documentRoot . ltrim($directory, DIRECTORY_SEPARATOR);
-
-                $searchFiles = $cp->dirToFilesArray($directorySearch);
-                
+            foreach ($directoryList as $directory) {    
+                $tempDirPath=ltrim(str_replace(DIRECTORY_SEPARATOR . $directorySearch, "", $directory),DIRECTORY_SEPARATOR); 
+                $list = \Core::convertStringToArray($tempDirPath, "Modules".DIRECTORY_SEPARATOR);
+                $list1 = \Core::convertStringToArray($list[1],DIRECTORY_SEPARATOR);
+                $moduleName=$list1[0];
+                $directorySearch = $wp->documentRoot . ltrim($directory, DIRECTORY_SEPARATOR);               
+                $searchFiles = $cp->dirToFilesArray($directorySearch); 
                 $filecount = \Core::countArray($searchFiles);
                 if ($filecount > 0) {
                     for ($i = $filecount - 1; $i >= 0; $i--) {
                         $path = $searchFiles[$i];
                         $adminDirectoryPath = "";
                         $adminDirectoryPath = \Core::createFolder(\Core::getTempAdminThemePath() . "js" . DIRECTORY_SEPARATOR . "" . $moduleName);
-                        $extentionfilePath = str_ireplace($directorySearch, "", $path);
+                        $extentionfilePath = str_ireplace($directorySearch, "", $path);                       
                         $temppath = $adminDirectoryPath . $extentionfilePath;
                         if (is_dir($path)) {
                             \Core::createFolder($temppath);
@@ -230,5 +244,63 @@ class JsRefresh {
     function createJsFile($path, $content) {
         \Core::createFile($path, 1, $content);
     }
+	function resetAngularjsConfig()
+	{
+		$angularjsElements=array("controllers","directives","filters","services");
+		foreach($angularjsElements as $agElement)
+		{
+			$cc = new \CoreClass();
+			$cp = $cc->getObject("\Core\CodeProcess");
+			$searchFiles = $cp->searchFiles("angularjs_".$agElement."_adminconfig.js");
+			$filesContent="";
+			if(\Core::countArray($searchFiles)>0)
+			{
+				foreach($searchFiles as $filepath)
+				{
+					$filesContent.="\n".trim(\Core::getFileContent($filepath));
+				}
+			}
+			$filesContent=ltrim($filesContent,"\n");
+			if($filesContent!="")
+			{
+				$controllslist=\Core::convertStringToArray(str_replace(",","",$filesContent),"\n");
+				$filesContent="'".\Core::convertArrayToString($controllslist,"',\n'")."'";
+				$elementFolderName=\Core::getTempAdminThemePath() . "js". DIRECTORY_SEPARATOR . "Modules". DIRECTORY_SEPARATOR . $agElement;
+				\Core::createFolder($elementFolderName);
+				$controllerIndex = $elementFolderName. DIRECTORY_SEPARATOR ."index.js";
+				$controllerIndexContent='define(['.$filesContent.'], function () {});';
+				$this->createJsFile($controllerIndex, $controllerIndexContent);		
+			}
+		}
+	}
+	function resetAngularjsFrontendConfig()
+	{
+		$angularjsElements=array("controllers","directives","filters","services");
+		foreach($angularjsElements as $agElement)
+		{
+			$cc = new \CoreClass();
+			$cp = $cc->getObject("\Core\CodeProcess");
+			$searchFiles = $cp->searchFiles("angularjs_".$agElement."_frontendconfig.js");
+			$filesContent="";
+			if(\Core::countArray($searchFiles)>0)
+			{
+				foreach($searchFiles as $filepath)
+				{
+					$filesContent.="\n".trim(\Core::getFileContent($filepath));
+				}
+			}
+			$filesContent=ltrim($filesContent,"\n");
+			if($filesContent!="")
+			{
+				$controllslist=\Core::convertStringToArray(str_replace(",","",$filesContent),"\n");
+				$filesContent="'".\Core::convertArrayToString($controllslist,"',\n'")."'";
+				$elementFolderName=\Core::getTempFrontendThemePath() . "js". DIRECTORY_SEPARATOR . "Modules". DIRECTORY_SEPARATOR . $agElement;
+				\Core::createFolder($elementFolderName);
+				$controllerIndex = $elementFolderName. DIRECTORY_SEPARATOR ."index.js";
+				$controllerIndexContent='define(['.$filesContent.'], function () {});';
+				$this->createJsFile($controllerIndex, $controllerIndexContent);		
+			}
+		}
+	}
 
 }

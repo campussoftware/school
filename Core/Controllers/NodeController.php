@@ -14,7 +14,7 @@ class NodeController extends Render
     public $_removeActionRecords=array();
     public $_scriptAdd=NULL;
 
-    function __construct($nodeName,$action)
+    public function __construct($nodeName,$action)
     {
         global $rootObj;
         $wp=$rootObj;
@@ -59,6 +59,7 @@ class NodeController extends Render
     }
 
     public function  returnJsonResponse($output){
+        ob_end_clean();
         ob_start();
         header('Content-Type: application/json');
         echo json_encode($output); exit;
@@ -138,7 +139,8 @@ class NodeController extends Render
                     {
                         $nodeSave->setData($key,$value);
                     }
-                    $this->_requestedData['id']=$nodeSave->save();
+                    $this->savingData=$data;
+                    $this->_requestedData[$this->_primaryKey]=$nodeSave->save();
                     $method=\Core::convertStringToMethod($this->_nodeName."_afterDataUpdate");
 
                     if(\Core::methodExists($this, $method))
@@ -190,7 +192,7 @@ class NodeController extends Render
                     }
                     $output=array();
                     $output['status']="success";
-                    $output['primaryId']=\Core::getValueFromArray($this->_requestedData, "$this->_primaryKey");
+                    $output['primaryId']=\Core::getValueFromArray($this->_requestedData, $this->_primaryKey);
                     $output['redirecturl']=$backUrl;
                     if($this->_scriptAdd)
                     {
@@ -273,12 +275,14 @@ class NodeController extends Render
                     }
                     $nodeSave=new \Core\Model\NodeSave();
                     $nodeSave->setNode($this->_nodeName);
-                    $nodeSave->setData("id",$requestedData["id"]);
+					
+                    $nodeSave->setData($this->_autoKey,$requestedData[$this->_autoKey]);
                     foreach ($data as $key=>$value)
                     {
                         $nodeSave->setData($key,$value);
                     }
                     $output=$nodeSave->save();
+                    $this->savingData=$data;
                     $method=\Core::convertStringToMethod($this->_nodeName."_afterDataUpdate");
 
                     if(\Core::methodExists($this, $method))
@@ -703,25 +707,15 @@ class NodeController extends Render
     public function gridContent()
     {
         if($this->_isDefaultCollection==1)
-        {
-            $this->setSingleActions();
-            $this->setIndividualActions();
-            $this->setMraActions();
-            $this->getCollection();
-            $this->setCurrentNodeName($this->_nodeName);
-            $this->actionRestriction();
+        {           
+            $this->setCurrentNodeName($this->_nodeName);           
         }
         $this->getAdminLayout();
         $this->renderLayout();
     }
     public function adminRefreshAction()
     {
-        $this->setSingleActions();
-        $this->setIndividualActions();
-        $this->setMraActions();
-        $this->getCollection();
         $this->setCurrentNodeName($this->_nodeName);
-        $this->actionRestriction();
         $this->getAdminLayout();
         $this->renderLayout();
     }
@@ -869,7 +863,7 @@ class NodeController extends Render
         if(\Core::keyInArray("parent_level",$this->_NodeFieldsList))
         {
             $parent_level=1;
-            if($requestedData['parent']!="")
+            if(\Core::getValueFromArray($requestedData,"parent")!="")
             {
                 $db=new \Core\DataBase\ProcessQuery();
                 $db->setTable($table);
@@ -1577,5 +1571,68 @@ class NodeController extends Render
         imagecopyresampled($new, $current_image, 0, 0, $x1, $y1, $crop_width, $crop_height, $w, $h);
         // creating our new image
         imagejpeg($new, $new_filename, 95);
+    }
+    public function gridResultJsonAction()
+    {
+        $output=[];
+        $this->setSingleActions();  
+        $this->setIndividualActions();
+        $this->setMraActions();
+        $this->getCollection();
+        $this->setCurrentNodeName($this->_nodeName);
+        $this->actionRestriction();  
+        $this->getCollection();
+        foreach($this->_showAttributes as $attribute)
+        {
+            $attributeDisplaySettings=[];
+            $attributeDisplaySettings['display']=__($attribute);
+            $attributeDisplaySettings['$id']=$attribute;            
+            $attributeDisplaySettings['attributeType']=\Core::inArray($attribute, $this->_boolAttributes)?"bool":"text";
+            $attributeDisplaySettings['search']=\Core::inArray($attribute, $this->_searchAttributes)?true:false;
+            $headerlist[]=$attributeDisplaySettings;
+        }
+        $output['headerlist']=$headerlist; 
+        $output['datalist']=$this->_collections;
+        $output['totalRecordsCount']=$this->_totalRecordsCount;
+        $output['primaryKeyForValue']=\Core::getValueFromArray($this->_nodeMTORelations, $this->_primaryKey)?$this->_primaryKey."pk":$this->_primaryKey;
+        $output['recordsPerPage']=$this->_wsrpp;
+        $output['currentSelectedRpp']=$this->_rpp;
+        $output['currentSelectedPage']=$this->_page;        
+        $output['requestedParams']=$this->_requestedData;
+        $output['individualActions']= $this->_individualActions;
+        $output['singleActions']= $this->_singleActions;
+        
+        $output['mraActions']= $this->_mraActions;
+        
+        return $this->returnJsonResponse($output);
+    }
+    public function importAction()
+    {
+        $this->getAdminLayout();
+        $this->renderLayout();
+    }
+    public function importdataAction()
+    {       
+        $importfile= $this->_filesData['importfile'];
+        $xlsx = new \Excel\Xlsx\Reader($importfile['tmp_name']);
+        $output='';
+        $xlData= $xlsx->rows();
+        if(count($xlData)>0)
+        {
+            $output.='<table class="table table-striped table-bordered table-hover dataTable">';
+            foreach($xlData as $rowData)
+            {
+                $output.="<tr>";
+                foreach($rowData as $tdData)
+                {
+                    $output.="<td>";
+                    $output.=$tdData;
+                    $output.="</td>";
+                }
+                $output.="</tr>";
+            }
+            $output.="</table>";
+        }
+        echo $output;
     }
 }

@@ -21,11 +21,10 @@ class Render extends Node {
         $wp = $rootObj;
         $layout = "";
         $flag = 0;
-        $module = \Core::convertStringToFileName($this->_currentNodeModule);        
+        $module = \Core::convertStringToFileName($this->_currentNodeModule);
         $node = \Core::convertStringToFileName($this->_nodeName);
         $layout = \Core::getTempAdminThemePath() . "layout".DIRECTORY_SEPARATOR. $module . DIRECTORY_SEPARATOR . $node . "_" . $this->_currentAction . ".xml";
-
-       $targetFile = $layout;
+        $targetFile = $layout;
         if (\Core::fileExists($layout)) {
             $this->_layout = $layout;
             return;
@@ -37,8 +36,8 @@ class Render extends Node {
             $cc = new \CoreClass();
             $cp = $cc->getObject("\Core\CodeProcess");
             $fileSearch = "Modules" . DIRECTORY_SEPARATOR . $module . DIRECTORY_SEPARATOR . "view" . DIRECTORY_SEPARATOR . "adminhtml" . DIRECTORY_SEPARATOR . "layout" . DIRECTORY_SEPARATOR . $node . "_" . $this->_currentAction . ".xml";
-           
-            $filesList = $cp->searchFiles($fileSearch);            
+            $filesList = $cp->searchFiles($fileSearch);
+
             if (\Core::countArray($filesList) > 0) {
                 $layout = $filesList['0'];
                 if (\Core::fileExists($layout)) {

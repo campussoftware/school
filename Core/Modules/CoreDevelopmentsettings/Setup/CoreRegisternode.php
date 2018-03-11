@@ -25,7 +25,7 @@ class CoreRegisternode
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Id",
-                "prmiary"=>false,
+                "primary"=>false,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"int",
@@ -43,10 +43,10 @@ class CoreRegisternode
                 "name"=>"nodename",
                 "displayValue"=>"Node Name",            
                 "default"=>false,
-                "prmiary"=>1,
+                "primary"=>1,
                 "type"=>"varchar",
                 "size"=>"255",
-                "prmiary"=>true,
+                "primary"=>true,
             ));
             $setup->addColumnName(array(
                 "name"=>"displayvalue",

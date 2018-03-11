@@ -51,36 +51,36 @@ class Core {
         switch ($type) {
             case "C" :
                 if ($folderName) {
-                    $folderName = "Var".DIRECTORY_SEPARATOR . $wp->identity .DIRECTORY_SEPARATOR. "Cache".DIRECTORY_SEPARATOR . $folderName;
+                    $folderName = "Var" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . "Cache" . DIRECTORY_SEPARATOR . $folderName;
                 } else {
-                    $folderName = "Var".DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR. "Cache";
+                    $folderName = "Var" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . "Cache";
                 }
                 break;
             case "E" :
-                $folderName = "Var".DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR. "Errors";
+                $folderName = "Var" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . "Errors";
                 break;
             case "L" :
-                $folderName = "Var".DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR. "Logs";
+                $folderName = "Var" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . "Logs";
                 break;
             case "U" :
                 if ($folderName) {
-                    $folderName = "uploads".DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . $folderName;
+                    $folderName = "uploads" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . $folderName;
                 } else {
-                    $folderName = "uploads".DIRECTORY_SEPARATOR . $wp->identity;
+                    $folderName = "uploads" . DIRECTORY_SEPARATOR . $wp->identity;
                 }
                 break;
             case "B" :
                 if ($folderName) {
-                    $folderName = "backup".DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . $folderName;
+                    $folderName = "backup" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . $folderName;
                 } else {
-                    $folderName = "backup".DIRECTORY_SEPARATOR . $wp->identity;
+                    $folderName = "backup" . DIRECTORY_SEPARATOR . $wp->identity;
                 }
                 break;
             case "R" :
                 if ($folderName) {
-                    $folderName = "Var".DIRECTORY_SEPARATOR . $wp->identity .DIRECTORY_SEPARATOR. "Reports" . DIRECTORY_SEPARATOR . $folderName;
+                    $folderName = "Var" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . "Reports" . DIRECTORY_SEPARATOR . $folderName;
                 } else {
-                    $folderName = "Var".DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR. "Reports";
+                    $folderName = "Var" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . "Reports";
                 }
                 break;
             default :
@@ -114,7 +114,7 @@ class Core {
         global $rootObj;
         $cc = new \CoreClass();
         $wp = $rootObj;
-        $fileName = "Var".DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR. "Cache".DIRECTORY_SEPARATOR;
+        $fileName = "Var" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . "Cache" . DIRECTORY_SEPARATOR;
         if (!\Core::fileExists($fileName)) {
             $ch = $cc->getObject("\Core\Cache\Refresh");
             $ch->refreshCache();
@@ -175,6 +175,16 @@ class Core {
         }
     }
 
+    static function arrayUnique($stringNeedToCheckArray) {
+        $output = array();
+        if (\Core::isArray($stringNeedToCheckArray)) {
+            $output = array_unique($stringNeedToCheckArray);
+        } else {
+            $output = $stringNeedToCheckArray;
+        }
+        return $output;
+    }
+
     static function convertStringToArray($stringNeedExplode, $delimiter = NULL) {
         if (!$delimiter) {
             $delimiter = "|";
@@ -220,7 +230,7 @@ class Core {
         return $string;
     }
 
-    static function redirectUrl($url, $message) {
+    static function redirectUrl($url, $message = null) {
         $string = '
             <script>';
         if ($message) {
@@ -262,24 +272,23 @@ class Core {
             \Core::Log($ex->getMessage());
         }
     }
+
     static function getDefaultController() {
         try {
             $fp = fopen("sitesettings.xml", "r");
             $fileContent = fread($fp, filesize("sitesettings.xml"));
             fclose($fp);
             $controllerSettings = \Core::convertXmlToArray($fileContent);
-            return $controllerSettings['controller'];
+            return self::getValueFromArray($controllerSettings, "controller");
         } catch (Exception $ex) {
             \Core::Log($ex->getMessage());
         }
     }
 
-
     static function convertXmlToArray($xml, $main_heading = '') {
         $deXml = simplexml_load_string($xml);
         $deJson = json_encode($deXml);
         $xml_array = json_decode($deJson, TRUE);
-
         if (!empty($main_heading)) {
             $returned = $xml_array[$main_heading];
             return $returned;
@@ -396,7 +405,7 @@ class Core {
 
     static function getCachefilePath($nodeName, $type, $refresh = null) {
         global $rootObj;
-        $filename = \Core::createFolder("Var".DIRECTORY_SEPARATOR . $rootObj->identity .DIRECTORY_SEPARATOR. "Cache".DIRECTORY_SEPARATOR."structure".DIRECTORY_SEPARATOR . $nodeName);
+        $filename = \Core::createFolder("Var" . DIRECTORY_SEPARATOR . $rootObj->identity . DIRECTORY_SEPARATOR . "Cache" . DIRECTORY_SEPARATOR . "structure" . DIRECTORY_SEPARATOR . $nodeName);
 
         switch ($type) {
             case 'R':
@@ -480,18 +489,15 @@ class Core {
         }
     }
 
-    static function createFile($fileName, $overwrite, $data=null) {
+    static function createFile($fileName, $overwrite, $data = null) {
         try {
             if ($overwrite == 1) {
-                $fp = fopen($fileName, "w+") or die($fileName."<br/>");
+                $fp = fopen($fileName, "w+") or die($fileName . "<br/>");
             } else {
-                if(\Core::fileExists($fileName))
-                {
-                    $fp = fopen($fileName, "a") or die($fileName."<br/>");
-                }
-                else
-                {
-                    $fp = fopen($fileName, "w") or die($fileName."<br/>");
+                if (\Core::fileExists($fileName)) {
+                    $fp = fopen($fileName, "a") or die($fileName . "<br/>");
+                } else {
+                    $fp = fopen($fileName, "w") or die($fileName . "<br/>");
                 }
             }
             fwrite($fp, $data);
@@ -510,7 +516,7 @@ class Core {
     }
 
     static function getEmailTemplate($templatePath) {
-        $wp = new Core_WebsiteSettings();
+        $wp = new \Core\WebsiteSettings();
         $filename = $wp->documentRoot . "templates/email/" . $templatePath;
         return \Core::getFileContent($filename);
     }
@@ -572,6 +578,10 @@ class Core {
         return date('Y-m-d H:i:s');
     }
 
+    static function getTime() {
+        return date('H:i');
+    }
+
     static function is_image($path) {
         $a = getimagesize($path);
         $image_type = $a[2];
@@ -599,10 +609,6 @@ class Core {
             foreach ($xml as $element) {
                 $xmlstr .= $element->asXML();
             }
-        }
-        else
-        {
-            echo $file; die;
         }
         return $xmlstr;
     }
@@ -663,35 +669,171 @@ class Core {
     static function getTempAdminThemePath() {
         global $rootObj;
         $wp = $rootObj;
-        $folderName = $wp->documentRoot . "Var".DIRECTORY_SEPARATOR . $wp->identity .DIRECTORY_SEPARATOR. "design".DIRECTORY_SEPARATOR."adminhtml".DIRECTORY_SEPARATOR . $wp->themeName.DIRECTORY_SEPARATOR;
+        $folderName = $wp->documentRoot . "Var" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . "design" . DIRECTORY_SEPARATOR . "adminhtml" . DIRECTORY_SEPARATOR . $wp->themeName . DIRECTORY_SEPARATOR;
         return $folderName;
     }
 
-    static function getTempFrontendThemePath(){
+    static function getTempFrontendThemePath() {
         global $rootObj;
         $wp = $rootObj;
-        $folderName = $wp->documentRoot . "Var".DIRECTORY_SEPARATOR. $wp->identity .DIRECTORY_SEPARATOR. "design".DIRECTORY_SEPARATOR."frontend".DIRECTORY_SEPARATOR . $wp->themeName.DIRECTORY_SEPARATOR;
+        $folderName = $wp->documentRoot . "Var" . DIRECTORY_SEPARATOR . $wp->identity . DIRECTORY_SEPARATOR . "design" . DIRECTORY_SEPARATOR . "frontend" . DIRECTORY_SEPARATOR . $wp->themeName . DIRECTORY_SEPARATOR;
         return $folderName;
     }
+
     static function getTempAdminThemeUrl() {
         global $rootObj;
         $wp = $rootObj;
-        $folderName = $wp->websiteUrl . "Var/" . $wp->identity . "/design/adminhtml/" . $wp->themeName."/";
+        $folderName = $wp->websiteUrl . "Var/" . $wp->identity . "/design/adminhtml/" . $wp->themeName . "/";
         return $folderName;
     }
 
-    static function getTempFrontendThemeUrl(){
+    static function getTempFrontendThemeUrl() {
         global $rootObj;
         $wp = $rootObj;
-        $folderName = $wp->websiteUrl . "Var/" . $wp->identity . "/design/frontend/" . $wp->themeName."/";
+        $folderName = $wp->websiteUrl . "Var/" . $wp->identity . "/design/frontend/" . $wp->themeName . "/";
         return $folderName;
     }
-    static function deleteFile($filepath)
-    {
-        if(\Core::fileExists($filepath))
-        {
+
+    static function deleteFile($filepath) {
+        if (\Core::fileExists($filepath)) {
             unlink($filepath);
         }
     }
+    public static function getShortUrl($link) {
+        define("API_BASE_URL", "https://www.googleapis.com/urlshortener/v1/url?");
+        define("API_KEY", "AIzaSyAr8ZQ5XbudqcZP97OWIQVOhbcMGdOvZUU");
+        // Used for file_get_contents
+        $fileOpts = array(
+            'key' => API_KEY,
+            'fields' => 'id' // We want ONLY the short URL
+        );
+        // Used for stream_context_create
+        $streamOpts = array(
+            'http' =>
+            array(
+                'method' => 'POST',
+                'header' => [
+                    "Content-type: application/json",
+                ],
+                'content' => json_encode(array(
+                    'longUrl' => $link,
+                ))
+            )
+        );
+        $context = stream_context_create($streamOpts);
+        $result = file_get_contents(API_BASE_URL . http_build_query($fileOpts), false, $context);
+        return json_decode($result, false)->id;
+    }
 
+    static function getIndianCurrency($number) {
+        $decimal = round($number - ($no = floor($number)), 2) * 100;
+        $hundred = null;
+        $digits_length = strlen($no);
+        $i = 0;
+        $str = array();
+        $words = array(0 => '', 1 => 'one', 2 => 'two',
+            3 => 'three', 4 => 'four', 5 => 'five', 6 => 'six',
+            7 => 'seven', 8 => 'eight', 9 => 'nine',
+            10 => 'ten', 11 => 'eleven', 12 => 'twelve',
+            13 => 'thirteen', 14 => 'fourteen', 15 => 'fifteen',
+            16 => 'sixteen', 17 => 'seventeen', 18 => 'eighteen',
+            19 => 'nineteen', 20 => 'twenty', 30 => 'thirty',
+            40 => 'forty', 50 => 'fifty', 60 => 'sixty',
+            70 => 'seventy', 80 => 'eighty', 90 => 'ninety');
+        $digits = array('', 'hundred', 'thousand', 'lakh', 'crore');
+        while ($i < $digits_length) {
+            $divider = ($i == 2) ? 10 : 100;
+            $number = floor($no % $divider);
+            $no = floor($no / $divider);
+            $i += $divider == 10 ? 1 : 2;
+            if ($number) {
+                $plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+                $hundred = ($counter == 1 && $str[0]) ? ' and ' : null;
+                $str [] = ($number < 21) ? $words[$number] . ' ' . $digits[$counter] . $plural . ' ' . $hundred : $words[floor($number / 10) * 10] . ' ' . $words[$number % 10] . ' ' . $digits[$counter] . $plural . ' ' . $hundred;
+            } else
+                $str[] = null;
+        }
+        $Rupees = implode('', array_reverse($str));
+        $paise = ($decimal) ? " and " . ($words[$decimal / 10] . " " . $words[$decimal % 10]) . ' Paise' : '';
+        return ($Rupees ? $Rupees . 'Rupees ' : '') . $paise.' Only.';
+    }
+    static function getCsvToArray($filepath) {
+        $csvMimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain');
+        //open uploaded csv file with read only mode
+        $data = [];
+        if (\Core::fileExists($filepath)) {
+            $csvFile = fopen($filepath, 'r');
+            $headers = fgetcsv($csvFile);
+            $i = 0;
+            $data["headers"] = $headers;
+            while (($line = fgetcsv($csvFile)) !== FALSE) {
+                $k = 0;
+                foreach ($line as $key => $value) {
+                    $header = $headers[$k];
+                    $data["data"][$line[0]][$header] = $value;
+                    $k++;
+                }
+                $i++;
+            }
+            fclose($csvFile);
+        }
+        return $data;
+    }
+
+    public static function getBrowser($useragent) {
+        $user_agent = $useragent;
+        $browser = "Unknown Browser";
+        $found = "";
+        $browser_array = array('/msie/i' => 'Internet Explorer',
+            '/firefox/i' => 'Firefox',
+            '/safari/i' => 'Safari',
+            '/chrome/i' => 'Chrome',
+            '/opera/i' => 'Opera',
+            '/netscape/i' => 'Netscape',
+            '/maxthon/i' => 'Maxthon',
+            '/konqueror/i' => 'Konqueror',
+            '/mobile/i' => 'Handheld Browser');
+
+        foreach ($browser_array as $regex => $value) {
+            if ($found)
+                break;
+            else if (preg_match($regex, $user_agent, $result)) {
+                $browser = $value;
+            }
+        }
+        return $browser;
+    }
+
+    public static function getDeviceName($userAgent) {
+        //$userAgent = $_SERVER["HTTP_USER_AGENT"];
+        $devicesTypes = array(
+            "computer" => array("msie 10", "msie 9", "msie 8", "windows.*firefox", "windows.*chrome", "x11.*chrome", "x11.*firefox", "macintosh.*chrome", "macintosh.*firefox", "opera"),
+            "tablet" => array("tablet", "android", "ipad", "tablet.*firefox"),
+            "mobile" => array("mobile ", "android.*mobile", "iphone", "ipod", "opera mobi", "opera mini"),
+            "bot" => array("googlebot", "mediapartners-google", "adsbot-google", "duckduckbot", "msnbot", "bingbot", "ask", "facebook", "yahoo", "addthis")
+        );
+        foreach ($devicesTypes as $deviceType => $devices) {
+            foreach ($devices as $device) {
+                if (preg_match("/" . $device . "/i", $userAgent)) {
+                    $deviceName = $deviceType;
+                }
+            }
+        }
+        return ucfirst($deviceName);
+    }
+    
+    public static function convertNumberToDecimal($number,$decimal){
+        return number_format((float)$number, $decimal, '.', '');
+    }
+    
+    public static function getUserPermission(){
+        global $rootObj;
+        $wp = $rootObj;
+        $userAccessFile = $wp->documentRoot."pages/frontend/".$wp->themeName."/settings/UserAccess.xml";
+        $fp = fopen($userAccessFile, "r");
+        $fileContent = fread($fp, filesize($userAccessFile));
+        fclose($fp);
+        $userPermission = \Core::convertXmlToArray($fileContent);
+        return $userPermission['Modules'];
+    }
 }

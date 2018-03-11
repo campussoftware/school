@@ -1,0 +1,25 @@
+.filter-bar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    overflow: hidden
+}
+
+.filter-bar label {
+    font-size: 14px;
+    margin: 7px 16px
+}
+
+.filter-bar input {
+    border-radius: 0;
+    border: 1px solid #a9a9a9
+}
+
+#left-header select {
+    padding: 4px 0px;
+    margin: 5px 0px
+
+}
+
+#pref-search{
+    width: 70%;
+}

@@ -26,7 +26,7 @@ class FeeListFeeplanDetails
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Fee List Feeplan Details Id",
-                "prmiary"=>1,            
+                "primary"=>1,            
                 "default"=>NULL,
                 "type"=>"bigint",
                 "size"=>"11",

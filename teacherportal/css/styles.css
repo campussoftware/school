@@ -1,0 +1,250 @@
+/* CSS Document */
+.warper{
+	    
+    z-index: 9999;
+	padding: 10px;
+}
+#page_header_block{
+	background:#dcdcdc;
+	padding:8px 25px;
+}
+#page_links ul li{
+	display:inline-block;
+}
+#page_links ul li a{
+	padding:0px 6px;
+}
+#page_links ul li a i.fa{
+	margin-right:8px;
+}
+
+/* Teacher Study Material */
+#study_material ,#class_shedule, #test_shedule{
+    margin: 10px 10px;
+    background: #fff;
+    padding: 10px 10px;
+}
+#study_material h3,#test_shedule h3{
+	font-size: 18px;
+    margin: 10px 0px;
+}
+.mtr_list{
+	margin: 10px 0px;
+}
+.mtr_list .table-bordered>thead>tr>th {
+    text-align: center;
+}
+.mtr_list .table .fa{
+	padding: 6px;
+	margin-right: 5px;
+}
+
+.add_mtr_model .modal-content{
+	border-radius: 2px;
+}
+.add_mtr_model .modal-body {
+    padding: 20px 80px;
+}
+
+
+/*   Teacher Profile */
+.st_img ,.tech_img {
+    padding: 4px;
+    border-radius: 3px;
+}
+.st_data ,.tech_data{
+    text-align: center;
+    margin-top: 24px;
+}
+.st_data h4,.tech_data h4{
+	font-weight: 600;
+	font-size: 20px;
+	margin-bottom: 12px;
+}
+.tech_data p,.tech_data p span{
+	margin-bottom: 8px;
+}
+.tech_info,.stu_info{
+    padding: 8px 20px;
+    margin: 15px 20px;
+}
+.tech_info h4,.stu_info h4{
+	margin: 10px 0px;
+}
+.tech_info p,.stu_info p{
+	margin: 10px 0px;
+}
+.tech_info .fa,.stu_info fa{
+	margin-right: 7px;
+}
+.st_col_mod .col-md-6,.st_col_mod .col-md-4{
+	margin: 0px;
+	padding: 0px;
+}
+#tech_education {
+    margin: 0px 14px;
+}
+
+
+/* Student List */
+.student_list ,.stu_atnc,.sub_tech_list{
+    margin: 10px 10px;
+    background: #fff;
+    padding: 10px 10px;
+}
+.stu_search,.class_search {
+	margin: 22px 0px;
+}
+.stu_filter{
+	clear: both;
+}
+.stu_filter_list {
+    margin: 10px 0px;
+}
+.stu_filter_list img, .tech_list img{
+	width: 60px;
+	height: 60px;
+}
+.stu_filter_list .table-bordered>tbody>tr>td >li{
+	list-style: none;
+    border: 1px solid #ddd;
+    padding: 6px;
+    margin: 4px 0px;
+    background-color: #fff;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+    margin-right: 3px;
+}
+.stu_filter_list .table-bordered>tbody>tr>td >li:last-child{
+	clear: both;
+}
+.stu_filter_list .fa{
+	margin-right: 5px;
+}
+
+#parent_view img{
+	border-radius: 4px;
+}
+#parent_view p{	
+	font-size: 16px;
+    line-height: 24px;
+}
+
+/*  Attence teacher */
+
+.stu_atd_details p {
+    line-height: 14px;
+    font-size: 16px;
+    margin: 10px 0px;
+}
+.stu_atd_mon {
+    margin: 24px 0px;
+}
+.stu_atd_adv_srch h4{
+	margin: 20px 0px;
+}
+.row.stu_atd_view {
+    margin-top: 13px;
+}
+.stu_atd_view p{
+	font-size: 16px;
+    line-height: 24px;
+}
+.stu_atd_view .table{
+	margin-top: 20px;
+}
+
+/* Subject Teachers list */
+.tech_list{
+	margin-top: 20px;
+}
+.row_space{
+	margin: 10px 0px;
+}
+.tech_qul{
+	margin-top: 20px;
+}
+.tech_qul h4{
+	margin: 16px 0px;
+}
+.sub_tech_data{
+	margin: 20px 0px;
+}
+
+.tech_desig h4{
+	font-weight: 600;
+	padding: 6px 0px;
+}
+.tech_desig h5{
+	font-size: 16px;
+	background: #00ef97;
+    padding: 5px 4px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.tech_desig h6{
+	font-size: 16px;
+	padding: 5px 4px;
+    background: #b4b4f9;
+	margin-top: 5px;
+}
+.tech_desig hr{
+	border-top: 3px solid #fff;
+	margin: 0px;
+}
+
+/* Teacher Class Shedule */
+
+.class_shedule_list ul li {
+    float: left;
+    padding: 10px;
+    background: #056c89;
+    margin: 5px;
+    color: #fff;
+}
+ 
+.custom-table thead {
+    background-color: #f59547;
+    color: #fff;
+}
+.custom-table{
+	margin: 10px 12px;
+}
+.custom-table .table-bordered>thead>tr>th {
+    text-align: center;
+}
+.custom-table .table .fa{
+	padding: 6px;
+	margin-right: 5px;
+}
+#send_leave_request {
+    padding: 10px 30px;
+}
+.book_image{
+    width:10%;
+    
+}
+.book_image img{
+    height: 65px;
+    
+}
+.books_list_headng {
+    background: green;
+    color: #fff;
+    padding: 5px;
+    margin: 10px;
+}
+
+
+#res_default_table thead tr th{
+	    padding: 15px 8px;            
+}
+#res_default_table tbody tr td{
+	padding: 15px 10px;
+        line-height: 24px;
+}
+#res_default_table img{
+    height: 65px;
+    
+}

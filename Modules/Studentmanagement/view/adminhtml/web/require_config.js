@@ -4,7 +4,7 @@
     var config = {
         map: {
             '*': {
-                studentmng: 'Academics/studentmng', 
+                studentmng: 'Studentmanagement/studentmng', 
             }
         },
         "deps": ["jquery"]

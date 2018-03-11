@@ -1,0 +1,30 @@
+.go-back-btn{
+	border: 1px solid #ddd;
+    margin-top: 10px;
+    width: 135%;
+}
+.go-back-btn i{
+	background: #ccc;
+	padding: 10px 10px;
+	float: left;
+}
+.go-back-btn p{
+	padding: 10px 43px;
+
+}
+.teacher_details span{
+	margin-left: 10px
+}
+.teacher_details .row{
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+.designation_tchr{
+	margin-top: 15px;
+}
+.designation_tchr p{
+	padding: 10px 10px;
+}
+.education{
+	padding: 10px 3px;
+}

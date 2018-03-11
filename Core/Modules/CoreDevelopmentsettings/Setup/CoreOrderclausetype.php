@@ -25,7 +25,7 @@ class CoreOrderclausetype
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"User Id",
-                "prmiary"=>1,
+                "primary"=>1,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"int",

@@ -12,8 +12,15 @@
  * @author ramesh
  */
 class CoreClass {
+
     static public $node = NULL;
-    static function getController($node, $module = NULL, $action = NULL, $actionSourceFrom = NULL) {       
+
+    static function getController($node, $module = NULL, $action = NULL, $actionSourceFrom = NULL) {
+        $np = new \Core\Model\RameshAbstract();
+        $np->setNodeName($node);
+        if ($module == "") {
+            $module = $np->_currentNodeModule;
+        }
         $className = "\Modules\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $module))) . "\Controllers" . "\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $node))) . "\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $action)));
         if (self::checkFileExits($className)) {
             return new $className($node, $action);
@@ -38,19 +45,35 @@ class CoreClass {
         if ($node == "") {
             return false;
         }
+        $customNodeModel = \Core::convertStringToArray($node, "__");
+        $customModelFlag = 0;
+        if (\Core::countArray($customNodeModel) > 1) {
+            $node = \Core::getValueFromArray($customNodeModel, "0");
+            $customModelFlag = 1;
+            unset($customNodeModel[0]);
+        }
         global $rootObj;
         $np = new \Core\Model\RameshAbstract();
         $np->setNodeName($node);
         $module = $np->_currentNodeModule;
-        $className = "\Modules\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $module))) . "\Models" . "\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $node)));
-        if (self::checkFileExits($className)) {
-            return new $className($node, $action);
-        }
-        $className = "\Core\Modules\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $module))) . "\Models" . "\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $node)));
-        if (self::checkFileExits($className)) {
+        if ($customModelFlag == 1) {
+            $className = "\Modules\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $module))) . "\Models" . "\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $node))) . "\\" . \Core::convertArrayToString($customNodeModel, "\\");
+            if (self::checkFileExits($className)) {
+                return new $className($node, $action);
+            }
+            $className = "\Core" . $className;
             return new $className($node, $action);
         } else {
-            return new \Core\Model\Node($node, $action);
+            $className = "\Modules\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $module))) . "\Models" . "\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $node)));
+            if (self::checkFileExits($className)) {
+                return new $className($node, $action);
+            }
+            $className = "\Core\Modules\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $module))) . "\Models" . "\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $node)));
+            if (self::checkFileExits($className)) {
+                return new $className($node, $action);
+            } else {
+                return new \Core\Model\Node($node, $action);
+            }
         }
     }
 
@@ -60,11 +83,11 @@ class CoreClass {
         if ($moduleName == NULL) {
             return new \Core\Helper\Data();
         } else {
-            $className = "\Modules\\" . ucwords(str_replace("_", " ", $moduleName)) . "\Helper\\" . $helperNode; 
+            $className = "\Modules\\" . ucwords(str_replace("_", " ", $moduleName)) . "\Helper\\" . $helperNode;
             if (self::checkFileExits($className)) {
                 return new $className();
             } else {
-                return new Core\Helper\Data();
+                return new \Core\Helper\Data();
             }
         }
     }
@@ -88,7 +111,7 @@ class CoreClass {
         $cc = new \CoreClass();
         global $wp;
         $className = "\Modules\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $module))) . "\Controllers" . "\Frontend\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $node))) . "\\" . str_replace(" ", "", ucwords(str_replace("_", " ", $action)));
-       
+
         if (self::checkFileExits($className)) {
             return new $className($node, $action);
         }
@@ -125,17 +148,19 @@ class CoreClass {
     }
 
     static function getObject($className, $construcParams = NULL) {
+        
         return new $className($construcParams);
     }
 
-    static function checkFileExits($className){
+    static function checkFileExits($className) {
         global $wp;
-	$className = str_replace("'", "", $className);
-        $className = ltrim($className,"\\");
-        $fileName = $wp->documentRoot . str_replace("\\", DIRECTORY_SEPARATOR, $className) . ".php"; 
+        $className = str_replace("'", "", $className);
+        $className = ltrim($className, "\\");
+        $fileName = $wp->documentRoot . str_replace("\\", DIRECTORY_SEPARATOR, $className) . ".php";
+
         if (Core::fileExists($fileName)) {
             return true;
         }
-	return false;
-   }
+        return false;
+    }
 }

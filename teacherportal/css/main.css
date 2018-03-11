@@ -1,0 +1,44 @@
+/* CSS Document */
+body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, input, menu, .row {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	vertical-align: top;
+	background: transparent;
+	line-height: 1;
+	
+}
+body {
+	transition: all ease-in-out 0.3s;
+	-webkit-transition: all ease-in-out 0.3s;
+	-moz-transition: all ease-in-out 0.3s;
+	-ms-transition: all ease-in-out 0.3s;
+	-o-transition: all ease-in-out 0.3s;
+}
+a:hover {
+	text-decoration: none;
+}
+.left-padding {
+	padding-left: 0px;
+}
+.right-padding {
+	padding-right: 0px;
+}
+.no-padding {
+	padding: 0px;
+}
+ul li,ol li{
+	list-style:none;
+}
+.nav_title,.top_header{
+	height:50px;
+}
+.container_body .col-md-3.sideNavigation,.container_body .col-md-3 .footer_navigation{
+	width:230px;
+}
+.warper,.top_header{
+	margin-left:230px;
+}
+
+

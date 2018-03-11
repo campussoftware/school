@@ -14,6 +14,7 @@
         public $projectdefaultNode=NULL;
 	public $projectRootUpload=NULL;
 	public $projectRootUploadUrl=NULL;
+	public $isOnAdminInstance=0;
         function __construct() 
         {
             $Config=\Core::getSiteConfig();             
@@ -25,6 +26,7 @@
             $this->rpp=$Config['rpp'];
             $this->documentRootUpload="uploads/".$this->identity;
             $this->adminRouteCode=$Config['admincode'];
+	    $this->isOnAdminInstance=\Core::getValueFromArray($Config,"onlyadmin");
             $this->projectdefaultNode=is_array($Config['projectnode'])?"":$Config['projectnode'];
             $this->projectRootUpload=$this->documentRoot."uploads/".$this->identity."/";
             $this->projectRootUploadUrl=$this->websiteUrl."uploads/".$this->identity."/";

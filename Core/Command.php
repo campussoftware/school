@@ -32,9 +32,24 @@ class Command {
         switch ($command) {
             case "install":                
                 $new = $cc->getObject("\Core\Install\Setup");
-                $ch = $cc->getObject("\Core\Cache\Refresh");
-                $ch->refreshCache();
-                break;
+		case "allcache":
+				\Core::delTree($this->wp->documentRoot . "Var/" . $this->wp->identity);
+                \Core::checkCache();
+				$cc = new \CoreClass();
+                $jsRefresh = $cc->getObject("\Core\Cache\JsRefresh");
+                $jsRefresh->refreshVarAdminJs();				
+                $jsRefresh = $cc->getObject("\Core\Cache\CssRefresh");
+                $jsRefresh->moveCssAdminFiles();
+				$jsRefresh = $cc->getObject("\Core\Cache\JsRefresh");
+                $jsRefresh->refreshVarFrontendJs();
+				$jsRefresh = $cc->getObject("\Core\Cache\CssRefresh");
+                $jsRefresh->moveCssFrontendFiles();
+		break;
+	    case "cronexecute":
+                $cc = new \CoreClass();
+                $cronJob = $cc->getObject("\Core\Modules\CoreDevelopmentsettings\Models\CoreCronSchedule");
+                $cronJob->executeCronJob();
+                break;	
             case "layoutcache":
                 $ch = $cc->getObject("\Core\Cache\LayoutRefresh");
                 $ch->refreshLayout("Config".DIRECTORY_SEPARATOR."Settings".DIRECTORY_SEPARATOR."system.xml","system.xml");  
@@ -62,7 +77,7 @@ class Command {
                 $cc = new \CoreClass();
                 $jsRefresh = $cc->getObject("\Core\Cache\CssRefresh");
                 $jsRefresh->moveCssFrontendFiles();
-                break;
+                break;	
             default :
                 echo "No Commands Found";
                 break;

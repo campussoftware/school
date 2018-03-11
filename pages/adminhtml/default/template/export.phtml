@@ -1,12 +1,33 @@
-<?php    
-    $output="Name\n";
-    $output.="ramesh\n";
-    $output.="rajesh\n";
-    $output.="mani\n";
+<?php  
+	$this->setNolimit();
+	$this->getCollection();
+	$collectionList=$this->_collections;
+	$output="";
+	foreach($this->_showAttributes as $attribute)
+	{
+		$output.='"'.__($attribute).'"'.",";
+	}
+	$output=rtrim($output,",");
+	$output.="\n";
+	foreach($collectionList as $collection)
+	{
+		foreach($this->_showAttributes as $attribute)
+		{
+			$value=\Core::getValueFromArray($collection,$attribute);
+			$type=\Core::getValueFromArray($this->_NodeFieldAttributes,$attribute);
+			if($type=="bool")
+			{
+				$value==1?$value="Yes":$value="No";
+			}
+			$output.='"'.$value.'"'.",";
+		}
+		$output=rtrim($output,",");
+		$output.="\n";
+	}
     ob_clean();
     header('Content-Encoding: UTF-8');
     header('Content-type: text/csv; charset=UTF-8');
-    header("Content-Disposition: attachment; filename=ramesh.csv");
+    header("Content-Disposition: attachment; filename=".__($this->_nodeName).".csv");
     header("Pragma: no-cache");
     header("Expires: 0");    
     echo $output;

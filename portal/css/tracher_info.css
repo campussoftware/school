@@ -1,0 +1,65 @@
+#main_contnet_right{
+	margin-top: 1em;
+    overflow: hidden;
+}
+.class_tchr_info{
+	margin-bottom: 2em;
+	overflow: hidden;
+}
+.cls-tcr-inf{
+font-size: 15px;
+}
+
+.progress.thin{
+	height: 4px;
+	margin-top: 7px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+.teacher_details p{
+padding: 10px 0px;
+font-size: 15px;
+}
+
+.teacer_image img{
+	width: 30%;
+}
+.teacer_image{
+    width: 10%
+}
+.tech_details{
+    padding: 10px 0px!important;
+    color: #fff;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+    width: 66%;
+}
+.designation{
+    background: orange;
+    padding:10px 0px!important;
+    color: #fff;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+.download-btn{
+    background: orange;
+    padding:10px 10px!important;
+    color: #fff;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}

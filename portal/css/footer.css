@@ -1,0 +1,24 @@
+/* CSS Document */
+#footer{
+    bottom: 0px;
+    position: relative;
+    width: auto;
+    position: fixed;
+    display: block;
+    width: 100%;
+    background: #0b6c86;
+    color: #fff;
+    padding: 13px 10px;
+}
+#design{
+	float: right;
+}
+#copy{
+	float: left;
+}
+#footer a {
+    font-size: 18px;
+    text-decoration: none;
+    color: #fff;
+    line-height: 14px;
+}

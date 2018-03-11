@@ -1,0 +1,27 @@
+#main_contnet_right{
+}
+#attens_label label{
+	padding: 10px;
+}
+#button_bt{
+	border-radius: 0;
+
+}
+
+#attnd{
+	margin-top: 3em;
+}
+.attend_list{
+	    padding: 8px 10px;
+    border-top: 3px solid #01bfef;
+}
+#res_default_table thead tr th{
+	    padding: 15px 8px;            
+}
+#res_default_table tbody tr td{
+	padding: 15px 10px;
+        line-height: 24px;
+}
+.paid_btnn {   
+    padding: 6px 8px;
+}  

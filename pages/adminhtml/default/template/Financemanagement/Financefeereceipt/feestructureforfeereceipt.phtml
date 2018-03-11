@@ -1,0 +1,148 @@
+<table id="sample-table-2" class="table table-striped table-bordered table-hover dataTable">
+        <caption class="text-center">Student Details</caption>
+            <thead>
+                <tr role="row">
+                  <th>Name </th>
+                  <th>Admission No </th>
+                  <th>Acadmic Year </th>
+                  <th>Branch </th>                
+                  <th>Course</th>  
+                  <th>Class/Sec</th>  
+                </tr>              
+            </thead>
+            <tbody role="alert" aria-live="polite" aria-relevant="all">
+                <tr>
+                    <th><?php echo $this->_controllerObj->_studentCollection['studentname']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['admission_no']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['academicyear']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['branch']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['course']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['classname']."/".$this->_controllerObj->_studentCollection['section']; ?></th>                    
+                </tr>
+                <tr role="row" >
+                <td colspan="3">Fee Plan </td>
+                <td colspan="3" ><?php echo $this->_controllerObj->_studentCollection[plan];?> </td>
+              </tr>               
+            </tbody>
+    </table>
+    <table id="sample-table-2" class="table table-striped table-bordered table-hover dataTable">
+        <caption class="text-center">Fee Details</caption>
+                <thead>
+                  <tr role="row">
+                    <th>Fee Type </th>
+                    <th>Term </th>
+                    <th>Amount </th>
+                    <th>Concession </th>
+                    <th>Final Amount </th>
+                    <th>Paid Amount </th>
+                    <th>Fee Due </th>
+                    <th>Due Date </th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <?php
+                        $total=array();
+                        if($this->_controllerObj->_feecollection>1)
+                        {
+                            foreach ($this->_controllerObj->_feecollection as $feeItem)
+                            {
+                                $total['amount']+=$feeItem['amount'];
+                                $total['concession']+=$feeItem['concession'];
+                                $total['finalamount']+=$feeItem['finalamount'];
+                                $total['paidamount']+=$feeItem['paidamount'];
+                                $total['balance']+=$feeItem['balance'];
+                                echo '<tr role="row">
+                                        <td>'.$feeItem['feetype'].'</td>
+                                        <td>'.$feeItem['frequency'].'</td>
+                                        <td>'.$feeItem['amount'].'</td>
+                                        <td>'.$feeItem['concession'].'</td>
+                                         <td>'.$feeItem['finalamount'].'</td>
+                                         <td>'.$feeItem['paidamount'].'</td>
+                                         <td>'.$feeItem['balance'].'</td>
+                                         <td>'.$feeItem['due_date'].'</td>
+                                      </tr>';
+                            }
+                    ?>
+                <?php 
+                        }
+                  ?>
+                    <tbody>
+            <tfoot>
+               
+              <tr>
+                <td colspan="2" align="center" data-title="Grand Total">Grand Total</td>
+                <?php
+                echo '<td>'.$total['amount'].'</td>
+                    <td>'.$total['concession'].'</td>
+                     <td>'.$total['finalamount'].'</td>
+                     <td>'.$total['paidamount'].'</td>
+                     <td>'.$total['balance'].'</td>
+                     <td></td>';
+                ?>                
+              </tr>
+              
+            </tfoot>
+    </table>
+          <br>
+          <div id="payment_details_errors" class="error_message"></div>
+          
+            <div id="payment_details_div" name="payment_details_div" class="form-horizontal">
+              <div class="row">
+                <section class="col-md-6">
+                  <div class="control-group">
+                    <label class="control-label">Amount</label>
+                    <div class="controls">
+                      <input type="text" name="amount" id="amount" data-placeholder="Select amount" class="chosen-with-diselect  chzn-done"s>
+                    </div>
+                  </div>
+                </section>
+                <section class="col-md-6">
+                  <div class="control-group">
+                    <label class="control-label">Payment Type </label>
+                    <div class="controls">
+                        <?php
+                            $paymentTypes=$this->_controllerObj->_paymentType;                            
+                        ?>
+                      <select data-placeholder="Select payment type" id="core_payment_type" name="core_payment_type" >
+                          <option value=""> Select Payment Type </option>
+                        <?php
+                            if(count($paymentTypes)>0)
+                            {
+                                foreach ($paymentTypes as $key=>$value) 
+                                {
+                                    echo '<option value="'.$value['short_code'].'">'.$value['name'].'</option>';
+                                }
+                            }
+                        ?>
+                      </select>
+                    </div>
+                  </div>
+                </section>
+              </div>
+              <div class="row">
+                  <section class="col-md-6">
+                    <div class="control-group">
+                      <label class="control-label"> Date </label>
+                      <div class="controls">
+                        <div class="input-append date date-picker" data-date="2015-12-31" data-date-format="yyyy-mm-dd" data-date-viewmode="days">
+                            <input size="16" type="date" id="paymentDate" name="paymentDate" value="<?php echo date('Y-m-d')?>">
+                            <span class="add-on"><i class="icon-calendar"></i></span>
+                    </div>
+                      </div>
+                    </div>
+                </section>
+                <section class="col-md-6">                    
+                  <div class="control-group">
+                    <label class="control-label">Reference No </label>
+                    <div class="controls">
+                      <input type="text" name="reference_no" id="reference_no" data-placeholder="Enter reference_no" >
+                    </div>
+                  </div>                    
+                </section>
+              </div>
+              <div class="form-actions">
+                  <button type="button" class="btn btn-success" id="payment_details_submit" name="payment_details_submit" onclick="make_payment();" > Submit </button>
+                  <button  type="button"  class="btn btn-success" id="payment_details_print" name="payment_details_print" onclick='return feeReceiptPrint($("#transactionId").val());' > Print </button>
+              </div>
+            </div>
+          

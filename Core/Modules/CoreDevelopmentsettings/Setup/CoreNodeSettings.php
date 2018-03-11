@@ -25,7 +25,7 @@ class CoreNodeSettings
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Node Settings Id",
-                "prmiary"=>false,
+                "primary"=>false,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"int",
@@ -36,7 +36,7 @@ class CoreNodeSettings
                 "name"=>"core_registernode_id",
                 "displayValue"=>"Node Name",            
                 "default"=>false,
-                "prmiary"=>1,
+                "primary"=>1,
                 "type"=>"varchar",
                 "size"=>"255"          
             ));

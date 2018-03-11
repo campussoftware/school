@@ -1,0 +1,182 @@
+/* CSS Document */
+body{
+	
+        background: #f5f5f5;
+}
+.sideNavigation,.academic-year {
+	background: #056c89;
+}
+.nav_title {
+	background: #e36304;
+}
+.nav_title a, .nav_title a i.fa, .main_navigation ul li a, .main_navigation .dropdown-menu li a:hover, .sideBar_toggle a, 
+.nav>li>a,.academic-year p{
+	color: #fff;
+}
+/*.warper{
+    background:#f5f5f5;
+}*/
+.footer_navigation {
+	background: #00475a;
+}
+.footer_navigation a {
+	color: #0887ab;
+}
+.footer_navigation a:hover {
+	background: #0f5a6f;
+}
+.main_navigation ul li a.active, .main_navigation ul li a:hover, .main_navigation ul li a:focus {
+	background: #0184a9;
+}
+.main_navigation ul li a.active, .main_navigation ul li a:hover, .main_navigation ul li a:focus {
+	border-color: #ff6c00 !important;
+}
+.top_header {
+	background: #ff6c00;
+}
+.icon-notification{
+	background:#000;
+}
+.icon-message{
+	background:#000;
+}
+.nav li a:hover,.nav li a:focus,.nav .open>a, .nav .open>a:focus, .nav .open>a:hover{
+	background: #e06206;
+}
+.nav .dropdown-menu.user-profile li a{
+	color:#6b6b6b;
+}
+.nav .dropdown-menu.user-profile li a i.fa{
+	color: #d4d4d4;
+}
+.nav .dropdown-menu.user-profile li a:hover{
+	background:rgba(0,0,0,0.05);
+}
+.nav .dropdown-menu.toggle-alert .alert-header,.nav .dropdown-menu.toggle-alert .alert-footer{
+	background:#FAFAFA;
+}
+.nav .dropdown-menu.toggle-alert .alert-header,.nav .dropdown-menu.toggle-alert .alert-footer a{
+	color: #666666;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li:hover{
+	background:rgba(0,0,0,0.02);
+}
+.nav .dropdown-menu.toggle-alert .alert-body li h4{
+	color:#444444;
+}
+.nav .dropdown-menu.toggle-alert .alert-body li p{
+	color:#888888;
+}
+#page_links ul li a{
+	color:#000;
+}
+.attend_list{
+	background: #357ca6;
+	 color: #fff;
+	}
+.table_attendance table.restables-clone tr:first-child td { background: #333; color:#fff; }
+.teacher_name{
+	color: #0184a9;
+}
+.progress .progress-bar.progress-bar-info {
+    background-color: #ff6c00;
+}
+.des_1{
+	background:#357ca6;
+	color: #fff;
+}
+.des_2{
+	background: orange;
+}
+.designation_tchr a{
+	color: #fff;
+}
+.education{
+	border: 1px solid #ddd;
+	border-top: 3px solid red;
+}
+.transport_main{
+	background: #c0504e;
+	color: #fff
+}
+.transport_child{
+	background: #efd3d2;
+}
+#_table_bg>thead>tr>th {
+
+    border: 1px solid #b51010!important;
+}
+#_table_bg>tbody>tr>td {
+    border: 1px solid #b51010!important;
+}
+.fully_paid{
+	background: green;
+	color: #fff;
+}
+.fee_view{
+		border: 1px solid #ccc;
+	color: #000;
+
+}
+#Fee_head{
+	border-bottom: 3px solid #777;
+}
+#fee_tb_tt{
+	border-bottom: 2px solid #777;
+}
+.books_list_headng{
+	background: green;
+	color: #fff;
+        padding: 10px;
+}
+.books_border{
+	border: 1px solid green
+}
+.stage_colr{
+	color: red;
+}
+.paid_btnn{
+	background: green;
+	color:#fff;
+}
+.books_not_avlble{
+	color: #fff;
+	background: red;
+        padding: 10px;
+}
+.green{
+	background: green;
+	color: #fff;
+}
+.green a{
+	color: #fff;
+}
+.search_button{
+    background: blue;
+    color: #fff;
+}
+.orange{
+	background: orange;
+	color: #fff;
+
+}
+.orange tr th{
+	border-color: #000; 
+}
+.download-btn{
+    background: orange;
+}
+.download-btn a{
+	color: #fff;
+}
+.button_bt{
+	color: #fff
+}
+.default-list{
+    background: green;
+    color: #fff;
+}
+#res_default_table thead{
+    background: #ff6c00;
+    color: #fff;
+}

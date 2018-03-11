@@ -29,7 +29,7 @@ class CoreNodeAttributeOption
                 "default"=>NULL,
                 "type"=>"int",
                 "size"=>"11",
-                "prmiary"=>1,
+                "primary"=>1,
                 "auto_increment"=>1            
             ));
             $setup->addColumnName(array(

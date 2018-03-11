@@ -1,0 +1,9 @@
+<?php 
+    $jsonconfig=[];
+    $jsonconfig['parentnode']=$controllerObj->_parentNode;
+    $jsonconfig['parentAction']=$controllerObj->_parentAction;
+    $jsonconfig['parentSelector']=$controllerObj->_parentSelector;
+    $jsonconfig['currentActionLabel']=__($controllerObj->_currentAction);
+    $jsonconfig= json_encode($jsonconfig);
+?>
+<div ng-include class="grid_<?php echo $controllerObj->_nodeName; ?>" src='"<?php echo $controllerObj->_websiteAdminUrl;?>html/reportengine.html"' ng-controller='reportController'  ng-init="init('<?php echo $controllerObj->_nodeName; ?>','<?php echo htmlspecialchars($jsonconfig); ?>')" ></div>

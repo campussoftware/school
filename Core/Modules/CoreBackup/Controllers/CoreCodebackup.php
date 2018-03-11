@@ -17,17 +17,27 @@ class CoreCodebackup extends NodeController
 {       
     public function savedbtoseverAction() 
     {
-        $requestedData=$this->_requestedData;
-        $tableName=$requestedData['db_table'];
+        $requestedData=$this->_requestedData;        
         try
         {  
             
-            $folderName="uploadData".strtotime(date('Y-m-d H:i:s'));
-            $targetfilepath=\Core::createFolder("uploads",'B').$folderName;
-            $codeProcess=new \Core\CodeProcess();
-            $codeProcess->createZipFile(\Core::createFolder(""), $targetfilepath);            
             
-            $data=array("core_backup_type_id"=>"UP","filepath"=>$folderName,"dateandtime"=>date('Y-m-d H:i:s'));
+            $codeProcess=new \Core\CodeProcess();
+			if($this->_requestedData['exporttype']=="UP")
+			{
+				$folderName="uploads_".strtotime(date('Y-m-d H:i:s'));
+				$targetfilepath=\Core::createFolder("","B").$folderName.".zip";	
+				$codeProcess->createZipFile(["uploads"], $targetfilepath);				
+			}
+			else
+			{
+				$folderName="Code_".strtotime(date('Y-m-d H:i:s'));
+				$targetfilepath=\Core::createFolder("","B").$folderName.".zip";	
+				$codeProcess->createZipFile(["Core","pages"], $targetfilepath);    
+				
+			}
+          		
+            $data=array("core_backup_type_id"=>$this->_requestedData['exporttype'],"filepath"=>$folderName,"dateandtime"=>date('Y-m-d H:i:s'));
             $nodeSave=new \Core\Model\NodeSave();
             $nodeSave->setNode($this->_nodeName);
             foreach ($data as $key=>$value)
@@ -37,7 +47,7 @@ class CoreCodebackup extends NodeController
             $nodeSave->save();           
             
         }
-        catch (Exception $ex)
+        catch (\Exception $ex)
         {
             \Core::Log(__METHOD__.$ex->getMessage());
         }        

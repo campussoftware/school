@@ -25,7 +25,7 @@ class CoreEmailVerify
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>" Id",
-                "prmiary"=>1,
+                "primary"=>1,
                 "default"=>NULL,
                 "type"=>"bigint",
                 "size"=>"11",

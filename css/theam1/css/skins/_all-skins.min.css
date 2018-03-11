@@ -72,7 +72,8 @@
 	color: #b8c7ce
 }
 .skin-blue .sidebar a:hover {
-	text-decoration: none
+	text-decoration: none;
+       /* background-color: #F2B33F; */
 }
 .skin-blue .treeview-menu>li>a {
 	color: #8aa4af

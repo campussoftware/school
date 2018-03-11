@@ -36,11 +36,14 @@ class NodeSave extends Settings
                 $updatedKeys=array_keys($this->_tableFieldWithData);
                 if(in_array($key,$updatedKeys) && $this->_autoKey!=$key)
                 {
-					if(($Data['Type']=="tinyint") && $this->_tableFieldWithData[$key]!="1")
-					{
-						$this->_tableFieldWithData[$key]=0;
-					}
-                    $db->addFieldArray(array($key=>$this->_tableFieldWithData[$key]));
+			if(($Data['Type']=="tinyint") && $this->_tableFieldWithData[$key]!="1")
+			{
+			     $this->_tableFieldWithData[$key]=0;
+			}
+                     if(isset($this->_tableFieldWithData[$key]))
+{
+                     $db->addFieldArray(array($key=>$this->_tableFieldWithData[$key]));
+}
                 }
             }                        
             

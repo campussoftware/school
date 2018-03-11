@@ -26,13 +26,13 @@ class CoreLoginhistory
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"History Id",
-                "prmiary"=>false,
+                "primary"=>false,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"int",
                 "size"=>"11",
                 "auto_increment"=>1,
-                "prmiary"=>1,
+                "primary"=>1,
             ));
             $setup->addColumnName(array(
                 "name"=>"core_user_id",

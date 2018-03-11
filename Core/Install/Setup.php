@@ -31,12 +31,12 @@ class Setup {
                 $setup->addColumnName(array(
                     "name" => "id",
                     "displayValue" => "Id",
-                    "prmiary" => false,
+                    "primary" => false,
                     "key" => "unique",
                     "default" => NULL,
                     "type" => "bigint",
                     "size" => "11",
-                    "prmiary" => 1,
+                    "primary" => 1,
                     "auto_increment" => 1
                 ));
                 $setup->addColumnName(array(
@@ -96,6 +96,9 @@ class Setup {
             $cc = new \CoreClass();
             $cp = $cc->getObject("\Core\CodeProcess");
             $directoryList = $cp->searchDirectory("Config".DIRECTORY_SEPARATOR."DataBase");
+            $baseDirectoryPath=DIRECTORY_SEPARATOR."Core".DIRECTORY_SEPARATOR."Modules".DIRECTORY_SEPARATOR."CoreDevelopmentsettings".DIRECTORY_SEPARATOR."Config".DIRECTORY_SEPARATOR."DataBase";
+            $directoryList=array_diff($directoryList,array($baseDirectoryPath));
+            $directoryList= array_merge(array($baseDirectoryPath),$directoryList);
             if (\Core::countArray($directoryList) > 0) {
                 foreach ($directoryList as $moduleConfig) {
                     $directory = substr($moduleConfig, 1);
@@ -143,21 +146,21 @@ class Setup {
                                 }
                                 if ($processFlag == 1) {
                                     if ($schemaprocess == 1) {
-                                        if (trim($configFileContentSettings['setuppath']) != "") {
+                                        if (trim(\Core::getValueFromArray($configFileContentSettings,'setuppath')) != "") {
                                             $setuppath = $configFileContentSettings['setuppath'] . "\SchemaInstall";
                                             $className = $setuppath;
                                             $setup = new $className();
                                         }
                                     }
                                     if ($dataprocess == 1) {
-                                        if ($configFileContentSettings['datapath']) {
+                                        if (\Core::getValueFromArray($configFileContentSettings,'datapath')) {
                                             $setuppath = $configFileContentSettings['datapath'] . "\DataInstall";
                                             $className = $setuppath;
                                             $setup = new $className();
                                         }
                                     }
                                     if ($attributeprocess == 1) {
-                                        if ($configFileContentSettings['attributepath']) {
+                                        if (\Core::getValueFromArray($configFileContentSettings,'attributepath')) {
                                             $setuppath = $configFileContentSettings['attributepath'] . "\AttributeInstall";
                                             $className = $setuppath;
                                             $setup = new $className();
@@ -195,5 +198,4 @@ class Setup {
             \Core::Log(__METHOD__ . "::" . $ex->getMessage(), "installexception.log");
         }
     }
-
 }

@@ -83,7 +83,7 @@ class Setup
             {
                 $this->_sql.="(".$columnData['size'].")";
             }            
-            if(\Core::getValueFromArray($columnData,'prmiary'))
+            if(\Core::getValueFromArray($columnData,'primary'))
             {
                 $this->_sql.=" NOT NULL ";
             }
@@ -95,7 +95,7 @@ class Setup
             {
                 $this->_sql.=" ".$columnData['key']." KEY ";
             }
-            if(\Core::getValueFromArray($columnData,'prmiary'))
+            if(\Core::getValueFromArray($columnData,'primary'))
             {
                 $this->_sql.=" PRIMARY KEY ";
             }
@@ -115,7 +115,7 @@ class Setup
             $db=$cc->getObject("\Core\DataBase\DbConnect");
             $db->executeQuery($this->_sql);        
         }
-        catch (Exception $ex)
+        catch (\Exception $ex)
         {
             \Core::Log(__METHOD__.$this->_sql." ::  ".$ex->getMessage(),"setup");
         }
@@ -147,7 +147,7 @@ class Setup
                 {
                     $this->_sql.="(".$columnData['size'].")";
                 }            
-                if(\Core::getValueFromArray($columnData,'prmiary'))
+                if(\Core::getValueFromArray($columnData,'primary'))
                 {
                     $this->_sql.=" NOT NULL ";
                 }
@@ -159,7 +159,7 @@ class Setup
                 {
                     $this->_sql.=" ".$columnData['key']." KEY ";
                 }
-                if(\Core::getValueFromArray($columnData,'prmiary'))
+                if(\Core::getValueFromArray($columnData,'primary'))
                 {
                     $this->_sql.=" PRIMARY KEY ";
                 }
@@ -190,7 +190,7 @@ class Setup
             $db=$cc->getObject("\Core\DataBase\DbConnect");
             $db->executeQuery($this->_sql);        
         }
-        catch (Exception $ex)
+        catch (\Exception $ex)
         {
             \Core::Log(__METHOD__.$this->_sql." ::  ".$ex->getMessage(),"setup");
         }
@@ -260,7 +260,7 @@ class Setup
             $db=$cc->getObject("\Core\DataBase\DbConnect");
             $db->executeQuery($this->_sql);        
         }
-        catch (Exception $ex)
+        catch (\Exception $ex)
         {
             \Core::Log(__METHOD__.$this->_sql." ::  ".$ex->getMessage(),"setup");
         }

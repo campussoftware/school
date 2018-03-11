@@ -25,7 +25,7 @@ class CoreNodeAttributeset
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Attribute Set Id",
-                "prmiary"=>1,
+                "primary"=>1,
                 "default"=>NULL,
                 "type"=>"int",
                 "size"=>"11",

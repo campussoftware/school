@@ -80,10 +80,13 @@ class CurlCall
     }
     public function callCurl()
     {
+        $this->_postData = ltrim($this->_postData,"&");
+
+
         $curl=curl_init();
         if($this->_customMethod=='GET')
         {
-            $this->_url.=$this->_url.$this->_postData;
+            $this->_url=$this->_url.$this->_postData;
             $this->_postData="";
             $this->_postFieldCount=0;
         }
@@ -139,8 +142,7 @@ class CurlCall
         $this->_status = curl_getinfo($curl,CURLINFO_HTTP_CODE); 
         $this->_curlInfo=curl_getinfo($curl);
         curl_close($curl); 
-		
-        
+	return 	$this->_response;        
     }
     
     

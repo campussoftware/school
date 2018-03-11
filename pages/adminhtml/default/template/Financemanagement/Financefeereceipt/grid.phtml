@@ -1,0 +1,104 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                    <div class="widget-title">
+                            <h4><i class="icon-reorder"></i><?php echo $this->_controllerObj->_currentAction;?></h4>
+                            <span class="tools">
+                            <a href="javascript:;" class="icon-chevron-down"></a>
+                            </span>
+                    </div>
+                    <div class="widget-body" >
+             <div id="<?php echo $this->_controllerObj->_nodeName;?>_div" name="<?php echo $this->_controllerObj->_nodeName;?>_div" class="form-horizontal">           
+                <form name="<?php echo $this->_controllerObj->_nodeName;?>" id="<?php echo $this->_controllerObj->_nodeName;?>" class="form-horizontal form_<?php echo $this->_controllerObj->_nodeName;?>" action="" enctype="multipart/form-data">
+                    <input type="hidden" id="node" name="node" value="<?php echo $this->_controllerObj->_nodeName;?>">
+                    <input type="hidden" id="action" name="action" value="add">
+                    <input type="hidden" id="action_id" name="action_id" value="add">
+                  <div class="row" id="row_cur_list_academicyear_id">
+                    <section class="col-md-6">
+                      <div class="control-group">
+                          <label class="control-label"><span id="label_cur_list_academicyear_id">Academic Year</span> </label>
+                        <div class="controls" id="value_cur_list_academicyear_id">
+                          <select data-placeholder="Select year" class="chosen-with-diselect  chzn-done" tabindex="-1" id="cur_list_academicyear_id" name="cur_list_academicyear_id" >
+                            <option>Select <?php echo $this->getLabel('cur_list_academicyear_id');?> </option>                              
+                          </select>
+                          <span class="error_message" id="error_cur_list_academicyear_id"></span>
+                        </div>
+                      </div>
+                    </section>
+                    <section class="col-md-6">
+                      <div class="control-group">
+                        <label class="control-label">Admission No </label>
+                        <div class="controls">
+                          <input type="text" name="admision_no" id="admision_no" data-placeholder="Select admision_no" class="chosen-with-diselect  chzn-done"s>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                  <div class="control-group" id="row_list_branch_id">
+                    <label class="control-label" id="label_list_branch_id">Branch </label>
+                    <div class="controls" id="value_list_branch_id">
+                      <select  id="list_branch_id" name="list_branch_id" >
+                        <option>Select <?php echo $this->getLabel('list_branch_id');?> </option> 
+                      </select>
+                      <span class="error_message" id="error_list_branch_id"></span>
+                    </div>
+                  </div>
+                  <div class="control-group" id="row_cur_branch_orientation_id">
+                    <label class="control-label" id="label_cur_branch_orientation_id">Branch Course </label>
+                    <div class="controls" id="value_cur_branch_orientation_id">
+                      <select  id="cur_branch_orientation_id" name="cur_branch_orientation_id" >
+                        <option>Select <?php echo $this->getLabel('cur_branch_orientation_id');?> </option>              
+                      </select>
+                      <span class="error_message" id="error_cur_branch_orientation_id"></span>
+                    </div>
+                  </div>    
+                    <div class="control-group" id="row_cur_branch_class_id">
+                    <label class="control-label" id="label_cur_branch_class_id">Branch Class</label>
+                    <div class="controls" id="value_cur_branch_class_id">
+                      <select  id="cur_branch_class_id" name="cur_branch_class_id" >
+                        <option>Select <?php echo $this->getLabel('cur_branch_class_id');?> </option>              
+                      </select>
+                      <span class="error_message" id="error_cur_branch_class_id"></span>
+                    </div>
+                  </div>
+                  <div class="control-group" id="row_cur_branch_class_section_id">
+                    <label class="control-label" id="label_cur_branch_class_section_id">Section </label>
+                    <div class="controls" id="value_cur_branch_class_section_id">
+                      <select  id="cur_branch_class_section_id" name="cur_branch_class_section_id" >
+                        <option>Select <?php echo $this->getLabel('cur_branch_class_section_id');?> </option>              
+                      </select>
+                      <span class="error_message" id="error_cur_branch_class_section_id"></span>
+                    </div>
+                  </div>
+                    <div class="control-group" id="row_student_admission_id">
+                    <label class="control-label" id="label_student_admission_id">Student </label>
+                    <div class="controls" id="value_student_admission_id">
+                      <select  id="student_admission_id" name="student_admission_id" >
+                        <option>Select <?php echo $this->getLabel('student_admission_id');?> </option>              
+                      </select>
+                      <span class="error_message" id="error_student_admission_id"></span>
+                    </div>
+                  </div>
+                  <div class="form-actions">
+
+                    <input type="hidden" id="parentformNode" name="parentformNode" value="">
+                    <input type="hidden" id="parentformkey" name="parentformkey" value="">
+                    <input type="hidden" id="parentformvalue" name="parentformvalue" value="">
+                    <input type="hidden" id="parentformAction" name="parentformAction" value="">
+                    <input type="hidden" id="noderesult" name="noderesult" value="[]">
+                    <input type="hidden" name="transactionId" id="transactionId" value=''>
+                    <input type="hidden" id="noderelations" name="noderelations" value='<?php echo json_encode($this->_controllerObj->_nodeMTORelations);?>'>
+                    <button type="button" id="getDetails" name="getDetails" class="btn btn-small btn-success" onclick="getfeestructure();"> <i class="icon-ok"></i> Get Details </button>
+
+                    </div>
+                <div id="feedetails_div" name="feedetails_div">
+
+                </div>  
+                </form>
+            </div>                                 
+            </div>
+        </div>
+    </div>
+</div>
+</div>

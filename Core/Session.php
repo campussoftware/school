@@ -39,11 +39,15 @@ class Session {
 
     private function checkSession() {
         global $actionRequestFrom;
-        $ipAddress = $_SERVER['REMOTE_ADDR'];
+        $ipAddress = isset($_SERVER['REMOTE_ADDR'])?$_SERVER['REMOTE_ADDR']:"127.0.0.1";
         
         if($actionRequestFrom=='admin')
         {
             $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteAdminUrl);
+        }
+	else if($actionRequestFrom=='api')
+        {
+            $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl."Api");
         }
         else 
         {
@@ -65,9 +69,15 @@ class Session {
         $ipAddress = $_SERVER['REMOTE_ADDR'];
         
         
-        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl);
-        
-        
+        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl); 
+        $_SESSION[$identifier]['ipaddress'] = $ipAddress;
+        $_SESSION[$identifier]['_lastactivity'] = strtotime(date('Y-m-d H:i:s'));
+        $this->_sessionExists = true;       
+    }
+    private function checkApiSession() {
+        global $actionRequestFrom;
+        $ipAddress = $_SERVER['REMOTE_ADDR'];
+        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl."Api"); 
         $_SESSION[$identifier]['ipaddress'] = $ipAddress;
         $_SESSION[$identifier]['_lastactivity'] = strtotime(date('Y-m-d H:i:s'));
         $this->_sessionExists = true;       
@@ -77,9 +87,13 @@ class Session {
     {
         global $actionRequestFrom;
         
-        if($actionRequestFrom=='admin')
+	if($actionRequestFrom=='admin')
         {
             $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteAdminUrl);
+        }
+        else if($actionRequestFrom=='api')
+        {
+            $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl."Api");
         }
         else 
         {
@@ -119,10 +133,14 @@ class Session {
         {
             $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteAdminUrl);
         }
+	else if($actionRequestFrom=='api')
+        {
+            $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl."Api");
+        }
         else 
         {
             $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl);
-        }
+        }		
         $this->checkSession();
         if ($this->_sessionExists) {
             return $_SESSION[$identifier];
@@ -135,6 +153,19 @@ class Session {
         
         $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteAdminUrl);
         unset($_SESSION[$identifier]);
+    }
+    public function setAdminSessionValue($key,$value)
+    {        
+        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteAdminUrl);
+        $this->checkFrontendSession();
+        $_SESSION[$identifier][$key]=$value;
+        return true;
+    }
+     public function getAdminSessionValue($key)
+    {
+        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteAdminUrl);
+        $this->checkFrontendSession();
+        return \Core::getValueFromArray($_SESSION[$identifier],$key);        
     }
     public function destroyFrontendSession() {
         $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl);
@@ -163,6 +194,35 @@ class Session {
     {
         $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl);
         $this->checkFrontendSession();
+        unset($_SESSION[$identifier][$key]);
+    }
+    public function destroyApiSession() {
+        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl."Api");
+        unset($_SESSION[$identifier]);
+    }
+    public function getApiSession()
+    {
+        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl."Api");
+        $this->checkApiSession();
+        return \Core::getValueFromArray($_SESSION,$identifier);
+    }
+    public function setApiSessionValue($key,$value)
+    {        
+        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl."Api");
+        $this->checkApiSession();
+        $_SESSION[$identifier][$key]=$value;
+        return true;
+    }
+    public function getApiSessionValue($key)
+    {
+        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl."Api");
+        $this->checkApiSession();
+        return \Core::getValueFromArray($_SESSION[$identifier],$key);        
+    }
+    public function removeApiSessionValue($key)
+    {
+        $identifier = $this->_cp->convertEncryptDecrypt('encrypt', $this->siteObject->websiteUrl."Api");
+        $this->checkApiSession();
         unset($_SESSION[$identifier][$key]);
     }
 }

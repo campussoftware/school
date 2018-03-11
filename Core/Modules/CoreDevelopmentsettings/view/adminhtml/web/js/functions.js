@@ -1,11 +1,11 @@
 window.hosturl= "";
-$(document).ready(function () 
+jQuery(document).ready(function () 
 {
-	window.hosturl=$("#sitehostadmin").val();
+	window.hosturl=jQuery("#sitehostadmin").val();
 function ajaxindicatorstart(text)
 {
 	if(jQuery('body').find('#resultLoading').attr('id') != 'resultLoading'){
-	jQuery('body').append('<div id="resultLoading" style="display:none"><div><img src="'+$("#sitehost").val()+'/img/gears.gif"><div>'+text+'</div></div><div class="bg"></div></div>');
+	jQuery('body').append('<div id="resultLoading" style="display:none"><div><img src="'+jQuery("#sitehost").val()+'/img/gears.gif"><div>'+text+'</div></div><div class="bg"></div></div>');
 	}
 
 	jQuery('#resultLoading').css({
@@ -93,8 +93,8 @@ function calldefaultfunctions()
 			var noderelations=document.getElementById('noderelations').value;			
 			if(noderelations!="")
 			{
-                            var noderelations=$.parseJSON(noderelations);	
-                            $.each(noderelations,function(colname,destinationnode)
+                            var noderelations=jQuery.parseJSON(noderelations);	
+                            jQuery.each(noderelations,function(colname,destinationnode)
                             {                                
                                 defaultphpfile(node,action,destinationnode,colname);                                
                                 
@@ -112,9 +112,9 @@ function calldefaultfunctions()
 function defaultphpfile(node,action,destinationNode,replacediv)
 {
     
-	//$("#div_loading").show();
+	//jQuery("#div_loading").show();
 	var casevalue;
-	if ($("#"+node))
+	if (jQuery("#"+node))
 	{
 		casevalue=1;
 	}
@@ -125,18 +125,18 @@ function defaultphpfile(node,action,destinationNode,replacediv)
         
 	if (casevalue=='1')
 	{
-		var formdata = $(".form_"+node).serialize();
+		var formdata = jQuery(".form_"+node).serialize();
 		
 	}
 	else
 	{
-		var formdata = $("form#result_"+node).serialize();
+		var formdata = jQuery("form#result_"+node).serialize();
 		
 	}
 	
 	var posturl=window.hosturl+destinationNode+"/descriptor";
         
-       $.ajax({
+       jQuery.ajax({
 		url : posturl,
 		type : "POST",
 		dataType : "html",
@@ -144,11 +144,11 @@ function defaultphpfile(node,action,destinationNode,replacediv)
 		success : function (html)
 		{
                     
-			$("#div_loading").hide();
+			jQuery("#div_loading").hide();
 			if(html)
 			{
 				var ivid="#value_"+replacediv;
-				$(ivid).html(html);								
+				jQuery(ivid).html(html);								
 				return true;
 			}
 		}
@@ -157,7 +157,7 @@ function defaultphpfile(node,action,destinationNode,replacediv)
 
 function hidevalues()
 {
-	var is_module=$("#is_module").is(":checked");
+	var is_module=jQuery("#is_module").is(":checked");
 	if(is_module==true)
 	{
 		document.getElementById("row_module_id").style.display = "none";
@@ -172,14 +172,14 @@ function hidevalues()
 }
 function getformsubmit(actionflag)
 {
-	$("#actionflag").val(actionflag);
+	jQuery("#actionflag").val(actionflag);
 	
-        $(".formsubmit").prop( "disabled", true);
+        jQuery(".formsubmit").prop( "disabled", true);
         if(node==undefined)
 	var node=document.getElementById("node").value;
         if(action==undefined)
 	var action=document.getElementById("action").value;	
-	if($("#accesssave").val()!=undefined)
+	if(jQuery("#accesssave").val()!=undefined)
 	{
 		node="core_access";
 		action="save";
@@ -189,21 +189,21 @@ function getformsubmit(actionflag)
         var count=0;
 	if(x==true)
 	{		
-                $(".formsubmit").prop( "disabled", false);
-		$("form#"+node).click(function(event){
+                jQuery(".formsubmit").prop( "disabled", false);
+		jQuery("form#"+node).click(function(event){
                     var target = event.toElement || event.relatedTarget || event.target || function () { throw "Failed to attach an event target!"; }                    
-                    if($("#"+target.id).hasClass("formsubmit"))
+                    if(jQuery("#"+target.id).hasClass("formsubmit"))
                     {
                         count=count+1;
                         if(count==1)
                         {
                         
-                            $(".error_message").html("");
-                            var formData = new FormData($("form#"+node)[0]);		
+                            jQuery(".error_message").html("");
+                            var formData = new FormData(jQuery("form#"+node)[0]);		
                             event.preventDefault();
-                            $(".formsubmit").prop( "disabled", true);
+                            jQuery(".formsubmit").prop( "disabled", true);
 
-                            $.ajax({
+                            jQuery.ajax({
                                     url : postUrl,
                                     type: 'POST',
                                     data: formData,
@@ -213,11 +213,11 @@ function getformsubmit(actionflag)
                                     processData: false,
                                     success: function (responseData)
                                     {   
-                                        $(".formsubmit").prop( "disabled", false);
+                                        jQuery(".formsubmit").prop( "disabled", false);
 
                                             try
                                             {
-                                                $("#error_div").html("");
+                                                jQuery("#error_div").html("");
                                                 var obj = jQuery.parseJSON(responseData)
                                                 if(obj.status=="success")
                                                 {
@@ -226,14 +226,14 @@ function getformsubmit(actionflag)
                                                 }
                                                 else if(obj.status=="error")
                                                 {
-                                                    $("#error_div").html('');
+                                                    jQuery("#error_div").html('');
                                                     var errorsArray=obj.errors;
-                                                    $.each(errorsArray, function(key, errorMessage) 
+                                                    jQuery.each(errorsArray, function(key, errorMessage) 
                                                     {
                                                         try
                                                         {
                                                             var idname="#error_"+key;                                                    
-                                                            $(idname).html(errorMessage);                                                        
+                                                            jQuery(idname).html(errorMessage);                                                        
                                                         }
                                                         catch(e)
                                                         {
@@ -244,16 +244,16 @@ function getformsubmit(actionflag)
                                                 }
                                                 else
                                                 {
-                                                    $(".formsubmit").prop( "disabled", false);
-                                                    $("#error_div").html(responseData);
+                                                    jQuery(".formsubmit").prop( "disabled", false);
+                                                    jQuery("#error_div").html(responseData);
                                                     return false;
                                                 }
                                                 return true;
                                             }
                                             catch(e)
                                             {
-                                                $(".formsubmit").prop( "disabled", false);
-                                                $("#error_div").html(responseData);
+                                                jQuery(".formsubmit").prop( "disabled", false);
+                                                jQuery("#error_div").html(responseData);
                                                 return false;
                                             }
 
@@ -270,26 +270,26 @@ function getformsubmit(actionflag)
 	}
 	else
 	{
-            $(".formsubmit").prop( "disabled", false);
-		$('#validate_value').val("0");
-		$("#error_div").html("");
-		$( "#saveandclose").prop( "disabled", false);
+            jQuery(".formsubmit").prop( "disabled", false);
+		jQuery('#validate_value').val("0");
+		jQuery("#error_div").html("");
+		jQuery( "#saveandclose").prop( "disabled", false);
 		return false;
 	}
 }
 function removedisable()
 {
-	$('#validate_value').val("0");
-	$("#error_div").html("");
-	$( "#saveandclose").prop( "disabled", false);
-	$("#refreshsaveandclose").hide();
+	jQuery('#validate_value').val("0");
+	jQuery("#error_div").html("");
+	jQuery( "#saveandclose").prop( "disabled", false);
+	jQuery("#refreshsaveandclose").hide();
 	return true;
 }
 function samplefun(node)
 {
     
-	$('#multiedit_'+node).val("0");
-	$('#mrahtml_'+node).val("");
+	jQuery('#multiedit_'+node).val("0");
+	jQuery('#mrahtml_'+node).val("");
 	updateresultdiv("cancel",node);
 	return true;
 }
@@ -297,17 +297,17 @@ function updateresultdiv(action,node)
 {
 	if(action=="cancel")
 	{
-		$('#'+node+'_multiedit').val("0");
+		jQuery('#'+node+'_multiedit').val("0");
 	}
 	else
 	{
-		$('#'+node+'_multiedit').val("1");	
+		jQuery('#'+node+'_multiedit').val("1");	
 	}
         var formname="form#result_"+node;
         
-	var formdata = $(formname).serialize();	
+	var formdata = jQuery(formname).serialize();	
         var POSTURL=window.hosturl+node+"/adminRefresh";
-        $.ajax({
+        jQuery.ajax({
 			url : POSTURL,
 			type : "POST",
 			dataType : "html",
@@ -315,8 +315,8 @@ function updateresultdiv(action,node)
 			success : function (html)
 			{
                                 var idname="#total_"+node;
-                                $(idname).html(html);
-				//$("#div_loading").hide();
+                                jQuery(idname).html(html);
+				//jQuery("#div_loading").hide();
 				return true;
 					
 			}
@@ -329,10 +329,10 @@ function multieditformsubmit(node)
 {
 	
 	var formname="form#result_"+node;       
-	var formdata = $(formname).serialize();	        
+	var formdata = jQuery(formname).serialize();	        
         var postUrl=window.hosturl+node+"/multiEditSave";
         console.log(postUrl);
-	$.ajax({
+	jQuery.ajax({
 			url : postUrl,
 			type : "POST",
 			dataType : "html",
@@ -341,7 +341,7 @@ function multieditformsubmit(node)
 			{
                             try
                             {
-                                $(".error_message").html("");
+                                jQuery(".error_message").html("");
                                 var obj = jQuery.parseJSON(responseData)
                                 if(obj.status=="success")
                                 {
@@ -352,12 +352,12 @@ function multieditformsubmit(node)
                                     try
                                     {
                                         var errorsArray=obj.errors;
-                                        $.each(errorsArray, function(key, errorMessage) 
+                                        jQuery.each(errorsArray, function(key, errorMessage) 
                                         {
                                             try
                                             {
                                                 var idname="#"+key;   
-                                                $(idname).html(errorMessage);                                                        
+                                                jQuery(idname).html(errorMessage);                                                        
                                             }
                                             catch(e)
                                             {
@@ -368,13 +368,13 @@ function multieditformsubmit(node)
                                     }
                                     catch(e)
                                     {
-                                        $("#"+node+"_error_div").html(responseData);
+                                        jQuery("#"+node+"_error_div").html(responseData);
                                     }
                                 }
                             }
                             catch(err)
                             {
-                                $("#"+node+"_error_div").html(responseData);
+                                jQuery("#"+node+"_error_div").html(responseData);
                                 console.log(err);
                             }                            		
 			}
@@ -385,11 +385,11 @@ function multieditformsubmit(node)
 }
 function getPrimarykey()
 {
-    var destinationNode=$("#node").val();
-    var formData = $("form").serialize();
+    var destinationNode=jQuery("#node").val();
+    var formData = jQuery("form").serialize();
     var posturl=window.hosturl+destinationNode+"/getPrimaryKey";
         
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
@@ -397,7 +397,7 @@ function getPrimarykey()
             success : function (html)
             {                
                html=html.replace(" ","");
-               $("#primkey").val(html);
+               jQuery("#primkey").val(html);
 
             }
      });
@@ -405,20 +405,20 @@ function getPrimarykey()
 }
 function getAutokey()
 {
-    var destinationNode=$("#node").val();
-    var formData = $("form").serialize();
+    var destinationNode=jQuery("#node").val();
+    var formData = jQuery("form").serialize();
     var posturl=window.hosturl+destinationNode+"/getAutokey";
         
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
             data : formData,
             success : function (html)
             {               
-                html=$.trim(html);
-               $("#autokey").val(html);
-               $("#autokey").next("span").html(html);
+                html=jQuery.trim(html);
+               jQuery("#autokey").val(html);
+               jQuery("#autokey").next("span").html(html);
 
             }
      });
@@ -427,8 +427,8 @@ function getAutokey()
 function getNodeStructure()
 {
     
-    var destinationNode=$("#node").val();
-    var formData = $("form").serialize();
+    var destinationNode=jQuery("#node").val();
+    var formData = jQuery("form").serialize();
     var posturl=window.hosturl+destinationNode+"/getNodeStructureDetails";
     var columnarray=new Array("mandotatory_add","mandotatory_edit","uniquefields","hide_add","hide_edit","hide_view","hide_admin","readonly_add","readonly_edit","search","boolattributes","file","fck","checkbox","selectbox","multivalues","exactsearch","editlist","numberattribute","total","colorattributes");
     for(var j=0;j<columnarray.length;j++)
@@ -440,11 +440,11 @@ function getNodeStructure()
 }
 function getNodeStructureFields(columnname)
 {
-    var destinationNode=$("#node").val();
-    var formData = $("form").serialize();
+    var destinationNode=jQuery("#node").val();
+    var formData = jQuery("form").serialize();
     var posturl=window.hosturl+destinationNode+"/getNodeStructureDetails";
     
-        $.ajax({
+        jQuery.ajax({
         url : posturl,
         type : "POST",
         dataType : "html",
@@ -452,7 +452,7 @@ function getNodeStructureFields(columnname)
         success : function (html)
         {                
            var ivid="#value_"+columnname;
-           $(ivid).html(html);
+           jQuery(ivid).html(html);
 
         }
     });
@@ -461,16 +461,16 @@ function getNodeStructureFields(columnname)
 }
 function setpagezero(node)
 {
-	$('#page_'+node).val(1);
+	jQuery('#page_'+node).val(1);
 }
 function setpage(node,pagevalue)
 {
-	$('#page_'+node).val(pagevalue);
+	jQuery('#page_'+node).val(pagevalue);
 }
 function setrpp(node,rppvalue)
 {	
-	$('#rpp_'+node).val(rppvalue);
-	$('#page_'+node).val(1);
+	jQuery('#rpp_'+node).val(rppvalue);
+	jQuery('#page_'+node).val(1);
 }
 function formvalidations(value,colname,type)
 {
@@ -485,13 +485,13 @@ function formvalidations(value,colname,type)
 }
 function checkdateformate(colname,value)
 {
-	var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/;
+	var pattern =/^([0-9]{4})-([0-9]{2})-([0-9]{2})jQuery/;
 	if(value!="")
 	{
 		if (!pattern.test(value))
 		{
 			var idname="#"+colname
-			$(idname).val("");
+			jQuery(idname).val("");
 		}
 	}
 	
@@ -500,29 +500,29 @@ function validateEmail(sEmail,colname)
 {
     var idname="#"+colname;
     var statusidname="#status_"+colname;
-    var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    var filter = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)jQuery/;
     if (filter.test(sEmail))
-    {	$(idname).css('color', 'green');
+    {	jQuery(idname).css('color', 'green');
         return true;
     }
     else
     {	
-	$(idname).val("");
+	jQuery(idname).val("");
         return false;
     }
 }
 function validatePhone(value,colname)
 {
-	var filter = /^[0-9-+]+$/;
+	var filter = /^[0-9-+]+jQuery/;
 	if (filter.test(value))
 	{
-		$(idname).css('color', 'green');
+		jQuery(idname).css('color', 'green');
 		return true;
 	}
 	else
 	{
 		var idname="#"+colname;
-		$(idname).val("");
+		jQuery(idname).val("");
 		return false;
 	}
 }
@@ -536,7 +536,7 @@ function rameshajaxfunction(fileurl,formdata,replacediv,type)
 	{
 		type="value";
 	}
-	$.ajax({
+	jQuery.ajax({
 		
 		url:fileurl,
 		dataType:"html",
@@ -546,11 +546,11 @@ function rameshajaxfunction(fileurl,formdata,replacediv,type)
 		{
 			if(type == 'html') 
 			{
-				$("#"+replacediv).html(html);
+				jQuery("#"+replacediv).html(html);
 			}
 			else
 			{
-				$("#"+replacediv).value(html);
+				jQuery("#"+replacediv).value(html);
 			}
 		}
 		
@@ -573,14 +573,16 @@ function checkaction(nodename,value,type)
 	for(var i=0;i<namevaluearray.length;i++)
 	{
 		var idvalue=namevaluearray[i].id;
-                $("#"+idvalue).attr('checked',value);
-		$("#"+idvalue).css("opacity","1");
+                jQuery("#"+idvalue).attr('checked',value);
+		jQuery("#"+idvalue).css("opacity","1");
 	}
 	return true;
 }
-function getmraaction(nodeName)
+function getmraaction(currentElement)
 {   
-    var actionName=$("#"+nodeName+"_mraAction").val();
+	var nodeName=jQuery(currentElement).attr("currentnode");
+	
+    var actionName=jQuery("#"+nodeName+"_mraAction").val();
     var selectorValues="";
     if(actionName)
     {
@@ -596,12 +598,12 @@ function getmraaction(nodeName)
                 {
                     selectorValues=selectorValues+"|";
                 }
-                selectorValues=selectorValues+$("#"+idvalue).val();
+                selectorValues=selectorValues+jQuery("#"+idvalue).val();
             }
         }
         if(selected==0)
         {
-            $("#"+nodeName+"_selector").val("");
+            jQuery("#"+nodeName+"_selector").val("");
             alert("Please Select Records");
             return false;
         }    
@@ -610,23 +612,23 @@ function getmraaction(nodeName)
             var x=confirm("Due Want to Submit");
             if(x==true)
             {
-                $("#"+nodeName+"_selector").val(selectorValues);
-                var parentAction=$("#"+nodeName+"_parentaction").val();
-                var parentNode=$("#"+nodeName+"_parentnode").val();
-                var parentSelector=$("#"+nodeName+"_parentidvalue").val();
-                var postUrl=window.hosturl+nodeName+"/"+actionName;
+                jQuery("#"+nodeName+"_selector").val(selectorValues);
+                var parentAction=jQuery("#"+nodeName+"_parentaction").val();
+                var parentNode=jQuery("#"+nodeName+"_parentnode").val();
+                var parentSelector=jQuery("#"+nodeName+"_parentidvalue").val();
+                var postUrl=window.hosturl+nodeName+"/"+"mra"+actionName;
                 if(parentNode)
                 {
                     postUrl=postUrl+"/0/"+parentNode+"/"+parentAction+"/"+parentSelector;
                 }                
-                var formData =$("#mradata_"+nodeName).serialize(); 
-                $.ajax({
+                var formData =jQuery("#mradata_"+nodeName).serialize(); 
+                jQuery.ajax({
                             url : postUrl,
                             type: 'POST',
                             data: formData,				
                             success: function (responseData)
                             {   
-                                $("#mraerror_"+nodeName).html(responseData);
+                                jQuery("#mraerror_"+nodeName).html(responseData);
                                 try
                                 {
                                     var obj = jQuery.parseJSON(responseData)
@@ -636,20 +638,20 @@ function getmraaction(nodeName)
                                     }
                                     else if(obj.status=="error")
                                     {
-                                        $("#mraerror_"+nodeName).html(responseData.errors);
+                                        jQuery("#mraerror_"+nodeName).html(responseData.errors);
                                         return false;
                                     }
                                     else
                                     {
 
-                                        $("#mraerror_"+nodeName).html(responseData);
+                                        jQuery("#mraerror_"+nodeName).html(responseData);
                                         return false;
                                     }
                                     return true;
                                 }
                                 catch(e)
                                 {
-                                    $("#mraerror_"+nodeName).html(responseData);
+                                    jQuery("#mraerror_"+nodeName).html(responseData);
                                     return false;
                                 }                                       
                             }
@@ -666,151 +668,151 @@ function getmraaction(nodeName)
 }
 function getMRATemplate(nodeName)
 {   
-    var formData=$("form#mradata_"+nodeName).serialize();
+    var formData=jQuery("form#mradata_"+nodeName).serialize();
   
     var posturl=window.hosturl+nodeName+"/getMRATemplate";
      
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
             data : formData+"&id=mra",
             success : function (responseData)
             {   
-               $("#mrahtml_"+nodeName).html(responseData);
+               jQuery("#mrahtml_"+nodeName).html(responseData);
 
             }
      });
 }
 function getFieldsForUniqueFieldset()
 {
-    var node=$("#node").val();    
-    var formData=$("form#"+node).serialize();
+    var node=jQuery("#node").val();    
+    var formData=jQuery("form#"+node).serialize();
   
     var posturl=window.hosturl+node+"/getStructure";
      
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
             data : formData+"&idname=uniquefieldset",
             success : function (responseData)
             {   
-               $("#value_uniquefieldset").html(responseData);
+               jQuery("#value_uniquefieldset").html(responseData);
 
             }
      });
 }
 function getFieldsForFormSettings()
 {
-    var node=$("#node").val();    
-    var formData=$("form#"+node).serialize();
+    var node=jQuery("#node").val();    
+    var formData=jQuery("form#"+node).serialize();
   
     var posturl=window.hosturl+node+"/getStructure";
      
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
             data : formData+"&idname=filedname",
             success : function (responseData)
             {   
-               $("#value_filedname").html(responseData);
+               jQuery("#value_filedname").html(responseData);
 
             }
      });
 }
 function getFieldsForRelationDependee()
 {
-    var node=$("#node").val();    
-    var formData=$("form#"+node).serialize();
+    var node=jQuery("#node").val();    
+    var formData=jQuery("form#"+node).serialize();
   
     var posturl=window.hosturl+node+"/getStructure";
      
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
             data : formData+"&idname=dependee_fields",
             success : function (responseData)
             {   
-               $("#value_dependee_fields").html(responseData);
+               jQuery("#value_dependee_fields").html(responseData);
 
             }
      });
 }
 function getFieldsForDefualtFields()
 {
-    var node=$("#node").val();    
-    var formData=$("form#"+node).serialize();
+    var node=jQuery("#node").val();    
+    var formData=jQuery("form#"+node).serialize();
   
     var posturl=window.hosturl+node+"/getStructure";
      
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
             data : formData+"&idname=fieldname",
             success : function (responseData)
             {   
-               $("#value_fieldname").html(responseData);
+               jQuery("#value_fieldname").html(responseData);
 
             }
      });
 }
 function getFieldsForAttributeFields()
 {
-    var node=$("#node").val();    
-    var formData=$("form#"+node).serialize();
+    var node=jQuery("#node").val();    
+    var formData=jQuery("form#"+node).serialize();
   
     var posturl=window.hosturl+node+"/getStructure";
      
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
             data : formData+"&idname=fieldname",
             success : function (responseData)
             {   
-               $("#value_fieldname").html(responseData);
+               jQuery("#value_fieldname").html(responseData);
 
             }
      });
 }
 function getFieldsForNodeFiletypes()
 {
-    var node=$("#node").val();    
-    var formData=$("form#"+node).serialize();
+    var node=jQuery("#node").val();    
+    var formData=jQuery("form#"+node).serialize();
   
     var posturl=window.hosturl+node+"/getStructure";
      
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
             data : formData+"&idname=colmanname",
             success : function (responseData)
             {   
-               $("#value_colmanname").html(responseData);
+               jQuery("#value_colmanname").html(responseData);
 
             }
      });
 }
 function getFieldsforReport()
 {
-    var node=$("#node").val();    
-    var formData=$("form#"+node).serialize();
+    var node=jQuery("#node").val();    
+    var formData=jQuery("form#"+node).serialize();
   
     var posturl=window.hosturl+node+"/getStructure";
      
-    $.ajax({
+    jQuery.ajax({
             url : posturl,
             type : "POST",
             dataType : "html",
             data : formData+"&idname=fieldsdata",
             success : function (responseData)
             {   
-               $("#value_fieldsdata").html(responseData);
+               jQuery("#value_fieldsdata").html(responseData);
 
             }
      });
@@ -821,7 +823,7 @@ function getreportfilter(reportname)
 	{
              var posturl=window.hosturl+'core_reportsengine'+"/filter";
              console.log(posturl);
-		$.ajax({
+		jQuery.ajax({
 			
 			url:posturl,
 			type:"POST",
@@ -830,13 +832,13 @@ function getreportfilter(reportname)
 			success : function (output)
 			{
                  console.log(output);
-				$("#filterdiv").html(output);
-				$("#buttons_div").show();
-				$("#report_submit").attr("disabled", false);
-				$("#report_submitrefresh").hide();
-				$("#div_loading").hide();
-				$("#reportoutput_div").html("");
-				$("#page").val(1);
+				jQuery("#filterdiv").html(output);
+				jQuery("#buttons_div").show();
+				jQuery("#report_submit").attr("disabled", false);
+				jQuery("#report_submitrefresh").hide();
+				jQuery("#div_loading").hide();
+				jQuery("#reportoutput_div").html("");
+				jQuery("#page").val(1);
 			}
 			
 			});
@@ -844,17 +846,17 @@ function getreportfilter(reportname)
 	}
 	else
 	{
-		$("#filterdiv").html("");
-		$("#reportoutput_div").html("");
-		$("#buttons_div").hide();
-		$("#div_loading").hide();
-		$("#page").val(1);
+		jQuery("#filterdiv").html("");
+		jQuery("#reportoutput_div").html("");
+		jQuery("#buttons_div").hide();
+		jQuery("#div_loading").hide();
+		jQuery("#page").val(1);
 	}
 	return true;
 }
 function reportdatasubmit()
 {
-	var formdata=$("form").serialize();
+	var formdata=jQuery("form").serialize();
 	var outputtype=document.getElementById("output_type").value;
 	if(outputtype=="csv" || outputtype=='pdf')
 	{
@@ -864,9 +866,9 @@ function reportdatasubmit()
 	else
 	{
             var posturl=window.hosturl+'core_reportsengine'+"/getReportDetails";
-		$("#report_submit").attr("disabled", true);
-		$("#report_submitrefresh").show();		
-		$.ajax({
+		jQuery("#report_submit").attr("disabled", true);
+		jQuery("#report_submitrefresh").show();		
+		jQuery.ajax({
 				
 			url:posturl,
 			type:"POST",
@@ -874,8 +876,8 @@ function reportdatasubmit()
 			dataType:"html",
 			success : function (output)
 			{
-				$("#reportoutput_div").html(output);
-				$("#report_submit").attr("disabled", false);
+				jQuery("#reportoutput_div").html(output);
+				jQuery("#report_submit").attr("disabled", false);
 			}
 				
 		});
@@ -886,18 +888,18 @@ function reportdatasubmit()
 }
 function setpageforreport(page)
 {
-	$("#page").val(page);
+	jQuery("#page").val(page);
 	reportdatasubmit();
 }
-$(function () {
+jQuery(function () {
     var jcrop_api,
         boundx,
         boundy;
-    $(".fileupload").change(function () {
+    jQuery(".fileupload").change(function () {
         
-        var fileElementId=$(this).attr("id");
+        var fileElementId=jQuery(this).attr("id");
         window.imageelement=fileElementId;
-        $("#image_preview_"+fileElementId).html("");
+        jQuery("#image_preview_"+fileElementId).html("");
         var x = document.getElementById(fileElementId);
         var txt = "";
         if ('files' in x) {
@@ -906,7 +908,7 @@ $(function () {
             } 
             else
             {
-                $("#image_preview_"+fileElementId).show();
+                jQuery("#image_preview_"+fileElementId).show();
                 for (var i = 0, f; f = x.files[i]; i++) {
 
                     // Only process image files.
@@ -924,16 +926,15 @@ $(function () {
         
         img.onload = function() { 
 //I loaded the image and have complete control over all attributes, like width and src, which is the purpose of filereader.
-            $.ajax({url: img.src, async: false, success: function(result){
+            jQuery.ajax({url: img.src, async: false, success: function(result){
                      var imageInfo = theFile.name    +' '+ // get the value of `name` from the `file` Obj
                       img.width  +'×'+ // But get the width from our `image`
                       img.height +' '+
                       theFile.type    +' '+
                       Math.round(theFile.size/1024) +'KB';
                         console.log(imageInfo);
-            		$("#image_preview_"+fileElementId).append("<div style='min-width:1500px;min-height:"+img.height+"px;overflow:auto;'><img id='ramesh' src='" + img.src + "' /></div>");
-                console.log("Finished reading Image");
-                showramesh();
+            		jQuery("#image_preview_"+fileElementId).append("<div style='min-width:1500px;min-height:"+img.height+"px;overflow:auto;'><img id='ramesh' src='" + img.src + "' /></div>");
+                console.log("Finished reading Image");               
         		}});
         };
         
@@ -944,8 +945,7 @@ $(function () {
                             span.innerHTML = ['<div style="overflow:auto;" ><img id="ramesh" style="width:100% !importtant;height:100% !importtant;" src="'+e.target.result+
                                 '" title="'+escape(theFile.name)+'"/><div>'].join('');
                             
-                            //$("#image_preview_"+fileElementId).append(span);
-                            //showramesh();
+                            //jQuery("#image_preview_"+fileElementId).append(span);                            
                             
                         };
                     })(f);
@@ -959,39 +959,17 @@ $(function () {
     });
     function showCoords(c)
     {        
-        $('#'+window.imageelement+'_x1').val(c.x);
-        $('#'+window.imageelement+'_y1').val(c.y);       
-        $('#'+window.imageelement+'_x2').val(c.x2);
-        $('#'+window.imageelement+'_y2').val(c.y2);
-        $('#'+window.imageelement+'_w').val(c.w);
-        $('#'+window.imageelement+'_h').val(c.h);
+        jQuery('#'+window.imageelement+'_x1').val(c.x);
+        jQuery('#'+window.imageelement+'_y1').val(c.y);       
+        jQuery('#'+window.imageelement+'_x2').val(c.x2);
+        jQuery('#'+window.imageelement+'_y2').val(c.y2);
+        jQuery('#'+window.imageelement+'_w').val(c.w);
+        jQuery('#'+window.imageelement+'_h').val(c.h);
         
-    }       
+    }      
 
-  function showramesh()
-  {
-    $('#ramesh').Jcrop({      
-      onSelect: showCoords
-    }); 
-
-  }
-  $(".jcropcoords").change(function(e){
-      var elementid=this.id;
-      var res = elementid.split("_");
-      res.pop();
-      setCoords(res.join("_"));
-      
-      
-  });
-  function setCoords(imageelement)
-  {
-      $('#ramesh').Jcrop({                      
-            setSelect:   [ $('#'+imageelement+'_x1').val(), $('#'+imageelement+'_y1').val(), $('#'+imageelement+'_x2').val(), $('#'+imageelement+'_y2').val() ],
-            
-        });
-  }
-$(".span.pull-right").click(function () {
+jQuery(".span.pull-right").click(function () {
         var top = 0;        
-        $("body,html").animate({scrollTop: top}, 800);
+        jQuery("body,html").animate({scrollTop: top}, 800);
     });
     

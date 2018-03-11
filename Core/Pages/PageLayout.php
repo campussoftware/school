@@ -308,5 +308,10 @@ class PageLayout extends Language {
             return false;
         }
     }
+	public function loadHtmlTemplate($templatePath)
+    {        
+        $this->loadLayout($templatePath);
+        exit;
+    }
 
 }

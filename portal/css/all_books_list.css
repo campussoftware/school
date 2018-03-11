@@ -1,0 +1,24 @@
+.books_list_headng{
+	padding: 10px 10px;
+	font-size: 14px;
+}
+.books_search{
+	border:1px solid #ddd; 
+	margin: 10px 0px;
+}
+.books_records{
+	margin: 10px 0px;
+}
+#books_records select{
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding: 2px 0px;
+}
+.books_not_avlble{
+	padding: 4px 0px;
+	margin: 0 auto;
+	display: block;
+	text-align: center;
+}

@@ -1,0 +1,63 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget">
+                <div class="widget-body" >
+                    <div class="box box-primary">
+                        <div class="row-fluid">
+                            <div class="sidebar-config col-md-2 no-padding">
+                                <ul>                                    
+                                    <?php                                     
+                                    $finalTabs=$controllerObj->getTabsDetails(); 
+                                    if(\Core::countArray($finalTabs)>0)
+                                    {
+                                        foreach ($finalTabs as $tab)
+                                        {
+                                            
+                                            ?>
+                                            <li><a href="<?php echo $controllerObj->_websiteHostUrl."admin/".$tab['code'];?>"><?php echo $tab['name'];?></li>
+                                            <?php 
+                                        }
+                                    }
+                                    ?>   
+                                </ul>
+                            </div>
+                            <div class="sidebar-config col-md-10 no-padding">
+                                <div class="submit pull-right" style="padding: 15px;">
+                                    <button class="btn btn-small btn-success formsubmit ">Save</button>
+                                </div>
+                                <div class="panel-group" id="<?php echo $controllerObj->currentTab;?>">
+                                    <?php 
+                                    $tabContentlist=$controllerObj->getTabContent();
+                                    if(\Core::countArray($tabContentlist)>0)
+                                    {
+                                        foreach ($tabContentlist as $tabContent)
+                                        {
+                                            ?>
+                                            <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" class="collapsed" data-parent="#<?php echo $controllerObj->currentTab;?>" href="#<?php echo $controllerObj->currentTab;?>_<?php echo $tabContent['code'] ?>"><?php echo $tabContent['name'] ?></a>
+                                            </h4>
+                                        </div>
+                                        <div id="<?php echo $controllerObj->currentTab;?>_<?php echo $tabContent['code'] ?>" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <p><?php echo $tabContent['name'] ?></p>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                            <?php
+                                        }
+                                    }
+                                    ?>  
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

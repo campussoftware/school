@@ -25,7 +25,7 @@ class CoreNodeRelations
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"User Id",
-                "prmiary"=>1,
+                "primary"=>1,
                 "default"=>NULL,
                 "type"=>"int",
                 "size"=>"11",

@@ -26,7 +26,7 @@ class CoreActionType
             $setup->addColumnName(array(
                 "name"=>"id",
                 "displayValue"=>"Action Type Id",
-                "prmiary"=>false,
+                "primary"=>false,
                 "key"=>"unique",
                 "default"=>NULL,
                 "type"=>"int",
@@ -43,7 +43,7 @@ class CoreActionType
             $setup->addColumnName(array(
                 "name"=>"short_code",
                 "displayValue"=>"Short Code",
-                "prmiary"=>1,
+                "primary"=>1,
                 "type"=>"varchar",
                 "size"=>"255"                
             ));           

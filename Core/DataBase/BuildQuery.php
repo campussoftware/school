@@ -174,5 +174,4 @@ use \Core\DataBase\Query;
             return $this->sql;                    
         }
     }
-?>
 

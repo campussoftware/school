@@ -44,7 +44,7 @@ class CoreAttributeOption
                 "default"=>false,                
                 "type"=>"varchar",
                 "size"=>"255",
-                "prmiary"=>1,
+                "primary"=>1,
             ));
             $setup->addColumnName(array(
                 "name"=>"core_root_attributes_id",

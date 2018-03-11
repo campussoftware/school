@@ -1,0 +1,217 @@
+/* CSS Document */
+/*==> media screens <==*/
+/*///////////////////////////////////////////////////////////// 1680px ///////////////////////////////////////////////////*/
+@media screen and (min-width: 1680px) {
+}
+/*///////////////////////////////////////////////////////////// 1366px ///////////////////////////////////////////////////*/
+@media screen and (min-width: 1366px) {
+}
+/*///////////////////////////////////////////////////////////// 1280px ///////////////////////////////////////////////////*/
+@media screen and (max-width: 1280px) {
+}
+/*///////////////////////////////////////////////////////////// 1024px ///////////////////////////////////////////////////*/
+@media screen and (max-width: 1024px) {
+
+}
+/*///////////////////////////////////////////////////////////// 768px ///////////////////////////////////////////////////*/
+@media screen and (max-width: 768px) {
+    .navbar-nav .open .dropdown-menu{
+        position: absolute;
+        background: #fff;
+    }
+}
+/*///////////////////////////////////////////////////////////// 736px ///////////////////////////////////////////////////*/
+@media screen and (max-width: 736px) {
+}
+/*///////////////////////////////////////////////////////////// 690px ///////////////////////////////////////////////////*/
+@media screen and (max-width: 690px) {
+    .warper{
+        clear: both;
+    }
+    .academic-year{
+        display:none;
+    }
+    .navbar-right{
+        float:right;
+    }
+    .nav>li.header_logs{
+        display:none;
+    }
+    #page_links{
+        display:none;
+    }
+    #res_default_table {
+        clear: both;
+    }
+}
+/*///////////////////////////////////////////////////////////// 640px ///////////////////////////////////////////////////*/
+@media screen and (max-width: 640px) {
+}
+/*///////////////////////////////////////////////////////////// 480px ///////////////////////////////////////////////////*/
+@media screen and (max-width: 480px) {
+    #text_right{
+        text-align: left!important;
+    }
+    .inner_toggle_tabs {
+        margin-top: 14px;
+    }
+    .inner_toggle_tabs .panel-group .panel {    
+        border-radius: 0px;
+    }
+    .inner_toggle_tabs .panel-default{
+        border-color: #ddd;
+    }
+    .inner_toggle_tabs .panel-heading {
+        background: #2daab3;
+        color: #fff;
+        border-radius: 0px;
+    }
+    .stu_info h4{
+        font-size: 15px;
+        margin-top: 6px;
+        margin-bottom: 6px;
+    }
+    .stu_info p {    
+        margin: 0 0 5px;
+    }
+    .stu_info {   
+        margin: 8px 14px;
+    }
+    .teacher_details p {
+        padding: 4px 0px;
+        font-size: 13px;
+    }
+    #std_books_table img{
+        margin: 0px;
+    }
+    #res_default_table tbody tr td {
+        padding: 5px 5px;
+        line-height: 18px;
+    } 
+    #copy {    
+        font-size: 12px;
+    }
+    #footer a {
+        font-size: 15px;    
+        line-height: 11px;
+    }
+    .nav li a, .nav li a i.fa {
+    font-size: 12px;
+    }
+    .nav>li>a{
+        padding: 10px 5px;
+    }
+    li.mob_notification ,li.mob_messages{
+        display: none;
+    }
+    .toggle_tabs .nav-tabs > li > a{
+        font-size: 14px;    
+        padding: 6px 18px;
+    }
+}
+/*///////////////////////////////////////////////////////////// 360px ///////////////////////////////////////////////////*/
+@media screen and (max-width: 360px) {
+}
+/*///////////////////////////////////////////////////////////// 320px ///////////////////////////////////////////////////*/
+@media screen and (max-width: 320px) {
+}
+/*///////////////////////////////////////////////////////////// 800px ///////////////////////////////////////////////////*/
+
+@media only screen and (max-width: 800px){
+
+    .responsive .panel-body{
+        padding: 5px 0px;
+    }
+    #res_default_table table, 
+    #res_default_table thead, 
+    #res_default_table tbody, 
+    #res_default_table th, 
+    #res_default_table td, 
+    #res_default_table tr { 
+        display: block;
+        margin-top: 10px;
+        width:100%; 
+    }
+    #res_default_table tr{
+        margin-bottom: 10px;
+    }
+    #res_default_table thead tr { 
+        display: none;	
+    } 
+    #res_default_table tr { border: 1px solid #ccc; }
+
+    #res_default_table td { 
+
+        border: none;
+        border-bottom: 1px solid #eee; 
+        position: relative;
+        padding-left: 45%!important; 
+        white-space: normal;
+        text-align:left;
+        font-size: 12px;
+    }
+
+    #res_default_table td:before { 
+
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%; 
+        padding-right: 10px; 
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+    #res_default_table .table-bordered{
+        border:none;
+    }
+
+    #res_default_table td:before { content: attr(data-title); }
+    #exam-shedule .col-xs-12{
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .responsive .panel-group .panel {
+        margin-bottom: 0;
+        border-radius: 0px;
+    }
+    .responsive .panel-default>.panel-heading {
+        color: #fff;
+        background-color: #2daab3;
+        border-color: #2daab3;
+        border-radius: 0px;
+    }
+    #exam-marks .panel-group {
+        margin-bottom: 6px;
+    } 
+    .tech_details{
+        margin-left: -3px!important;
+    }
+    .designation{
+        margin-left: -3px!important;
+    }
+    /*------------------------------------submit buttons------------------*/
+    #serach_bt{
+        margin-left: 10px;
+    }
+
+    .stage_colr{
+        float: left;
+        font-size: 12px;
+        margin-left: 3px;
+    }
+    #madal_child div{
+        float: left;
+        font-size: 9px;
+
+    }
+    .paid_btnn{
+        margin-left: -0px!important;
+    }
+    #issue_books input{
+        width: 100%!important;
+    }
+
+
+
+}

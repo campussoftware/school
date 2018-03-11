@@ -1,0 +1,130 @@
+<table id="sample-table-2" class="table table-striped table-bordered table-hover dataTable">
+        <caption class="text-center">Student Details</caption>
+            <thead>
+                <tr role="row">
+                  <th>Name </th>
+                  <th>Admission No </th>
+                  <th>Acadmic Year </th>
+                  <th>Branch </th>                
+                  <th>Course</th>  
+                  <th>Class/Sec</th>  
+                </tr>              
+            </thead>
+            <tbody role="alert" aria-live="polite" aria-relevant="all">
+                <tr>
+                    <th><?php echo $this->_controllerObj->_studentCollection['studentname']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['admission_no']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['academicyear']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['branch']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['course']; ?></th>
+                    <th><?php echo $this->_controllerObj->_studentCollection['classname']."/".$this->_controllerObj->_studentCollection['section']; ?></th>
+                    
+                </tr>
+                <tr role="row" >
+                <td colspan="3">Fee Plan </td>
+                <td colspan="3" ><?php echo $this->_controllerObj->_studentCollection[plan];?> </td>
+              </tr>
+               
+            </tbody>
+    </table>
+
+    <table id="sample-table-2" class="table table-striped table-bordered table-hover dataTable">
+        <caption class="text-center">Fee Details</caption>
+                <thead>
+                  <tr role="row">
+                    <th>Fee Type </th>
+                    <th>Term </th>
+                    <th>Amount </th>
+                    <th>Concession </th>
+                    <th>Final Amount </th>
+                    <th>Paid Amount </th>
+                    <th>Fee Due </th>
+                    <th>Due Date </th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <?php
+                        $total=array();
+                        if($this->_controllerObj->_feecollection>1)
+                        {
+
+                            foreach ($this->_controllerObj->_feecollection as $feeItem)
+                            {
+                                $total['amount']+=$feeItem['amount'];
+                                $total['concession']+=$feeItem['concession'];
+                                $total['finalamount']+=$feeItem['finalamount'];
+                                $total['paidamount']+=$feeItem['paidamount'];
+                                $total['balance']+=$feeItem['balance'];
+                                echo '<tr role="row">
+                                        <td>'.$feeItem['feetype'].'</td>
+                                        <td>'.$feeItem['frequency'].'</td>
+                                        <td>'.$feeItem['amount'].'</td>
+                                        <td>'.$feeItem['concession'].'</td>
+                                         <td>'.$feeItem['finalamount'].'</td>
+                                         <td>'.$feeItem['paidamount'].'</td>
+                                         <td>'.$feeItem['balance'].'</td>
+                                         <td>'.$feeItem['due_date'].'</td>
+                                      </tr>';
+                            }
+                    ?>
+                <?php 
+                        }
+                  ?>
+                    <tbody>
+            <tfoot>
+               
+              <tr>
+                <td colspan="2" align="center" data-title="Grand Total">Grand Total</td>
+                <?php
+                echo '<td>'.$total['amount'].'</td>
+                    <td>'.$total['concession'].'</td>
+                     <td>'.$total['finalamount'].'</td>
+                     <td>'.$total['paidamount'].'</td>
+                     <td>'.$total['balance'].'</td>
+                     <td></td>';
+                ?>                
+              </tr>
+              
+            </tfoot>
+    </table>
+          <br>
+          <div id="payment_details_errors" class="error_message"></div>
+          
+            <div id="payment_details_div" name="payment_details_div" class="form-horizontal">
+              <div class="row">
+                <section class="col-md-6">
+                  <div class="control-group">
+                    <label class="control-label">Amount</label>
+                    <div class="controls">
+                      <input type="text" name="amount" id="amount" data-placeholder="Select amount" class="chosen-with-diselect  chzn-done"s>
+                    </div>
+                  </div>
+                </section>
+                <section class="col-md-6">
+                  <div class="control-group">
+                    <label class="control-label">Concession Type </label>
+                    <div class="controls">
+                        <?php
+                            $ConcessionType=$this->_controllerObj->_concessionMethod;
+                        ?>
+                      <select data-placeholder="Select Concesssion type" id="fee_concession_type" name="fee_concession_type" >
+                          <option value=""> Select Concesssion Type </option>
+                        <?php
+                            if(count($ConcessionType)>0)
+                            {
+                                foreach ($ConcessionType as $key=>$value) 
+                                {
+                                    echo '<option value="'.$value['code'].'">'.$value['name'].'</option>';
+                                }
+                            }
+                        ?>
+                      </select>
+                    </div>
+                  </div>
+                </section>
+              </div>              
+              <div class="form-actions">
+                  <button type="button" class="btn btn-success" id="concession_details_submit" name="concession_details_submit" onclick="make_concession();" > Submit </button>                  
+              </div>
+            </div>
+          
