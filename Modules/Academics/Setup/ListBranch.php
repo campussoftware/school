@@ -11,12 +11,14 @@
  *
  * @author ramesh
  */
-class Modules_Academics_Setup_ListBranch
+namespace Modules\Academics\Setup;
+class ListBranch
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();
+        $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("list_branch");
         if(!$setup->tableExists($setup->getTable()))
         {

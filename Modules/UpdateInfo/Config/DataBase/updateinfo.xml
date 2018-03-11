@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<academics>
+    <status>active</status>
+    <filename>updateinfo</filename>
+    <name>updateinfo</name>
+    <displayname>Updateinfo</displayname>
+    <rootmodule>false</rootmodule>
+    <codemodule>false</codemodule>
+    <moduledisplay>false</moduledisplay>
+    <sort_value>2</sort_value>
+    <setuppath>\Modules\UpdateInfo\Setup</setuppath>
+    <datapath>\Modules\UpdateInfo\Data</datapath>
+	<schemaversion>1.0.0</schemaversion>
+    <dataversion>1.0.0</dataversion>
+    </academics>

@@ -11,12 +11,14 @@
  *
  * @author ramesh
  */
-class Modules_Feesetup_Setup_FeeListFeeplanDetails
+namespace Modules\Feesetup\Setup;
+class FeeListFeeplanDetails
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();
+        $setup=$cc->getObject("\Core\DataBase\Setup");   
         $setup->setTable("fee_list_feeplan_details");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -106,6 +108,12 @@ class Modules_Feesetup_Setup_FeeListFeeplanDetails
                 "default"=>NULL,  
                 "type"=>"int",
                 "size"=>"11"         
+            ));
+            $setup->addColumnName(array(
+                "name"=>"due_date",
+                "displayValue"=>"Due Date",            
+                "default"=>NULL,  
+                "type"=>"date",     
             ));
             $setup->addColumnName(array(
                 "name"=>"active_status",

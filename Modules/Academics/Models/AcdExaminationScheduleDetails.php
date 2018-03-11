@@ -1,30 +1,1 @@
-<?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of AcdExaminationScheduleDetails
- *
- * @author ramesh
- */
-class Modules_Academics_Models_AcdExaminationScheduleDetails extends Core_Model_Node
-{
-    //put your code here
-    public function curClassSubjectIdAddDescriptorFieldsFilter()
-    {
-        return array();
-    }
-    public function curClassSubjectIdAddSingleFilter()
-    {
-        $db=new Core_DataBase_ProcessQuery();
-        $db->setTable("acd_examination_schedule");
-        $db->addField("cur_list_class_id");
-        $db->addWhere("id='".$this->_requestedData['acd_examination_schedule_id']."'");
-        $classid=$db->getValue();        
-        return "cur_list_class_id='".$classid."'";
-    }
-}
+<?php/* * To change this license header, choose License Headers in Project Properties. * To change this template file, choose Tools | Templates * and open the template in the editor. *//** * Description of AcdExaminationScheduleDetails * * @author ramesh */namespace Modules\Academics\Models;use Core\Model\Node;class AcdExaminationScheduleDetails extends Node{    //put your code here    public $_scheduleId=NULL;    public function setScheduleId($scheduleId) {        $this->_scheduleId = $scheduleId;        return $this;    }    public function getScheduleId() {        return $this->_scheduleId;    }    public function curClassSubjectIdAddDescriptorFieldsFilter()    {        return array();    }    public function curClassSubjectIdAddSingleFilter()    {        $db=new \Core\DataBase\ProcessQuery();        $db->setTable("acd_examination_schedule");        $db->addField("cur_list_class_id");        $db->addWhere("id='".$this->_requestedData['acd_examination_schedule_id']."'");        $classid=$db->getValue();                return "cur_list_class_id='".$classid."'";    }    public function examSheduleDetails(){         $nodeModel = \CoreClass::getModel($this->_nodeName);        $nodeModel->setNodeName($this->_nodeName);           $nodeModel->addCustomFieldToSelect("acd_examination_schedule_details.id", "id");          $nodeModel->addCustomFieldToSelect("cur_academic_subject.name", "subject_name");          $nodeModel->addCustomFieldToSelect("cur_subject_type.name", "subject_type");          $nodeModel->addCustomFieldToSelect("acd_examination_schedule_details.exam_date", "exam_date");        $nodeModel->addCustomFieldToSelect("acd_examination_schedule_details.start_time", "start_time");        $nodeModel->addCustomFieldToSelect("acd_examination_schedule_details.end_time", "end_time");        $nodeModel->addCustomFieldToSelect("acd_examination_schedule_details.max_marks", "max_marks");                 $nodeModel->addCustomJoin("cur_academic_subject.id", "cur_academic_subject", "cur_academic_subject", "cur_academic_subject.id=acd_examination_schedule_details.cur_academic_subject_id");        $nodeModel->addCustomJoin("cur_subject_type.id", "cur_subject_type", "cur_subject_type", "cur_subject_type.short_code=cur_academic_subject.cur_subject_type_id");        $nodeModel->addCustomFilter("acd_examination_schedule_details.acd_examination_schedule_id='" .$this->getScheduleId(). "' ");         $nodeModel->addCustomFilter("acd_examination_schedule_details.active_status='1' ");        $nodeModel->getCollection();        $output = $nodeModel->_collections;                      return $output;    }    }

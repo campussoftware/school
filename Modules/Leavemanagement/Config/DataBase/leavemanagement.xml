@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<academics>
+    <status>active</status>
+    <filename>leavemanagement</filename>
+    <name>leavemanagement</name>
+    <displayname>LeaveManagement</displayname>
+    <rootmodule>false</rootmodule>
+    <codemodule>false</codemodule>
+    <moduledisplay>false</moduledisplay>
+    <sort_value>2</sort_value>
+    <setuppath>\Modules\LeaveManagement\Setup</setuppath>
+    <datapath>\Modules\LeaveManagement\Data</datapath>
+    <schemaversion>1.0.0</schemaversion>
+    <dataversion>1.0.0</dataversion>
+    </academics>
