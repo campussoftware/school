@@ -1,12 +1,13 @@
 <?php
-    class Core_DataBase_DbConnect 
+namespace Core\DataBase;
+    class DbConnect 
     { 
         public   $default;          // The MySQL database connection 
         public      $output=array();
         /* Class constructor */ 
         function __construct()
         {       
-            $dbConfig=Core::getDBConfig();
+            $dbConfig=\Core::getDBConfig();
             $this->default = mysqli_connect($dbConfig['default']['Host'], $dbConfig['default']['User'],$dbConfig['default']['PWD'],$dbConfig['default']['Name']) or die("Please Check DB");
             mysqli_select_db($this->default,$dbConfig['default']['Name']);
         }
@@ -34,12 +35,12 @@
             
             try
             {                
-                $this->output['result'] = mysqli_query($this->default,$query) or die (Core::Log(mysqli_error($this->default)."::".$query));
+                $this->output['result'] = mysqli_query($this->default,$query) or (mysqli_error($this->default).\Core::Log($query));
                 $arrayResults=(array)$this->output['result'];
                 $affetedrows="";
                 $affetedfields="";
                 if(isset($arrayResults['num_rows']))
-                {
+                {   
                     $affetedrows=$arrayResults['num_rows'];
                 }
                 if(isset($arrayResults['field_count']))
@@ -52,7 +53,7 @@
             }
             catch(Exception $ex)
             {               
-                Core::Log($ex->getMessage().$query);
+                \Core::Log($ex->getMessage().$query);
             }
         }
         function getLastInsertID()

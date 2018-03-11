@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreArchiveData 
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreArchiveData 
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_archive_data");
         if(!$setup->tableExists($setup->getTable()))
         {

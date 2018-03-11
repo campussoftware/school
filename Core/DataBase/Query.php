@@ -1,5 +1,6 @@
 <?php
-    class Core_DataBase_Query
+namespace Core\DataBase;
+    class Query
     {
         public $whereCon=NULL;
         public $joinArray=array();
@@ -73,15 +74,18 @@
         }
         public function addGroupBy($groupColumnName=NULL)
         {
-            if($this->groupByColumnName!=NULL && $this->groupByColumnName!="")
+            if($groupColumnName!="")
             {
-                $this->groupByColumnName.=" , ";
+                if($this->groupByColumnName!=NULL && $this->groupByColumnName!="")
+                {
+                    $this->groupByColumnName.=" , ";
+                }
+                if(strpos($groupColumnName,".") === false)
+                {
+                    $groupColumnName=$this->tablealias.".".$groupColumnName;
+                }
+                $this->groupByColumnName.=$groupColumnName;
             }
-            if(strpos($groupColumnName,".") === false)
-            {
-                $groupColumnName=$this->tablealias.".".$groupColumnName;
-            }
-            $this->groupByColumnName.=$groupColumnName;
         }
         public function addFieldArray($selectArray=array())
         {

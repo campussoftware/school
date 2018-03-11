@@ -1,6 +1,7 @@
 <?php
-
-class Core_Controllers_AdminController extends Core_Pages_Render
+namespace Core\Controllers;
+use \Core\Pages\Render;
+class AdminController extends Render
 {
     //put your code here
     

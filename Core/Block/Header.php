@@ -11,7 +11,9 @@
  *
  * @author venkatesh
  */
-class Core_Block_Header extends Core_Block_Block
+namespace Core\Block;
+use \Core\Block\Block;
+class Header extends Block
 {
     //put your code here
 }

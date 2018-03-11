@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreFormLayout
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreFormLayout
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_form_layout");
         if(!$setup->tableExists($setup->getTable()))
         {

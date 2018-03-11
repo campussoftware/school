@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Helper_Data 
+namespace Core\Helper;
+class Data 
 {
     //put your code here
     public function getSequenceCode($Identity)
     {
         try
         {
-            $db =new Core_DataBase_ProcessQuery();
+            $db =new \Core\DataBase\ProcessQuery();
             $db->setTable("core_settings_sequence");
             $db->addFieldArray(array("identity"=>"identity","prefix"=>"prefix","left_padding"=>"left_padding","current_sequence"=>"current_sequence"));
             $db->addWhere("identity='".$Identity."'");
@@ -34,20 +35,20 @@ class Core_Helper_Data
         } 
         catch (Exception $ex) 
         {
-            Core::Log($ex->getMessage(),"sequenceerror.log");
+            \Core::Log($ex->getMessage(),"sequenceerror.log");
         }
     }
     public function updateSequenceCode($Identity)
     {
         try 
         {
-            $db =new Core_DataBase_DbConnect();
+            $db =new \Core\DataBase\DbConnect();
             $sql="update core_settings_sequence set current_sequence=current_sequence+1 where identity='".$Identity."' ";
             $db->executeQuery($sql);
         } 
         catch (Exception $ex) 
         {
-            Core::Log($ex->getMessage(),"sequenceerror.log");
+            \Core::Log($ex->getMessage(),"sequenceerror.log");
         }       
               
     }

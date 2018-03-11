@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFiletypes
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreNodeFiletypes
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_node_filetypes");
             $registerController->setNodeNameData("core_node_filetypes");
             $registerController->setDisplayValue("Node File Types");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFiletypes
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_node_filetypes");           
             $registerController->setTablename("core_node_filetypes");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFiletypes
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_filetypes");
             $relationController->setCoreNodeColname("core_node_settings_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -76,7 +77,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFiletypes
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_cms_uploadfolders_id");
             $relationController->setCoreNodeColname("core_profile_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -84,7 +85,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFiletypes
             $relationController->setSortValue("2");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_filetypes");
             $relationController->setCoreNodeColname("core_file_types_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -92,7 +93,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFiletypes
             $relationController->setSortValue("3");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_filetypes");
             $relationController->setCoreNodeColname("core_cms_image_settings_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -104,7 +105,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFiletypes
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

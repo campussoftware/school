@@ -11,8 +11,8 @@
  *
  * @author ramesh
  */
-
-class Core_Model_Settings
+namespace Core\Model;
+class Settings
 {
     protected $_nodeName=NULL;
     protected $_tableName=NULL; 
@@ -35,16 +35,26 @@ class Core_Model_Settings
     }
     public function setNodeProperties()
     {
-        $np=new Core_Model_NodeProperties();
+        $np=new \Core\Model\NodeProperties();
         $np->setNode($this->_nodeName);
         $this->_NodeProperties=$np->currentNodeStructure();
         $this->setPkName($this->_NodeProperties['primkey']);       
         $this->setTableName($this->_NodeProperties['tablename']);
         
     }
-    public function setData($FieldName,$Value)
+    public function setData($FieldName,$value)
     {
-        $this->_tableFieldWithData[$FieldName]=$Value;
+        $this->_tableFieldWithData[$FieldName]=$value;
+    }
+    public function setKeyWithData($keyWithValue)
+    {
+        if(\Core::isArray($keyWithValue)&& \Core::countArray($keyWithValue))
+        {
+            foreach($keyWithValue as $key=>$value)
+            {
+                $this->_tableFieldWithData[$key]=$value;
+            }
+        }
     }
     public function setPkName($pkName)
     {
@@ -52,7 +62,7 @@ class Core_Model_Settings
     }
     public function getId()
     {
-        return $this->_tableFieldWithData[$this->_pkName];
+        return \Core::getValueFromArray($this->_tableFieldWithData,$this->_pkName);
     }
     public function setId($pkValue)
     {
@@ -65,7 +75,7 @@ class Core_Model_Settings
     }    
     public function getTableStructure()
     {
-        $nodeTable=new Core_Model_TableStructure();
+        $nodeTable=new \Core\Model\TableStructure();
         $nodeTable->setTable($this->_tableName);
         $TS=$nodeTable->getStructure();
         $_TableStructure=array();
@@ -99,7 +109,7 @@ class Core_Model_Settings
         }        
         $this->_TableStructure=$_TableStructure;
     }
-    function addFilterCondition($Condition)
+    public function addFilterCondition($Condition)
     {
         if($this->_whereCon)
         {

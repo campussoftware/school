@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreListState
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreListState
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_list_state");
             $registerController->setNodeNameData("core_list_state");
             $registerController->setDisplayValue("State Details");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreListState
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_list_state");           
             $registerController->setTablename("core_list_state");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreListState
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_list_state");
             $relationController->setCoreNodeColname("core_country_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -79,7 +80,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreListState
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

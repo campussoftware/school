@@ -1,5 +1,6 @@
 <?php
-class Core_XmlData 
+namespace Core;
+class XmlData 
 {
   var $name;
   var $attributes;

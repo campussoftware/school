@@ -11,12 +11,13 @@
  *
  * @author venkatesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreUrlRewrite 
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreUrlRewrite 
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_url_rewrite");
         if(!$setup->tableExists($setup->getTable()))
         {

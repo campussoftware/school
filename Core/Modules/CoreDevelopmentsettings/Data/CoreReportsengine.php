@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsengine
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreReportsengine
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_reportsengine");
             $registerController->setNodeNameData("core_reportsengine");
             $registerController->setDisplayValue("Reports Engine");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsengine
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_reportsengine");           
             $registerController->setTablename("core_reportsdetails");
             $registerController->setAutokey("id");
@@ -71,7 +72,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsengine
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

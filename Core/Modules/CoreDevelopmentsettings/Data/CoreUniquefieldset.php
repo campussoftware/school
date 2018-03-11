@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreUniquefieldset
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreUniquefieldset
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_uniquefieldset");
             $registerController->setNodeNameData("core_uniquefieldset");
             $registerController->setDisplayValue("Unique Field Set");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreUniquefieldset
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_uniquefieldset");           
             $registerController->setTablename("core_uniquefieldset");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreUniquefieldset
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_uniquefieldset");
             $relationController->setCoreNodeColname("core_node_settings_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -79,7 +80,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreUniquefieldset
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

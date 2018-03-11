@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreOrganizationSocialnetworkingsites
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreOrganizationSocialnetworkingsites
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_organization_socialnetworkingsites");
             $registerController->setNodeNameData("core_organization_socialnetworkingsites");
             $registerController->setDisplayValue("Org Social Networking Sites");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreOrganizationSocialnetworking
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_organization_socialnetworkingsites");           
             $registerController->setTablename("core_organization_socialnetworkingsites");
             $registerController->setAutokey("id");
@@ -71,7 +72,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreOrganizationSocialnetworking
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

@@ -11,7 +11,9 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreCodebasedsettings_Models_CoreNodeFiletypes extends Core_Model_Node
+namespace Core\Modules\CoreCodebasedsettings\Models;
+use Core\Model\Node;
+class CoreNodeFiletypes extends Node
 {
     //put your code here
     public function coreNodeSettingsIdAddSingleFilter()

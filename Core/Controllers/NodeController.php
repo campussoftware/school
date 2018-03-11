@@ -1,20 +1,23 @@
 <?php
-class Core_Controllers_NodeController extends Core_Pages_Render
+namespace Core\Controllers;
+use \Core\Pages\Render;
+class NodeController extends Render
 {
-    
+
     public $_nodeName=NULL;
     public $_currentAction="Admin";
     public $_websiteAdminUrl=NULL;
     public $_websiteHostUrl=NULL;
     public $_websiteRootHostUrl=NULL;
-    public $_methodType=NULL;    
+    public $_methodType=NULL;
     public $_performMraAction=NULL;
     public $_removeActionRecords=array();
     public $_scriptAdd=NULL;
-    
-    function __construct($nodeName,$action) 
+
+    function __construct($nodeName,$action)
     {
-        $wp=new Core_WebsiteSettings();                
+        global $rootObj;
+        $wp=$rootObj;
         $this->setNodeName($nodeName);
         $this->setActionName($action);
         $this->_websiteHostUrl=$wp->websiteAdminUrl.$this->getNodeName()."/";
@@ -24,26 +27,25 @@ class Core_Controllers_NodeController extends Core_Pages_Render
         parent::__construct();
     }
     public function setScriptAction()
-    {        
+    {
         $this->_scriptAdd=1;
     }
     public function setMethodType($Type)
-    {        
+    {
         $this->_methodType=$Type;
     }
     public function setMraActionPerform()
     {
         $this->_performMraAction=1;
-    }    
+    }
     public function adminAction()
-    {        
-        $this->gridContent();        
+    {
+        $this->gridContent();
     }
     public function noAction()
     {
         if($this->_methodType=='POST')
         {
-            
             $output=array();
             $output['status']="error";
             $output['errors']=$this->getLabel($this->_currentAction)." is Not Existing";
@@ -55,28 +57,37 @@ class Core_Controllers_NodeController extends Core_Pages_Render
             $this->loadLayout("noActionFound.phtml");
         }
     }
-    
+
+    public function  returnJsonResponse($output){
+        ob_start();
+        header('Content-Type: application/json');
+        echo json_encode($output); exit;
+    }
+
     function checkSession()
     {
         if($this->_currentAction!='validateLogin' && $this->_currentAction!='logout' && $this->_currentAction!='login')
-        {            
-            $session=new Core_Session();
+        {
+            $session=new \Core\Session();
             $session->setApi($this->_isAPI);
             $session=$session->getSessionMaganager();
         }
         return true;
     }
-    public function logoutAction() 
+    public function logoutAction()
     {
-        $sm=new Core_Session();
-        $sm->destroySession();
-        $wp=new Core_WebsiteSettings();                
-        Core::redirectUrl($wp->websiteAdminUrl."core_users/login");
+        $cc = new \CoreClass();
+        $session=$cc->getObject("\Core\Session");
+        $session->destroySession();
+        global $rootObj;
+        $wp=$rootObj;
+        \Core::redirectUrl($wp->websiteAdminUrl."core_users/login");
     }
     public function addAction()
-    {       
-        
+    {
+
         $backUrl=$this->_websiteHostUrl;
+        $actionflag=isset($this->_requestedData['actionflag'])?$this->_requestedData['actionflag']:"";
         if($this->_parentNode)
         {
             $backUrl=$this->_websiteAdminUrl.$this->_parentNode."/".$this->_parentAction."/".$this->_parentSelector."/MTO/".$this->_nodeName;
@@ -84,7 +95,7 @@ class Core_Controllers_NodeController extends Core_Pages_Render
         $this->getDefaultAttributeValues();
         $requestedData=$this->_requestedData;
         if($this->_methodType=="REQUEST")
-        {            
+        {
             $this->setCurrentNodeName($this->_nodeName);
             $this->getAdminLayout();
             $this->renderLayout();
@@ -93,139 +104,174 @@ class Core_Controllers_NodeController extends Core_Pages_Render
         {
             try
             {
-                
+
                 $errorsArray=$this->nodeDataValidate("add",$this);
-                if(count($errorsArray)>0)
-                {   
+                if(\Core::countArray($errorsArray)>0)
+                {
                     $output['status']="error";
                     $output['errors']=$errorsArray;
-                    $output['redirecturl']=$backUrl;  
-                    if($this->_scriptAdd)
-                    {
-                        return $output;
-                    }
-                    echo json_encode($output);                   
-                }
-                else
-                {                    
-                    $data=array();                  
-                                
-                    foreach($this->_showAttributes as $FieldName)
-                    {                
-                        $fieldNameValue=Core::convertArrayToString($requestedData[$FieldName]);
-                        $data[$FieldName]=$fieldNameValue;                        
-                    } 
-                    $data=$this->beforeDataUpdate($data);
-                    $methodName=Core::convertStringToMethod($this->_nodeName."_beforeDataUpdate");
-                    if(Core::methodExists($this, $methodName))
-                    {
-                        $data=$this->$methodName($data);
-                    }
-                    $nodeSave=new Core_Model_NodeSave();
-                    $nodeSave->setNode($this->_nodeName);
-                    foreach ($data as $key=>$value)
-                    {
-                        $nodeSave->setData($key,$value);
-                    }
-                    $this->_requestedData['id']=$nodeSave->save();   
-                    $method=Core::convertStringToMethod($this->_nodeName."_afterDataUpdate");                    
-                  
-                    if(Core::methodExists($this, $method))
-                    {                       
-                        $errorsArray=$this->$method();
-                        if(Core::isArray($errorsArray))
-                        {
-                            $output['status']="error";
-                            $output['errors']=$errorsArray;
-                            $output['redirecturl']=$backUrl;                 
-                            echo json_encode($output);
-                            exit;
-                        }
-                    }                    
-                    $output=array();
-                    $output['status']="success";
-                    $output['primaryId']=$this->_requestedData[$this->_primaryKey];
-                    $output['redirecturl']=$backUrl;   
+                    $output['redirecturl']=$backUrl;
                     if($this->_scriptAdd)
                     {
                         return $output;
                     }
                     echo json_encode($output);
                 }
-                
-                
+                else
+                {
+                    $data=array();
+
+                    foreach($this->_showAttributes as $FieldName)
+                    {
+                        $fieldNameValue=\Core::convertArrayToString(\Core::getValueFromArray($requestedData,$FieldName));
+                        $data[$FieldName]=$fieldNameValue;
+                    }
+                    $data=$this->beforeDataUpdate($data);
+                    $methodName=\Core::convertStringToMethod($this->_nodeName."_beforeDataUpdate");
+                    if(\Core::methodExists($this, $methodName))
+                    {
+                        $data=$this->$methodName($data);
+                    }
+                    $nodeSave=new \Core\Model\NodeSave();
+                    $nodeSave->setNode($this->_nodeName);
+                    foreach ($data as $key=>$value)
+                    {
+                        $nodeSave->setData($key,$value);
+                    }
+                    $this->_requestedData['id']=$nodeSave->save();
+                    $method=\Core::convertStringToMethod($this->_nodeName."_afterDataUpdate");
+
+                    if(\Core::methodExists($this, $method))
+                    {
+                        $errorsArray=$this->$method();
+                        if(\Core::isArray($errorsArray))
+                        {
+                            $output['status']="error";
+                            $output['errors']=$errorsArray;
+                            $output['redirecturl']=$backUrl;
+                            echo json_encode($output);
+                            exit;
+                        }
+                    }
+                    $method=\Core::convertStringToMethod($this->_nodeName."_commitDataUpdate");
+                    if(\Core::methodExists($this, $method))
+                    {
+                        $errorsArray=$this->$method();
+                        if(\Core::isArray($errorsArray))
+                        {
+                            $output['status']="error";
+                            $output['errors']=$errorsArray;
+                            $output['redirecturl']=$backUrl;
+                            echo json_encode($output);
+                            exit;
+                        }
+                    }
+                    if($actionflag=='continue')
+                    {
+                        if($this->_parentNode)
+                        {
+                            $backUrl=$this->_websiteAdminUrl.$this->_nodeName."/"."edit/".$this->_requestedData[$this->_primaryKey]."/".$this->_parentNode."/".$this->_parentAction."/".$this->_parentSelector;
+                        }
+                        else
+                        {
+                            $backUrl.="edit/".$this->_requestedData[$this->_primaryKey];
+                        }
+                    }
+                    else if($actionflag=='next')
+                    {
+                        if($this->_parentNode)
+                        {
+                            $backUrl=$this->_websiteAdminUrl.$this->_nodeName."/"."add/0"."/".$this->_parentNode."/".$this->_parentAction."/".$this->_parentSelector;
+                        }
+                        else
+                        {
+                            $backUrl.="add";
+                        }
+                    }
+                    $output=array();
+                    $output['status']="success";
+                    $output['primaryId']=\Core::getValueFromArray($this->_requestedData, "$this->_primaryKey");
+                    $output['redirecturl']=$backUrl;
+                    if($this->_scriptAdd)
+                    {
+                        return $output;
+                    }
+                    echo json_encode($output);
+                }
+
+
             }
             catch (Exception $ex)
             {
-                Core::Log(__METHOD__.$ex->getMessage(), $this->_nodeName."_add");
+                \Core::Log(__METHOD__.$ex->getMessage(), $this->_nodeName."_add");
             }
         }
-        
+
     }
     public function editAction()
-    {       
+    {
         $requestedData=$this->_requestedData;
-        
+        $actionflag=isset($this->_requestedData['actionflag'])?$this->_requestedData['actionflag']:"";
         $backUrl=$this->_websiteHostUrl;
         if($this->_parentNode)
         {
                 $backUrl=$this->_websiteAdminUrl.$this->_parentNode."/".$this->_parentAction."/".$this->_parentSelector."/MTO/".$this->_nodeName;
         }
-        
+
         if($this->_methodType=="REQUEST")
         {
-            
+
             $this->getRecordLoad();
             $this->setCurrentNodeName($this->_nodeName);
             $this->getAdminLayout();
             $this->renderLayout();
         }
         else
-        { 
-            
+        {
+
             try
             {
                 $errorsArray=$this->nodeDataValidate("edit",$this);
                 if(count($errorsArray)>0)
-                {   
+                {
                     $output['status']="error";
                     $output['errors']=$errorsArray;
-                    $output['redirecturl']=$backUrl;   
+                    $output['redirecturl']=$backUrl;
                     if($this->_scriptAdd)
                     {
                         return $output;
                     }
-                    echo json_encode($output);                   
+                    echo json_encode($output);
                 }
                 else
                 {
-                    $data=array();                  
-                                
+                    $data=array();
+
                     foreach($this->_showAttributes as $FieldName)
-                    {      
-                        $fieldNameValue=Core::convertArrayToString($requestedData[$FieldName]);
+                    {
+                        $fieldNameValue=\Core::convertArrayToString(\Core::getValueFromArray($requestedData,$FieldName));
                         //rameshmodified
                         if($this->_scriptAdd)
                         {
-                            if(Core::keyInArray($FieldName, $requestedData))
+                            if(\Core::keyInArray($FieldName, $requestedData))
                             {
-                                $data[$FieldName]=$fieldNameValue;   
+                                $data[$FieldName]=$fieldNameValue;
                             }
                         }
                         else
                         {
-                            
-                            $data[$FieldName]=$fieldNameValue;   
+
+                            $data[$FieldName]=$fieldNameValue;
                         }
-                                             
-                    } 
+
+                    }
                     $data=$this->beforeDataUpdate($data);
-                    $methodName=Core::convertStringToMethod($this->_nodeName."_beforeDataUpdate");
-                    if(Core::methodExists($this, $methodName))
+                    $methodName=\Core::convertStringToMethod($this->_nodeName."_beforeDataUpdate");
+                    if(\Core::methodExists($this, $methodName))
                     {
                         $data=$this->$methodName($data);
                     }
-                    $nodeSave=new Core_Model_NodeSave();
+                    $nodeSave=new \Core\Model\NodeSave();
                     $nodeSave->setNode($this->_nodeName);
                     $nodeSave->setData("id",$requestedData["id"]);
                     foreach ($data as $key=>$value)
@@ -233,12 +279,12 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                         $nodeSave->setData($key,$value);
                     }
                     $output=$nodeSave->save();
-                    $method=Core::convertStringToMethod($this->_nodeName."_afterDataUpdate");                    
-                  
-                    if(Core::methodExists($this, $method))
+                    $method=\Core::convertStringToMethod($this->_nodeName."_afterDataUpdate");
+
+                    if(\Core::methodExists($this, $method))
                     {
                         $errorsArray=$this->$method();
-                        if(Core::isArray($errorsArray))
+                        if(\Core::isArray($errorsArray))
                         {
                             $output['status']="error";
                             $output['errors']=$errorsArray;
@@ -250,11 +296,35 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                             echo json_encode($output);
                             exit;
                         }
-                    }                        
+                    }
+                    $method=\Core::convertStringToMethod($this->_nodeName."_commitDataUpdate");
+                    if(\Core::methodExists($this, $method))
+                    {
+                        $errorsArray=$this->$method();
+                        if(\Core::isArray($errorsArray))
+                        {
+                            $output['status']="error";
+                            $output['errors']=$errorsArray;
+                            $output['redirecturl']=$backUrl;
+                            echo json_encode($output);
+                            exit;
+                        }
+                    }
+                    if($actionflag=='continue')
+                    {
+                        if($this->_parentNode)
+                        {
+                            $backUrl=$this->_websiteAdminUrl.$this->_nodeName."/"."edit/".$this->_requestedData[$this->_primaryKey]."/".$this->_parentNode."/".$this->_parentAction."/".$this->_parentSelector;
+                        }
+                        else
+                        {
+                            $backUrl.="edit/".$this->_requestedData[$this->_primaryKey];
+                        }
+                    }
                     $output=array();
                     $output['status']="success";
                     $output['primaryId']=$this->_requestedData[$this->_primaryKey];
-                    $output['redirecturl']=$backUrl;    
+                    $output['redirecturl']=$backUrl;
                     if($this->_scriptAdd)
                     {
                         return $output;
@@ -264,56 +334,56 @@ class Core_Controllers_NodeController extends Core_Pages_Render
             }
             catch (Exception $ex)
             {
-                Core::Log(__METHOD__.$ex->getMessage(), $this->_nodeName."_edit");
+                \Core::Log(__METHOD__.$ex->getMessage(), $this->_nodeName."_edit");
             }
         }
-        
+
     }
     public function viewAction()
     {
         if($this->_methodType=="REQUEST")
         {
-            
+
             $this->getRecordLoad();
             $this->setCurrentNodeName($this->_nodeName);
             $this->getAdminLayout();
             $this->renderLayout();
-        }        
-        
+        }
+
     }
     public function checkDetleteData()
     {
-        $np=new Core_Model_NodeProperties();
+        return true;
+        $np=new \Core\Model\NodeProperties();
         $np->setNode($this->_nodeName);
         $childrelations=$np->getChildRelations();
-        if(Core::countArray($childrelations)>0)
+        if(\Core::countArray($childrelations)>0)
         {
             foreach($childrelations as $node=>$colNameArray)
             {
-                $np=new Core_Model_NodeProperties();
+                $np=new \Core\Model\NodeProperties();
                 $np->setNode($node);
                 $nodeStructure=$np->currentNodeStructure();
                 $nodetablename=$nodeStructure['tablename'];
                 $nodeprimkey=$nodeStructure['primkey'];
-                $db=new Core_DataBase_ProcessQuery();
+                $db=new \Core\DataBase\ProcessQuery();
                 $db->setTable($nodetablename,$node);
-                //$db->addField("count(".$node.".".$nodeprimkey.")");
                 $where=array();
                 foreach($colNameArray as $colName)
                 {
                     $where[]=$node.".".$colName." = '".$this->_currentSelector."'";
                 }
-                $db->addWhere("(".Core::convertArrayToString($where, " || ").")");
-                $db->buildDelete();
-                $db->executeQuery();
-               // $db->buildSelect();
-                //$count=$db->getValue();
-                //if($count>0)
+                $db->addWhere("(".\Core::convertArrayToString($where, " || ").")");
+                //$db->buildDelete();
+               // $db->executeQuery();
+                $db->buildSelect();
+                $count=$db->getValue();
+                if($count>0)
                 {
                   //  return  FALSE;
                 }
             }
-        }        
+        }
         return TRUE;
     }
     public function deleteAction()
@@ -333,18 +403,18 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                 }
                 $deleteCheck=$this->checkDetleteData();
                 if($deleteCheck)
-                {   
-                    $nodeDelete=new Core_Model_NodeDelete();
+                {
+                    $nodeDelete=new \Core\Model\NodeDelete();
                     $nodeDelete->setNode($this->_nodeName);
                     $nodeDelete->setPkValue($this->_currentSelector);
-                    $nodeDelete->addFilterCondition("(".$this->_tableName.".".$this->_primaryKey." = '".$this->_currentSelector."'".")");           
+                    $nodeDelete->addFilterCondition("(".$this->_tableName.".".$this->_primaryKey." = '".$this->_currentSelector."'".")");
                     $nodeDelete->delete();
                     $output=array();
                     $output['status']="success";
-                    $output['redirecturl']=$backUrl;         
+                    $output['redirecturl']=$backUrl;
                     if($this->_methodType=='REQUEST')
                     {
-                        Core::redirectUrl($backUrl);
+                        \Core::redirectUrl($backUrl);
                     }
                     else
                     {
@@ -353,21 +423,25 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                             return json_encode($output);
                         }
                         else
-                        {
-                            echo json_encode($output);
+                        {//karteek modified
+							if($this->_scriptAdd)
+							{
+								return $output;
+							}
+							echo json_encode($output);
                         }
                     }
                 }
-                else 
+                else
                 {
                     $output=array();
-                    $output['status']="error";                    
+                    $output['status']="error";
                     $output['redirecturl']=$backUrl;
                     $message=" Record Con't Deleted ";
                     $output['error']=$message;
                     if($this->_methodType=='REQUEST')
                     {
-                        Core::redirectUrl($backUrl,$message);
+                        \Core::redirectUrl($backUrl,$message);
                     }
                     else
                     {
@@ -379,36 +453,36 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                         {
                             echo json_encode($output);
                         }
-                    }                    
+                    }
                 }
             }
-            
+
         }
-        catch (Exception $ex) 
+        catch (Exception $ex)
         {
-            Core::Log(__METHOD__."  ".$ex->getMessage());
+            \Core::Log(__METHOD__."  ".$ex->getMessage());
         }
         return;
     }
     public function descriptorAction()
-    {            
-       
+    {
+
         try
         {
             $nodeRelations=$this->_nodeMTORelations;
-            $requestedData=$this->_requestedData;        
+            $requestedData=$this->_requestedData;
             $sourceNode=$this->_requestedData['node'];
-            $DestinationNode=$this->_requestedData['destinationNode'];         
-            $FieldName=$this->_requestedData['idname'];  
+            $DestinationNode=$this->_requestedData['destinationNode'];
+            $FieldName=$this->_requestedData['idname'];
             $noderesult=$this->_requestedData['noderesult'];
-            $methodName=CoreClass::getMethod($this,"descriptorAction",$sourceNode,$FieldName); 
-            $idName=$this->_requestedData['idname'];  
-            $active_status=Core::inArray("active_status", $this->_boolAttributes);                
-            if($methodName) 
-            {           
+            $methodName=\CoreClass::getMethod($this,"descriptorAction",$sourceNode,$FieldName);
+            $idName=$this->_requestedData['idname'];
+            $active_status=\Core::inArray("active_status", $this->_boolAttributes);
+            if($methodName)
+            {
                 $this->$methodName();
             }
-            else            
+            else
             {
                 if($noderesult!="")
                 {
@@ -418,15 +492,15 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                 {
                     $noderesult=array();
                 }
-                $defaultValue=Core::getValueFromArray($noderesult,$FieldName);               
-                $readonlyAttributes=$this->readonlyAttributes($requestedData['action']);   
-                $sourceNodeObj=CoreClass::getModel($sourceNode, $requestedData['action']);
+                $defaultValue=\Core::getValueFromArray($noderesult,$FieldName);
+                $readonlyAttributes=$this->readonlyAttributes(\Core::getValueFromArray($requestedData, "action"));
+                $sourceNodeObj=\CoreClass::getModel($sourceNode, \Core::getValueFromArray($requestedData, "action"));
                 $sourceNodeObjExists=0;
                 if($sourceNodeObj)
                 {
                     $sourceNodeObjExists=1;
                 }
-                
+                $onchangeEvents=[];
                 if($sourceNodeObjExists==1)
                 {
                     $sourceNodeObj->setNodeName($sourceNode);
@@ -437,15 +511,15 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                     $sourceNodeObj->setRequestedData($requestedData);
                     $sourceNodeStructure=$sourceNodeObj->_currentNodeStructure;
                     $onchangeEvents=$sourceNodeObj->defaultOnchangeEvents($FieldName);
-                    $eventmethod=lcfirst(str_replace(" ","",ucwords(str_replace("_", " ",$sourceNode)))."Onchange");            
-                    if(Core::methodExists($sourceNodeObj, $eventmethod))
+                    $eventmethod=lcfirst(str_replace(" ","",ucwords(str_replace("_", " ",$sourceNode)))."Onchange");
+                    if(\Core::methodExists($sourceNodeObj, $eventmethod))
                     {
-                        $customonchangeEvents=$sourceNodeObj->$eventmethod(); 
+                        $customonchangeEvents=$sourceNodeObj->$eventmethod();
                         if(count($customonchangeEvents)>0)
                         {
-                            foreach ($customonchangeEvents as $key => $value) 
+                            foreach ($customonchangeEvents as $key => $value)
                             {
-                               if(Core::keyInArray($key, $onchangeEvents)) 
+                               if(\Core::keyInArray($key, $onchangeEvents))
                                {
                                    $onchangeEvents[$key]=$onchangeEvents[$key].$value;
                                }
@@ -455,10 +529,10 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                                }
                             }
                         }
-                    }    
+                    }
                 }
                 $parentCol=0;
-                if(Core::keyInArray("parentformNode", $requestedData))
+                if(\Core::keyInArray("parentformNode", $requestedData))
                 {
                     if($requestedData['parentformvalue']!="" && $idName==$requestedData['parentformkey'])
                     {
@@ -467,26 +541,27 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                     }
                 }
                 $multiSelectedValues=array();
-                if(Core::isArray($sourceNodeStructure))
-                {            
-                    $readonlyAttributes=Core::convertStringToArray($sourceNodeStructure['readonly_'.$requestedData['action']]);   
-                    $mandotatoryAttributes=Core::convertStringToArray($sourceNodeStructure['mandotatory_'.$requestedData['action']]);   
-                    $multiSelectedValues=Core::convertStringToArray($sourceNodeStructure['multivalues']);   
+                $mandotatoryAttributes=[];
+                if(\Core::isArray($sourceNodeStructure))
+                {
+                    $readonlyAttributes=\Core::convertStringToArray(\Core::getValueFromArray($sourceNodeStructure,'readonly_'.$requestedData['action']));
+                    $mandotatoryAttributes=\Core::convertStringToArray(\Core::getValueFromArray($sourceNodeStructure,'mandotatory_'.$requestedData['action']));
+                    $multiSelectedValues=\Core::convertStringToArray(\Core::getValueFromArray($sourceNodeStructure,'multivalues'));
                 }
 
-                $db=new Core_DataBase_ProcessQuery();
+                $db=new \Core\DataBase\ProcessQuery();
                 $db->setTable($this->_tableName, $this->_nodeName);
-                $db->addField($this->_nodeName.".".$this->_primaryKey." as pid");            
-                if(Core::keyInArray($this->_descriptor, $nodeRelations))
-                {                
-                    $np=new Core_Model_NodeProperties();
+                $db->addField($this->_nodeName.".".$this->_primaryKey." as pid");
+                if(\Core::keyInArray($this->_descriptor, $nodeRelations))
+                {
+                    $np=new \Core\Model\NodeProperties();
                     $np->setNode($nodeRelations[$this->_descriptor]);
                     $parentNodeStructure=$np->currentNodeStructure();
                     $db->addFieldArray(array($nodeRelations[$this->_descriptor].".".$parentNodeStructure['descriptor']=>"pds"));
                     $joinCondition=$this->_nodeName.".".$this->_descriptor."=".$nodeRelations[$this->_descriptor].".".$parentNodeStructure['primkey'];
-                    $db->addJoin($this->_descriptor,$parentNodeStructure['tablename'],$nodeRelations[$this->_descriptor],$joinCondition);               
+                    $db->addJoin($this->_descriptor,$parentNodeStructure['tablename'],$nodeRelations[$this->_descriptor],$joinCondition);
                 }
-                else 
+                else
                 {
                     $db->addFieldArray(array($this->_nodeName.".".$this->_descriptor=>"pds"));
                 }
@@ -494,146 +569,154 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                 {
                     if($sourceNodeObjExists==1)
                     {
-                        if(Core::keyInArray($idName, $sourceNodeObj->_defaultValues))
+                        if(\Core::keyInArray($idName, $sourceNodeObj->_defaultValues))
                         {
                             $defaultValue=$sourceNodeObj->_defaultValues[$idName];
-                        }                        
+                        }
                     }
                 }
                 if(in_array($FieldName,$readonlyAttributes) || $requestedData['action']=='view' || $parentCol==1)
                 {
-                    $defaultValue_list=Core::convertStringToArray($defaultValue,"|");
+                    $defaultValue_list=\Core::convertStringToArray($defaultValue,"|");
                     $db->addWhere("LOWER(".$this->_nodeName.".".$this->_primaryKey.") in ('".implode("','",$defaultValue_list)."')");
-                }   
-                $queryExecuteFlag=1; 
+                }
+                $queryExecuteFlag=1;
                 if($sourceNodeObjExists==1)
                 {
-                    $depentparentList=$sourceNodeObj->defaultDependeeFilter($FieldName); 
-                               
-                    if(Core::countArray($depentparentList)>0)
+                    $depentparentList=$sourceNodeObj->defaultDependeeFilter($FieldName);
+
+                    if(\Core::countArray($depentparentList)>0)
                     {
-                        foreach ($depentparentList as $parentDependentColname) 
+                        foreach ($depentparentList as $parentDependentColname)
                         {
-                            if(Core::keyInArray($parentDependentColname, $requestedData))
+                            if(\Core::keyInArray($parentDependentColname, $requestedData))
                             {
                                 if($requestedData[$parentDependentColname]=="")
                                 {
-                                    $queryExecuteFlag=0;                            
+                                    $queryExecuteFlag=0;
                                 }
                                 else
                                 {
-                                    $methodName=CoreClass::getMethod($sourceNodeObj,"descriptionFilter",$sourceNode,$FieldName); 
-                                    if($methodName) 
-                                    { 
+                                    $methodName=\CoreClass::getMethod($sourceNodeObj,"descriptionFilter",$sourceNode,$FieldName);
+                                    if($methodName)
+                                    {
                                         $db->addWhere($sourceNodeObj->$methodName());
                                     }
                                     else
                                     {
-                                        if(Core::keyInArray($parentDependentColname, $this->_NodeFieldsList))
+                                        if(\Core::keyInArray($parentDependentColname, $this->_NodeFieldsList))
                                         {
                                             $db->addWhere($this->_nodeName.".".$parentDependentColname."='".$requestedData[$parentDependentColname]."'");
                                         }
                                     }
-                                }                       
+                                }
                             }
 
-                        }                
+                        }
                     }
                 }
                 if($active_status && $this->_currentAction=='add')
                 {
                     $db->addWhere($this->_nodeName.".active_status='1'");
-                }                
-                $methodName=Core::convertStringToMethod($FieldName."_addSingleFilter");
-                if(Core::methodExists($sourceNodeObj,$methodName))
+                }
+                $methodName=\Core::convertStringToMethod($FieldName."_addSingleFilter");
+                if(\Core::methodExists($sourceNodeObj,$methodName))
                 {
                     $db->addWhere($sourceNodeObj->$methodName());
                 }
                 if($sourceNodeObjExists==1)
                 {
-                    $methodName=CoreClass::getMethod($this,"filter",$sourceNode,$FieldName);
-                    if($methodName) 
-                    { 
-                        $db->addWhere($this->$methodName());
+                    $methodName=\CoreClass::getMethod($this,"filter",$sourceNode,$FieldName);
+                    if($methodName)
+                    {
+                        if(\Core::methodExists($this,$methodName))
+                        {
+                            $db->addWhere($this->$methodName());
+                        }
                     }
                 }
                 $db->addOrderBy($this->_descriptor);
                 $db->buildSelect();
                 if($queryExecuteFlag)
                 {
-                    $result=$db->getRows();        
+                    $result=$db->getRows();
                 }
                 else
                 {
                     $result=array();
                 }
-                if(Core::getValueFromArray($this->_requestedData,'dataType')=="json")
+                if(\Core::getValueFromArray($this->_requestedData,'dataType')=="json")
                 {
-                    echo Core::convertArrayToJson($result); exit;
+                    echo \Core::convertArrayToJson($result); exit;
                 }
                 try
-                {       
+                {
 
                     if(in_array($idName,  $multiSelectedValues))
                     {
                         $attributeType="checkbox";
                     }
-                    else 
+                    else
                     {
                         $attributeType="select";
-                    }    
+                    }
 
-                    $attributeDetails=new Core_Attributes_LoadAttribute($attributeType);				
-                    $attributeClass="Core_Attributes_".$attributeDetails->_attributeName;
+                    $attributeDetails=new \Core\Attributes\LoadAttribute($attributeType);
+                    $attributeClass="\Core\Attributes\'".$attributeDetails->_attributeName;
+                    $attributeClass=  str_replace("'", "", $attributeClass);
                     $attribute=new $attributeClass;
                     $attribute->setIdName($idName);
                     $attribute->setOptions($result);
                     $attribute->setValue($defaultValue);
-                    if(Core::keyInArray($FieldName, $onchangeEvents))
+                    if(\Core::keyInArray($FieldName, $onchangeEvents))
                     {
                         $attribute->setOnchange($onchangeEvents[$FieldName]);
                     }
-                    $attribute->setAction($this->_requestedData['action']);
-                    if(in_array($FieldName,$mandotatoryAttributes))
+		    if(\Core::keyInArray($FieldName, $multiSelectedValues))
+                    {
+                        $attribute->setMultiValues(1);
+                    }
+                    $attribute->setAction(\Core::getValueFromArray($this->_requestedData,'action'));
+                    if(\Core::keyInArray($FieldName,$mandotatoryAttributes))
                     {
                         $attribute->setRequired();
-                    }            
-                    if(in_array($FieldName,$readonlyAttributes) || $requestedData['action']=='view' || $parentCol==1)
-                    {                
+                    }
+                    if(\Core::keyInArray($FieldName,$readonlyAttributes) || \Core::getValueFromArray($requestedData, "action")=='view' || $parentCol==1)
+                    {
                         $attribute->setReadonly();
                     }
                     $attribute->loadAttributeTemplate($attributeType,$FieldName);
                 }
                 catch (Exception $ex)
                 {
-                    Core::Log(__METHOD__.$ex->getMessage());
+                    \Core::Log(__METHOD__.$ex->getMessage());
                 }
-            } 
+            }
         }
         catch (Exception $ex)
         {
-            Core::Log(__METHOD__.$ex->getMessage());
+            \Core::Log(__METHOD__.$ex->getMessage());
         }
-        
+
     }
 
     public function gridContent()
-    {       
+    {
         if($this->_isDefaultCollection==1)
         {
-            $this->setSingleActions();  
+            $this->setSingleActions();
             $this->setIndividualActions();
             $this->setMraActions();
             $this->getCollection();
             $this->setCurrentNodeName($this->_nodeName);
-            $this->actionRestriction();            
+            $this->actionRestriction();
         }
         $this->getAdminLayout();
         $this->renderLayout();
-    }    
+    }
     public function adminRefreshAction()
-    {       
-        $this->setSingleActions();  
+    {
+        $this->setSingleActions();
         $this->setIndividualActions();
         $this->setMraActions();
         $this->getCollection();
@@ -644,33 +727,33 @@ class Core_Controllers_NodeController extends Core_Pages_Render
     }
 
     public function setSingleActions()
-    {        
+    {
         return parent::setSingleActions();
     }
     public function nodeDataValidate($action,$nodeObject)
-    {        
+    {
         $errorsArray=array();
         $requestedData=$nodeObject->_requestedData;
         $NodeFieldAttributes=$this->_NodeFieldAttributes;
-        $nodeResult=  json_decode($requestedData['noderesult'],true);     
+        $nodeResult=  json_decode(\Core::getValueFromArray($requestedData, "noderesult"),true);
         $mandotatoryAttributes =$this->mandotatoryAttributes();
-        $methodName=Core::convertStringToMethod($this->_nodeName."_nodeDataValidateBefore");
-        
-        if(Core::methodExists($this, $methodName))
+        $methodName=\Core::convertStringToMethod($this->_nodeName."_nodeDataValidateBefore");
+
+        if(\Core::methodExists($this, $methodName))
         {
             $errorsArray=$this->$methodName($errorsArray);
         }
-        if(Core::countArray($mandotatoryAttributes)>0)
+        if(\Core::countArray($mandotatoryAttributes)>0)
         {
             foreach ($mandotatoryAttributes as $fieldName)
             {
-                if($fieldName!="" && Core::inArray($fieldName, $this->_showAttributes))
+                if($fieldName!="" && \Core::inArray($fieldName, $this->_showAttributes))
                 {
-                    
+
                     if($requestedData[$fieldName]=="")
                     {
                         $attributeType="";
-                        if(Core::keyInArray($fieldName, $NodeFieldAttributes))
+                        if(\Core::keyInArray($fieldName, $NodeFieldAttributes))
                         {
                             $attributeType=$NodeFieldAttributes[$fieldName];
                         }
@@ -683,7 +766,7 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                                     $errorsArray[$fieldName]=" Please Upload  ".$this->getLabel($fieldName);
                                 }
                             }
-                            else 
+                            else
                             {
                                 if($this->_requestedData['check_'.$fieldName]==1)
                                 {
@@ -696,37 +779,37 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                         }
                         else
                         {
-                            $errorsArray[$fieldName]=" Please Enter ".$this->getLabel($fieldName);                
+                            $errorsArray[$fieldName]=" Please Enter ".$this->getLabel($fieldName);
                         }
                     }
                     else
                     {
-                        if(Core::inArray($fieldName, $this->_numberAttributes))
+                        if(\Core::inArray($fieldName, $this->_numberAttributes))
                         {
                             if(!is_numeric($requestedData[$fieldName]))
                             {
                                 $errorsArray[$fieldName]=" Please Enter Numbers Only ";
-                            }                    
+                            }
                         }
                     }
                 }
 
-            }    
+            }
         }
         if(count($errorsArray)==0)
         {
             foreach($this->_uniqueAttributes as $fieldName)
             {
-                if($requestedData[$fieldName]!="")
+                if(\Core::getValueFromArray($requestedData, "$fieldName")!="")
                 {
-                    $db=new Core_DataBase_ProcessQuery();            
-                    $db->setTable($this->_tableName); 
+                    $db=new \Core\DataBase\ProcessQuery();
+                    $db->setTable($this->_tableName);
                     $db->addField("count(".$this->_tableName.".$this->_primaryKey)");
                     $db->addWhere($fieldName."='".$requestedData[$fieldName]."'");
-                            $db->addWhere($this->_primaryKey."!='".Core::getValueFromArray($nodeResult, $this->_primaryKey)."'");
-                    
-                    $db->buildSelect();       
-                    
+                            $db->addWhere($this->_primaryKey."!='".\Core::getValueFromArray($nodeResult, $this->_primaryKey)."'");
+
+                    $db->buildSelect();
+
                     $existingCount=$db->getValue();
                     if($existingCount>0)
                     {
@@ -735,44 +818,44 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                 }
             }
             $UnqueFieldSetAttributes=$this->getUnqueFieldSetAttributes();
-            if(Core::countArray($UnqueFieldSetAttributes)>0)
+            if(\Core::countArray($UnqueFieldSetAttributes)>0)
             {
-                foreach ($UnqueFieldSetAttributes as $UnqueFieldSet) 
+                foreach ($UnqueFieldSetAttributes as $UnqueFieldSet)
                 {
-                    $db=new Core_DataBase_ProcessQuery();            
-                    $db->setTable($this->_tableName); 
+                    $db=new \Core\DataBase\ProcessQuery();
+                    $db->setTable($this->_tableName);
                     $db->addField("count(".$this->_tableName.".$this->_primaryKey)");
-                    $UnqueFieldSet_list= Core::convertStringToArray($UnqueFieldSet);
+                    $UnqueFieldSet_list= \Core::convertStringToArray($UnqueFieldSet);
                     $UnqueFieldSet_list_label=array();
                     foreach($UnqueFieldSet_list as $fieldName)
-                    {            
+                    {
                         $UnqueFieldSet_list_label[]=$this->getLabel($fieldName);
                         $db->addWhere($fieldName."='".$requestedData[$fieldName]."'");
                     }
-                    $db->addWhere($this->_primaryKey."!='".$nodeResult[$this->_primaryKey]."'");                    
-                    $db->buildSelect();                    
+                    $db->addWhere($this->_primaryKey."!='".$nodeResult[$this->_primaryKey]."'");
+                    $db->buildSelect();
                     $existingCount=$db->getValue();
                     if($existingCount>0)
                     {
-                        $errorsArray[$fieldName]=" Value must be Unque for Combination :: (".Core::convertArrayToString($UnqueFieldSet_list_label,",").") ";
+                        $errorsArray[$fieldName]=" Value must be Unque for Combination :: (".\Core::convertArrayToString($UnqueFieldSet_list_label,",").") ";
                     }
                 }
             }
-            
-        }   
-        
-        $methodName=Core::convertStringToMethod($this->_nodeName."_nodeDataValidateAfter");
-        if(Core::methodExists($this, $methodName))
+
+        }
+
+        $methodName=\Core::convertStringToMethod($this->_nodeName."_nodeDataValidateAfter");
+        if(\Core::methodExists($this, $methodName))
         {
             $errorsArray=$this->$methodName($errorsArray);
         }
         return $errorsArray;
     }
     public function beforeDataUpdate($data)
-    {        
-        
+    {
+
         $node=$this->_nodeName;
-        $node_properties=$this->_currentNodeStructure;        
+        $node_properties=$this->_currentNodeStructure;
         $requestedData=$this->_requestedData;
         $filesData=$this->_filesData;
         $action=$this->_currentAction;
@@ -782,13 +865,13 @@ class Core_Controllers_NodeController extends Core_Pages_Render
         $filesettings_array=array();
         $file_types=array();
         $filePath=$this->_filePath;
-        $existingResult=Core::convertJsonToArray($requestedData['noderesult']);
-        if(Core::keyInArray("parent_level",$this->_NodeFieldsList))
+        $existingResult=\Core::convertJsonToArray(\Core::getValueFromArray($requestedData, "noderesult"));
+        if(\Core::keyInArray("parent_level",$this->_NodeFieldsList))
         {
             $parent_level=1;
             if($requestedData['parent']!="")
             {
-                $db=new Core_DataBase_ProcessQuery();
+                $db=new \Core\DataBase\ProcessQuery();
                 $db->setTable($table);
                 $db->addField("parent_level");
                 $db->addWhere($table.".".$this->_primaryKey."='".$requestedData['parent']."'");
@@ -798,29 +881,32 @@ class Core_Controllers_NodeController extends Core_Pages_Render
         }
         foreach ($this->_NodeFieldAttributes as $key=>$type)
         {
-           
+
             if($this->_currentAction=='edit')
             {
-                if($type=='PSD'&& $data[$key]=="")
-                {
-                    $fileName=$existingResult[$key];
-                    $data[$key]=$fileName;
-                }
+		if(!$this->_scriptAdd)
+		{
+			if($type=='PSD'&& $data[$key]=="")
+			{
+				$fileName=$existingResult[$key];
+				$data[$key]=$fileName;
+			}
+		}
             }
         }
-        
+
         if($fileattribute!="")
-        {           
-            $fileattribute_list=Core::convertStringToArray($fileattribute);            
-              
+        {
+            $fileattribute_list=\Core::convertStringToArray($fileattribute);
+
             if(count($fileattribute_list)>0)
             {
-                
+
                 foreach($fileattribute_list as $key)
                 {
-                    
 
-                    if(Core::keyInArray($key,$filesData))
+
+                    if(\Core::keyInArray($key,$filesData))
                     {
 
                             $columnnamedata=$filesData[$key];
@@ -828,7 +914,7 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                             {
                                 $uploadfolder="";
                                 $storagefolder="";
-                                if(Core::keyInArray($key, $filePath))
+                                if(\Core::keyInArray($key, $filePath))
                                 {
                                     $uploadfolder=$filePath[$key]['storagefolder'];
                                     $storagefolder=$filePath[$key]['storagefolder'];
@@ -837,50 +923,72 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                                 $list=explode(".",$columnnamedata['name']);
                                 $extentioncount=count($list);
                                 $extention=$list[$extentioncount-1];
-                                $filename=strtotime(date('Y-m-d h:i:s'))."_".str_replace(array(" ","_"),array("",""),$list['0'].".".strtolower($extention));
-                                $data[$key]=$filename;                            
-                                $uploadfolder=Core::createFolder($uploadfolder, "U");
+				$uploadfolder=\Core::createFolder($uploadfolder, "U");
+                                $filename=str_replace(array(" ","_"),array("",""),$list['0'].".".strtolower($extention));
+				$temppath=$uploadfolder.$filename;
+				if(\Core::fileExists($temppath))
+				{
+					$filename=str_replace(array(" ","_"),array("",""),$list['0']."_".strtotime(date('Y-m-d h:i:s')).".".strtolower($extention));
+				}
+                                $data[$key]=$filename;
                                 $filepath.=$uploadfolder.$filename;
                                 try
                                 {
-                                    move_uploaded_file($uploadfilepath,$filepath);		    
+                                    move_uploaded_file($uploadfilepath,$filepath);
                                 }
                                 catch (Exception $ex)
                                 {
-                                    Core::Log($ex->getMessage());
+                                    \Core::Log($ex->getMessage());
                                 }
-                                
-                                           
-                                $db=new Core_DataBase_ProcessQuery();
-                                $db->setTable("core_cms_image_settings");                                
+                                $imageproperties=$requestedData[$key];
+				$tempfolder=\Core::createFolder($storagefolder."/Crop", "U");
+
+				$thumbfile=$tempfolder.$data[$key];
+				if($imageproperties['w'])
+				{
+					$params = array('w' => $imageproperties['w'],
+											'h' => $imageproperties['h'],
+											'aspect_ratio' => false,
+											'crop' => false
+						 ,'x1'=>$imageproperties['x1'],'y1'=>$imageproperties['y1'],'x2'=>$imageproperties['x2'],'y2'=>$imageproperties['y2']);
+					$this->cropimage($filepath, $thumbfile, $params);
+				}
+				else
+				{
+					copy($filepath,$thumbfile);
+				}
+                                $filepath=$thumbfile;
+								$imagesettings=[];
+                                $db=new \Core\DataBase\ProcessQuery();
+                                $db->setTable("core_cms_image_settings");
                                 $db->addFieldArray(array("core_cms_image_settings.name"=>"tempname"));
                                 $db->addFieldArray(array("core_cms_image_settings.witdthvalue"=>"witdthvalue"));
                                 $db->addFieldArray(array("core_cms_image_settings.heightvalue"=>"heightvalue"));
-                                $db->addWhere("core_cms_image_settings.id in('".Core::convertArrayToString(Core::convertStringToArray($filePath[$key]['imagesizeid']),"','")."')");
+                                $db->addWhere("core_cms_image_settings.id in('".\Core::convertArrayToString(\Core::convertStringToArray($filePath[$key]['imagesizeid']),"','")."')");
                                 $db->buildSelect();
                                 $filesettings=$db->getRows();
                                 if(count($filesettings)>0)
                                 {
                                     foreach($filesettings as $fs)
                                     {
-                                            $imagesettings[$fs['tempname']]=$fs;
+										$imagesettings[$fs['tempname']]=$fs;
                                     }
                                 }
-                                
+
                                 if(count($imagesettings)>0)
                                 {
                                         foreach($imagesettings as $tempname=>$tempdata)
-                                        {              
+                                        {
                                             if($storagefolder)
                                             {
                                                 $tempfolder=$storagefolder."/".$tempname;
                                             }
-                                            else 
+                                            else
                                             {
                                                 $tempfolder=$tempname;
                                             }
-                                            $tempfolder=Core::createFolder($tempfolder, "U");
-                                            $thumbfile=$tempfolder.$filename;                                                    			
+                                            $tempfolder=\Core::createFolder($tempfolder, "U");
+                                            $thumbfile=$tempfolder.$filename;
                                             $params = array(
                                             'width' => $tempdata['witdthvalue'],
                                             'height' => $tempdata['heightvalue'],
@@ -888,103 +996,105 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                                             'crop' => false);
                                             $this->img_resize($filepath, $thumbfile, $params);
                                         }
-                                }  		    		    		    
+                                }
                             }
                             else
                             {
                                 if($this->_currentAction=='edit')
                                 {
-                                    if($requestedData['check_'.$key]==1)
+                                    if(\Core::getValueFromArray($requestedData,'check_'.$key)!=1)
                                     {
-
-                                    }
-                                    else   
-                                    {
-                                        $fileName=$existingResult[$key];
+										$fileName=$existingResult[$key];
                                         $data[$key]=$fileName;
-                                    }  
+                                    }
                                 }
                             }
-                    }  
-                    else 
-                    {
-                        if($this->_currentAction=='edit')
-                        {
-                            $fileName=$existingResult[$key];
-                            $data[$key]=$fileName;
-                        }
                     }
-                    $imageproperties=$requestedData[$key];
-                    $tempfolder=Core::createFolder($tempfolder, "U");
-                    $thumbfile=$tempfolder."crop_".$data[$key];                
-                    
-                    $params = array(   'w' => $imageproperties['w'],
-                                            'h' => $imageproperties['h'],
-                                            'aspect_ratio' => false,
-                                            'crop' => false
-                         ,'x1'=>$imageproperties['x1'],'y1'=>$imageproperties['y1'],'x2'=>$imageproperties['x2'],'y2'=>$imageproperties['y2']);
-                    $this->cropimage($filepath, $thumbfile, $params);                    
+                    else
+                    {
+		    	if(!$this->_scriptAdd)
+                        {
+				if($this->_currentAction=='edit')
+				{
+					$fileName=$existingResult[$key];
+					$data[$key]=$fileName;
+				}
+			}
+                    }
 
-                }  
+                }
             }
         }
-        
+        $attributes=array();
+        $nodeModel=\CoreClass::getModel("core_node_attribute_option");
+        $nodeModel->addCustomFilter("core_node_settings_id='".$this->_nodeName."'");
+        $nodeModel->getCollection();
+        if($nodeModel->_totalRecordsCount>0)
+        {
+            foreach ($nodeModel->_collections as $record)
+            {
+                        if(\Core::keyInArray($record['core_attribute_option_id'], $requestedData))
+                        {
+                            $data[$record['core_attribute_option_id']]=$requestedData[$record['core_attribute_option_id']];
+                        }
+            }
+        }
         return $data;
     }
     public function actionRestriction()
     {
-        
+
         if(count($this->_individualActions)>0)
         {
             foreach ($this->_individualActions as $actionData)
-            {                 
+            {
                 $methodName=$actionData['code']."_".$this->_nodeName."_actionRestriction";
-                $methodName=Core::convertStringToMethod($methodName);
-                if(Core::methodExists($this, $methodName))
+                $methodName=\Core::convertStringToMethod($methodName);
+                if(\Core::methodExists($this, $methodName))
                 {
                     $this->$methodName();
                 }
                 else
                 {
                     $methodName=$actionData['code']."_actionRestriction";
-                    $methodName=Core::convertStringToMethod($methodName);    
-                    if(Core::methodExists($this, $methodName))
+                    $methodName=\Core::convertStringToMethod($methodName);
+                    if(\Core::methodExists($this, $methodName))
                     {
                         $this->$methodName();
                     }
                 }
             }
-        }        
+        }
     }
     protected  function deleteActionRestriction()
     {
         $primaryKeys=array_keys($this->_collections);
-        $processkeys=$primaryKeys;        
-        $restrictionKeys=array();        
+        $processkeys=$primaryKeys;
+        $restrictionKeys=array();
         /*if(count($processkeys)>0)
-        {            
+        {
             if(count($this->_nodeOTMRelations)>0)
             {
                 foreach ($this->_nodeOTMRelations as $node=>$parentKey)
-                {          
+                {
                     if(count($processkeys)>0)
                     {
-                        $np=new Core_Model_NodeProperties();
+                        $np=new \Core\Model\NodeProperties();
                         $np->setNode($node);
                         $currentNodeStructure=$np->currentNodeStructure();
                         $tableName=$currentNodeStructure['tablename'];
 
-                        $db=new Core_DataBase_ProcessQuery();
+                        $db=new \Core\DataBase\ProcessQuery();
                         $db->setTable($tableName);
                         $db->addFieldArray(array("distinct(".$tableName.".".$parentKey.")"=>$parentKey));
-                        $db->addWhere($tableName.".".$parentKey." in ('".Core::convertArrayToString($processkeys, "','")."')");
-                        $db->buildSelect();                          
-                        $childRecords=$db->getRows($parentKey);  
-                        $parentKeysContainsRecords=Core::getKeysFromArray($childRecords);
+                        $db->addWhere($tableName.".".$parentKey." in ('".\Core::convertArrayToString($processkeys, "','")."')");
+                        $db->buildSelect();
+                        $childRecords=$db->getRows($parentKey);
+                        $parentKeysContainsRecords=\Core::getKeysFromArray($childRecords);
                         if(count($parentKeysContainsRecords)>0)
-                        {                            
-                            $processkeys=Core::diffArray($processkeys, $parentKeysContainsRecords);
-                            $restrictionKeys=Core::mergeArrays($restrictionKeys,$parentKeysContainsRecords);
+                        {
+                            $processkeys=\Core::diffArray($processkeys, $parentKeysContainsRecords);
+                            $restrictionKeys=\Core::mergeArrays($restrictionKeys,$parentKeysContainsRecords);
                         }
                     }
                     else
@@ -994,45 +1104,51 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                 }
             }
         }*/
-        $this->_removeActionRecords['delete']=$restrictionKeys;        
+        $this->_removeActionRecords['delete']=$restrictionKeys;
     }
     function recordActionPerform($action,$primaryKeyValue)
     {
-        $removeActionRecords=Core::getValueFromArray($this->_removeActionRecords,$action);
-        if(Core::countArray($removeActionRecords)>0)
+        $removeActionRecords=\Core::getValueFromArray($this->_removeActionRecords,$action);
+        if(\Core::countArray($removeActionRecords)>0)
         {
-            if(Core::inArray($primaryKeyValue, $removeActionRecords))
+            if(\Core::inArray($primaryKeyValue, $removeActionRecords))
             {
                 return false;
             }
-        }              
+        }
         return true;
-        
+
     }
     function mradeleteAction()
     {
-        
-        $pidname=$this->_nodeName.'_selector';
-        $primaryids=Core::convertStringToArray($this->_requestedData[$pidname],'|');
-        foreach ($primaryids as $pid) 
+		$backUrl=$this->_websiteHostUrl;
+        $actionflag=isset($this->_requestedData['actionflag'])?$this->_requestedData['actionflag']:"";
+        if($this->_parentNode)
         {
-            $node=CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"delete");     
+            $backUrl=$this->_websiteAdminUrl.$this->_parentNode."/".$this->_parentAction."/".$this->_parentSelector."/MTO/".$this->_nodeName;
+        }
+
+        $pidname=$this->_nodeName.'_selector';
+        $primaryids=\Core::convertStringToArray($this->_requestedData[$pidname],'|');
+        foreach ($primaryids as $pid)
+        {
+            $node=\CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"delete");
             $node->setNodeName($this->_nodeName);
             $node->setActionName("delete");
-            $node->setParentNode($parentNode);
-            $node->setParentValue($parentValue);
-            $node->setParentAction($parentAction);
+            $node->setParentNode($this->_parentNode);
+            $node->setParentValue($this->_parentSelector);
+            $node->setParentAction($this->_parentAction);
             $node->setCurrentSelector($pid);
-            $node->setMethodType("POST"); 
+            $node->setMethodType("POST");
             $node->setMraActionPerform();
             $node->checkSession();
             $functionName="deleteAction";
             $node->$functionName();
-            
+
         }
         $output=array();
         $output['status']="success";
-        $output['redirecturl']=$this->_websiteHostUrl;            
+        $output['redirecturl']=$backUrl;
         echo json_encode($output);
     }
     public function checkActionPerform()
@@ -1048,20 +1164,20 @@ class Core_Controllers_NodeController extends Core_Pages_Render
     }
     public function checkMraActionPerform()
     {
-        if(Core::countArray($this->_mraActions)>0)
-        {        
+        if(\Core::countArray($this->_mraActions)>0)
+        {
             return true;
         }
         else
         {
             return FALSE;
         }
-         
+
     }
     public function checkMultiEditAction()
     {
-        $multiEditFields=  $this->_currentNodeStructure['editlist'];  
-        if(Core::countArray(Core::convertStringToArray($multiEditFields)))
+        $multiEditFields=  $this->_currentNodeStructure['editlist'];
+        if(\Core::countArray(\Core::convertStringToArray($multiEditFields)))
         {
             return true;
         }
@@ -1072,7 +1188,7 @@ class Core_Controllers_NodeController extends Core_Pages_Render
     }
     public function checkMultiEditActionInProgress()
     {
-        if(Core::keyInArray($this->_nodeName.'_multiedit', $this->_requestedData))
+        if(\Core::keyInArray($this->_nodeName.'_multiedit', $this->_requestedData))
         {
             if($this->_requestedData[$this->_nodeName.'_multiedit']==1)
             {
@@ -1082,14 +1198,14 @@ class Core_Controllers_NodeController extends Core_Pages_Render
         }
         return false;
     }
-    public function getMultiEditAttributes() 
+    public function getMultiEditAttributes()
     {
-        return Core::convertStringToArray($this->_currentNodeStructure['editlist']);        
+        return \Core::convertStringToArray($this->_currentNodeStructure['editlist']);
     }
-    public function multiEditSaveAction() 
+    public function multiEditSaveAction()
     {
-        
-            $mandatoryAttributes=$this->mandotatoryAttributes('edit');            
+
+            $mandatoryAttributes=$this->mandotatoryAttributes('edit');
             $backUrl=$this->_websiteHostUrl;
             if($this->_parentNode)
             {
@@ -1098,19 +1214,19 @@ class Core_Controllers_NodeController extends Core_Pages_Render
             $nodeName=$this->_nodeName;
             $multiFormData=$this->_requestedData[$nodeName.'_save'];
             $errors=array();
-            
-            $method=Core::convertStringToMethod($this->_nodeName."_beforeMRADataValidate"); 
-            if(Core::methodExists($this, $method))
+
+            $method=\Core::convertStringToMethod($this->_nodeName."_beforeMRADataValidate");
+            if(\Core::methodExists($this, $method))
             {
                 $errors=$this->$method();
-            }            
-            if(Core::countArray($mandatoryAttributes)>0 && Core::countArray($errors)==0)
+            }
+            if(\Core::countArray($mandatoryAttributes)>0 && \Core::countArray($errors)==0)
             {
                 foreach ($multiFormData as $primaryValue=>$primaryData)
                 {
                         foreach($primaryData as $FieldName=>$FieldValue)
                         {
-                            if(Core::inArray($FieldName, $mandatoryAttributes))
+                            if(\Core::inArray($FieldName, $mandatoryAttributes))
                             {
                                 if($FieldValue=="")
                                 {
@@ -1120,29 +1236,29 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                         }
                 }
             }
-            if(Core::countArray($errors)==0)
+            if(\Core::countArray($errors)==0)
             {
-                $method=Core::convertStringToMethod($this->_nodeName."_afterMRADataValidate"); 
-                if(Core::methodExists($this, $method))
+                $method=\Core::convertStringToMethod($this->_nodeName."_afterMRADataValidate");
+                if(\Core::methodExists($this, $method))
                 {
                     $errors=$this->$method;
                 }
             }
-            if(Core::countArray($errors)==0)
+            if(\Core::countArray($errors)==0)
             {
                 $output=array();
                 foreach ($multiFormData as $primaryValue=>$primaryData)
                 {
-                        $data=array();    
+                        $data=array();
                         $data[$this->_primaryKey]=$primaryValue;
                         foreach($primaryData as $FieldName=>$FieldValue)
-                        {                
+                        {
                             $fieldNameValue=$FieldValue;
-                            $data[$FieldName]=$fieldNameValue;                        
-                        } 
+                            $data[$FieldName]=$fieldNameValue;
+                        }
                         $data=$this->beforeDataUpdate($data);
 
-                        $nodeSave=new Core_Model_NodeSave();
+                        $nodeSave=new \Core\Model\NodeSave();
                         $nodeSave->setNode($this->_nodeName);
                         $nodeSave->setData($this->_primaryKey,$primaryValue);
                         foreach ($data as $key=>$value)
@@ -1150,16 +1266,16 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                             $nodeSave->setData($key,$value);
                         }
                         $nodeSave->save();
-                        $method=Core::convertStringToMethod($this->_nodeName."_afterDataUpdate");                    
+                        $method=\Core::convertStringToMethod($this->_nodeName."_afterDataUpdate");
 
-                        if(Core::methodExists($this, $method))
+                        if(\Core::methodExists($this, $method))
                         {
                             $errorsArray=$this->$method();
-                            if(Core::isArray($errorsArray))
+                            if(\Core::isArray($errorsArray))
                             {
                                 $output['status']="error";
                                 $output['errors']=$errorsArray;
-                                $output['redirecturl']=$backUrl;                                             
+                                $output['redirecturl']=$backUrl;
                             }
                         }
                         $output['status']="success";
@@ -1170,7 +1286,7 @@ class Core_Controllers_NodeController extends Core_Pages_Render
                 $output['redirecturl']=$backUrl;
                 echo json_encode($output);
             }
-            else 
+            else
             {
                 $output=array();
                 $output['status']="error";
@@ -1179,35 +1295,36 @@ class Core_Controllers_NodeController extends Core_Pages_Render
             }
     }
     public function getMRATemplateAction()
-    {		
+    {
         $this->getAdminLayout();
         $this->renderLayout();
-    }    
+    }
     public function finalAction()
     {
-        
-        $method=Core::convertStringToMethod($this->_nodeName."_beforeFinal");
-        if(Core::methodExists($this, $method))
+
+        $method=\Core::convertStringToMethod($this->_nodeName."_beforeFinal");
+        if(\Core::methodExists($this, $method))
         {
            $errorsArray=$this->$method();
         }
-        if(Core::countArray($errorsArray)==0)
+        if(\Core::countArray($errorsArray)==0)
         {
-            $nodeSave=new Core_Model_NodeSave();
+            $nodeSave=new \Core\Model\NodeSave();
             $nodeSave->setNode($this->_nodeName);
             $nodeSave->setData($this->_primaryKey,$this->_currentSelector);
-            $nodeSave->setData("is_final","1");   
+            $nodeSave->setData("is_final","1");
             $nodeSave->setForceUpdate();
             $nodeSave->save();
-            $method=Core::convertStringToMethod($this->_nodeName."_afterFinal");
-            if(Core::methodExists($this, $method))
+            $method=\Core::convertStringToMethod($this->_nodeName."_afterFinal");
+            if(\Core::methodExists($this, $method))
             {
                $errorsArray=$this->$method();
             }
-        }                
+        }
         $output=array();
         $output['status']="success";
         $output['redirecturl']=$backUrl;
+		\Core::redirectUrl($this->_websiteAdminUrl.$this->_nodeName);
         if($this->_performMraAction)
         {
             return json_encode($output);
@@ -1219,27 +1336,28 @@ class Core_Controllers_NodeController extends Core_Pages_Render
     }
     public function unfinalAction()
     {
-        $method=Core::convertStringToMethod($this->_nodeName."_beforeunFinal");
-        if(Core::methodExists($this, $method))
+        $method=\Core::convertStringToMethod($this->_nodeName."_beforeunFinal");
+        if(\Core::methodExists($this, $method))
         {
            $errorsArray=$this->$method();
         }
-        if(Core::countArray($errorsArray)==0)
+        if(\Core::countArray($errorsArray)==0)
         {
-            $nodeSave=new Core_Model_NodeSave();
+            $nodeSave=new \Core\Model\NodeSave();
             $nodeSave->setNode($this->_nodeName);
             $nodeSave->setData($this->_primaryKey,$this->_currentSelector);
-            $nodeSave->setData("is_final","0");           
+            $nodeSave->setData("is_final","0");
             $nodeSave->save();
-            $method=Core::convertStringToMethod($this->_nodeName."_afterunFinal");
-            if(Core::methodExists($this, $method))
+            $method=\Core::convertStringToMethod($this->_nodeName."_afterunFinal");
+            if(\Core::methodExists($this, $method))
             {
                $errorsArray=$this->$method();
             }
-        }                
+        }
         $output=array();
         $output['status']="success";
         $output['redirecturl']=$backUrl;
+		\Core::redirectUrl($this->_websiteAdminUrl.$this->_nodeName);
         if($this->_performMraAction)
         {
             return json_encode($output);
@@ -1253,83 +1371,83 @@ class Core_Controllers_NodeController extends Core_Pages_Render
     {
         $recordStatus=array();
         $pidname=$this->_nodeName.'_selector';
-        $primaryids=Core::convertStringToArray($this->_requestedData[$pidname],'|');
-        foreach ($primaryids as $pid) 
+        $primaryids=\Core::convertStringToArray($this->_requestedData[$pidname],'|');
+        foreach ($primaryids as $pid)
         {
-            $node=CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"final"); 
+            $node=\CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"final");
             $node->setNodeName($this->_nodeName);
             $node->setActionName("final");
             $node->setParentNode($parentNode);
             $node->setParentValue($parentValue);
             $node->setParentAction($parentAction);
             $node->setCurrentSelector($pid);
-            $node->setMethodType("POST"); 
+            $node->setMethodType("POST");
             $node->setMraActionPerform();
             $node->checkSession();
             $functionName="finalAction";
-            $recordStatus[$pid]=$node->$functionName();           
+            $recordStatus[$pid]=$node->$functionName();
         }
         $output=array();
         $output['status']="success";
-        $output['redirecturl']=$this->_websiteHostUrl;            
+        $output['redirecturl']=$this->_websiteHostUrl;
         echo json_encode($output);
     }
     public function mraunfinalAction()
     {
         $pidname=$this->_nodeName.'_selector';
-        
-        $primaryids=Core::convertStringToArray($this->_requestedData[$pidname],'|');
-        foreach ($primaryids as $pid) 
+
+        $primaryids=\Core::convertStringToArray($this->_requestedData[$pidname],'|');
+        foreach ($primaryids as $pid)
         {
-            $node=CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"unfinal"); 
+            $node=\CoreClass::getController($this->_nodeName,$this->_currentNodeModule,"unfinal");
             $node->setNodeName($this->_nodeName);
             $node->setActionName("unfinal");
             $node->setParentNode($parentNode);
             $node->setParentValue($parentValue);
             $node->setParentAction($parentAction);
             $node->setCurrentSelector($pid);
-            $node->setMethodType("POST"); 
+            $node->setMethodType("POST");
             $node->setMraActionPerform();
             $node->checkSession();
             $functionName="unfinalAction";
             $node->$functionName();
-            
+
         }
         $output=array();
         $output['status']="success";
-        $output['redirecturl']=$this->_websiteHostUrl;            
+        $output['redirecturl']=$this->_websiteHostUrl;
         echo json_encode($output);
     }
     public function getDetailsAction()
-    {        
+    {
         $this->getCollection();
         $output=array();
         $output['status']="success";
-        $output['recordCount']=Core::countArray($this->_collections);
+        $output['recordCount']=\Core::countArray($this->_collections);
         $output['fileData']=$this->_fileStoragePath;
         $output['records']=$this->_collections;
-        $output['redirecturl']=$this->_websiteHostUrl;            
+        $output['redirecturl']=$this->_websiteHostUrl;
         echo json_encode($output);
-        exit;       
+        exit;
     }
     public function getRecordAction()
-    {  
+    {
         $this->addCustomFilter($this->_nodeName.".".$this->_primaryKey."='".$this->_currentSelector."'");
         $this->getCollection();
         $output=array();
         $output['status']="success";
-        $output['recordCount']=Core::countArray($this->_collections);
+        $output['recordCount']=\Core::countArray($this->_collections);
         $output['fileData']=$this->_fileStoragePath;
         $output['records']=$this->_collections;
-        $output['redirecturl']=$this->_websiteHostUrl;            
+        $output['redirecturl']=$this->_websiteHostUrl;
         echo json_encode($output);
-        exit;       
+        exit;
     }
-    public function printAction() 
+    public function printAction()
     {
         $this->loadLayout("print.phtml");
     }
-    public function exportAction() 
+    public function exportAction()
     {
         $this->loadLayout("export.phtml");
     }
@@ -1342,20 +1460,20 @@ class Core_Controllers_NodeController extends Core_Pages_Render
 	$quality = !empty($params['quality']) ?  $params['quality'] : 100;
 	$aspect_ratio = isset($params['aspect_ratio']) ?  $params['aspect_ratio'] : true;
 	$crop = isset($params['crop']) ?  $params['crop'] : true;
-     
+
 	if (!file_exists($ini_path)) return false;
-     
-     
+
+
 	if (!is_dir($dir=dirname($dest_path))) mkdir($dir);
-     
+
 	$img_info = getimagesize($ini_path);
 	if ($img_info === false) return false;
-     
+
 	$ini_p = $img_info[0]/$img_info[1];
 	if ( $constraint ) {
 	    $con_p = $constraint['width']/$constraint['height'];
 	    $calc_p = $constraint['width']/$img_info[0];
-     
+
 	    if ( $ini_p < $con_p ) {
 		$height = $constraint['height'];
 		$width = $height*$ini_p;
@@ -1373,18 +1491,18 @@ class Core_Controllers_NodeController extends Core_Pages_Render
 		$height = $img_info[1];
 	    }
 	}
-     
+
 	preg_match('/\.([^\.]+)$/i',basename($dest_path), $match);
 	$ext = $match[1];
 	$output_format = ($ext == 'jpg') ? 'jpeg' : $ext;
-     
+
 	$format = strtolower(substr($img_info['mime'], strpos($img_info['mime'], '/')+1));
 	$icfunc = "imagecreatefrom" . $format;
-     
+
 	$iresfunc = "image" . $output_format;
-     
+
 	if (!function_exists($icfunc)) return false;
-     
+
 	$dst_x = $dst_y = 0;
 	$src_x = $src_y = 0;
 	$res_p = $width/$height;
@@ -1413,7 +1531,7 @@ class Core_Controllers_NodeController extends Core_Pages_Render
 	    $src_w = $img_info[0];
 	    $src_h = $img_info[1];
 	}
-     
+
 	$isrc = $icfunc($ini_path);
 	$idest = imagecreatetruecolor($width, $height);
 	if ( ($format == 'png' || $format == 'gif') && $output_format == $format ) {
@@ -1427,15 +1545,15 @@ class Core_Controllers_NodeController extends Core_Pages_Render
 	}
 	imagecopyresampled($idest, $isrc, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
 	$res = $iresfunc($idest, $dest_path, $quality);
-     
+
 	imagedestroy($isrc);
 	imagedestroy($idest);
-     
+
 	return $res;
-    }    
+    }
     public function cropimage($filename, $new_filename, $params = array())
-    {        
-        
+    {
+
         $x1=$params['x1'];
         $y1=$params['y1'];
         $x2=$params['x2'];
@@ -1447,8 +1565,7 @@ class Core_Controllers_NodeController extends Core_Pages_Render
         list($current_width, $current_height) = getimagesize($filename);
 
         //die(print_r($_POST));
-
-        // This will be the final size of the image 
+        // This will be the final size of the image
         $crop_width = $w;
         $crop_height = $h;
 
@@ -1462,4 +1579,3 @@ class Core_Controllers_NodeController extends Core_Pages_Render
         imagejpeg($new, $new_filename, 95);
     }
 }
-?>

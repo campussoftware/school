@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreRegisternode 
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreRegisternode 
 {
     //put your code here
     public function execute()
     {
         try
         {
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_registernode");
             $registerController->setNodeNameData("core_registernode");
             $registerController->setDisplayValue("Register Nodes");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreRegisternode
             $registerController->setIsNotification("0");
             $registerController->dataSave();     
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_registernode");           
             $registerController->setTablename("core_registernode");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreRegisternode
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_registernode");
             $relationController->setCoreNodeColname("core_root_module_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -93,7 +94,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreRegisternode
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

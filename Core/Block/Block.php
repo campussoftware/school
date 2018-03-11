@@ -11,23 +11,36 @@
  *
  * @author venkatesh
  */
-class Core_Block_Block extends Core_Pages_PageLayout
+namespace Core\Block;
+use \Core\Pages\PageLayout;
+class Block extends PageLayout
 {
     //put your code here
     public $_layout=NULL;
     public $_blockName;
     public $_parentBlock=NULL;
     public $_template;
-    public $_controllerObj;
     public $_websiteSettings=NULL;
-    function __construct($controller) 
+    public $_accordionList=array();
+    public $_defaultAcdAttributes=array();
+    public $_accordionFields=array();
+    public $_partentObject;
+
+    function __construct($controller)
     {
-	$this->_websiteSettings=new Core_WebsiteSettings();
+        global $rootObj;
+	$this->_websiteSettings=$rootObj;
         $this->_controllerObj=$controller;
+        $this->_defaultAcdAttributes=$controller->_showAttributes;
+        parent::__construct($controller);
     }
     public function setLayout($layout)
     {
         $this->_layout=$layout;
+    }
+    public function setControllerObject($controllerObj)
+    {
+        $this->_controllerObj=$controllerObj;
     }
     public function setBlockName($block)
     {
@@ -42,17 +55,29 @@ class Core_Block_Block extends Core_Pages_PageLayout
         $this->_template=$template;
     }
     public function execute()
-    {
+    {        
         $this->loadLayout($this->_template.".phtml", 1);
     }
-    public function loadChildBlock()
+    public function setParentObject($_partentObject)
     {
-        $layoutContent=Core::getFileContent($this->_layout);
-        $blockProperties=Core::processXmlData($layoutContent,'//block[@parent="'.$this->_blockName.'"]');
-        
+        $this->_partentObject=$_partentObject;
+    }
+    public function loadChildBlock($blockName=NULL)
+    {
+        if($blockName)
+        {
+            $pattern='//block[@parent="'.$this->_blockName.'"][@name="'.$blockName.'"]';
+        }
+        else
+        {
+            $pattern='//block[@parent="'.$this->_blockName.'"]';
+        }
+       
+        $layoutContent=\Core::getFileContent($this->_layout);
+        $blockProperties=\Core::processXmlData($layoutContent,$pattern);
         foreach ($blockProperties as $eachblockProperties)
         {
-            if(Core::keyInArray('@attributes', $eachblockProperties))
+            if(\Core::keyInArray('@attributes', $eachblockProperties))
             {
                 $blockConfigData=$eachblockProperties['@attributes'];
                 $class=$blockConfigData['class'];
@@ -64,8 +89,8 @@ class Core_Block_Block extends Core_Pages_PageLayout
                         $block->setLayout($this->_layout);
                         $block->setBlockName($blockConfigData['name']);
                         $block->setParentBlock($this->_blockName);
-                        $block->setTemplate($blockConfigData['template']);
-                        
+                        $block->setParentObject($this);
+                        $block->setTemplate($blockConfigData['template']);                        
                         $block->execute();
                     }
                     catch (Exception $ex)
@@ -76,4 +101,10 @@ class Core_Block_Block extends Core_Pages_PageLayout
             }
         }
     }
+    public function getFromTabs()
+    {
+        
+    }
+    
+    
 }

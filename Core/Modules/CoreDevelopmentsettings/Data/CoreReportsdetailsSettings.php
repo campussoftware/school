@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetailsSettings
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreReportsdetailsSettings
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_reportsdetails_settings");
             $registerController->setNodeNameData("core_reportsdetails_settings");
             $registerController->setDisplayValue("Report Settings");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetailsSettings
             $registerController->setIsNotification("2");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_reportsdetails_settings");           
             $registerController->setTablename("core_reportsdetails_settings");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetailsSettings
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_reportsdetails_settings");
             $relationController->setCoreNodeColname("core_reportsdetails_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -76,7 +77,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetailsSettings
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_reportsdetails_settings");
             $relationController->setCoreNodeColname("core_queryclause_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -84,7 +85,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetailsSettings
             $relationController->setSortValue("2");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_reportsdetails_settings");
             $relationController->setCoreNodeColname("core_aggregate_function_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -92,7 +93,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetailsSettings
             $relationController->setSortValue("3");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_reportsdetails_settings");
             $relationController->setCoreNodeColname("core_orderclausetype_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -100,7 +101,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetailsSettings
             $relationController->setSortValue("4");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_reportsdetails_settings");
             $relationController->setCoreNodeColname("node_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -113,7 +114,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetailsSettings
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

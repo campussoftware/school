@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeSettings 
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreNodeSettings 
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_node_settings");
             $registerController->setNodeNameData("core_node_settings");
             $registerController->setDisplayValue("Node Settings");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeSettings
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_node_settings");           
             $registerController->setTablename("core_node_settings");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeSettings
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_settings");
             $relationController->setCoreNodeColname("core_registernode_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -76,7 +77,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeSettings
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_settings");
             $relationController->setCoreNodeColname("core_node_actions_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -84,7 +85,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeSettings
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_settings");
             $relationController->setCoreNodeColname("default_action");
             $relationController->setCoreRelationTypeId("MTO");
@@ -92,7 +93,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeSettings
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_settings");
             $relationController->setCoreNodeColname("core_node_settings_id");
             $relationController->setCoreRelationTypeId("OTM");
@@ -100,7 +101,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeSettings
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_settings");
             $relationController->setCoreNodeColname("core_node_settings_id");
             $relationController->setCoreRelationTypeId("OTM");
@@ -108,7 +109,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeSettings
             $relationController->setSortValue("2");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_settings");
             $relationController->setCoreNodeColname("core_node_settings_id");
             $relationController->setCoreRelationTypeId("OTM");
@@ -116,19 +117,27 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeSettings
             $relationController->setSortValue("3");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_settings");
             $relationController->setCoreNodeColname("core_node_settings_id");
             $relationController->setCoreRelationTypeId("OTM");
             $relationController->setCoreNodeParent("core_node_fieldattributes");
             $relationController->setSortValue("4");
-            $relationController->dataSave();            
+            $relationController->dataSave();
+            
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController->setCoreNodeSettingsId("core_node_settings");
+            $relationController->setCoreNodeColname("core_node_settings_id");
+            $relationController->setCoreRelationTypeId("OTM");
+            $relationController->setCoreNodeParent("core_node_attribute_option");
+            $relationController->setSortValue("5");
+            $relationController->dataSave();
             
             
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

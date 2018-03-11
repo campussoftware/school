@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFieldattributes
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreNodeFieldattributes
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_node_fieldattributes");
             $registerController->setNodeNameData("core_node_fieldattributes");
             $registerController->setDisplayValue("Field Attributes");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFieldattributes
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_node_fieldattributes");           
             $registerController->setTablename("core_node_fieldattributes");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFieldattributes
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_fieldattributes");
             $relationController->setCoreNodeColname("core_node_settings_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -76,7 +77,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFieldattributes
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_fieldattributes");
             $relationController->setCoreNodeColname("core_root_attribute_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -87,7 +88,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeFieldattributes
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

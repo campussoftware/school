@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreDbbackfile
+namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreDbbackfile
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_dbbackfile");
             $registerController->setNodeNameData("core_dbbackfile");
             $registerController->setDisplayValue("DB BackUp");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreDbbackfile
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_codebackup");           
             $registerController->setTablename("core_backupdetails");
             $registerController->setAutokey("id");
@@ -71,7 +72,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreDbbackfile
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreArchiveData
+namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreArchiveData
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_archive_data");
             $registerController->setNodeNameData("core_archive_data");
             $registerController->setDisplayValue("Archive Data");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreArchiveData
             $registerController->setIsNotification("1");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_archive_data");           
             $registerController->setTablename("core_archive_data");
             $registerController->setAutokey("id");
@@ -71,7 +72,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreArchiveData
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

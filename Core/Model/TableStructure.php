@@ -1,6 +1,6 @@
 <?php
-    
-    class Core_Model_TableStructure 
+    namespace Core\Model;
+    class TableStructure 
     {
         public $_tableName;
         public $_tableStructure=array();
@@ -12,7 +12,8 @@
         {
             if($this->_tableName)
             {
-                $qp=new Core_DataBase_ProcessQuery();
+                $cc=new \CoreClass();
+                $qp=$cc->getObject("\Core\DataBase\ProcessQuery");
                 $qp->setTable($this->_tableName);
                 $this->_tableStructure=$qp->getDescription();
             }

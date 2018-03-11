@@ -11,7 +11,8 @@
  *
  * @author ramesh
  */
-class Core_Email_MailerException 
+namespace Core\Email;
+class MailerException 
 {
     //put your code here
     public function errorMessage() 

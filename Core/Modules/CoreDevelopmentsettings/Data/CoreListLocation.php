@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreListLocation
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreListLocation
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_list_location");
             $registerController->setNodeNameData("core_list_location");
             $registerController->setDisplayValue("Location Details");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreListLocation
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_list_location");           
             $registerController->setTablename("core_list_location");
             $registerController->setAutokey("id");
@@ -68,10 +69,37 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreListLocation
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController->setCoreNodeSettingsId("core_list_location");
+            $relationController->setCoreNodeColname("core_country_id");
+            $relationController->setCoreRelationTypeId("MTO");
+            $relationController->setCoreNodeParent("core_country");
+            $relationController->setSortValue("1");
+            $relationController->dataSave();
+            
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController->setCoreNodeSettingsId("core_list_location");
+            $relationController->setCoreNodeColname("core_list_state_id");
+            $relationController->setCoreRelationTypeId("MTO");
+            $relationController->setCoreNodeParent("core_list_state");
+            $relationController->setDependeeFields("core_country");
+            $relationController->setSortValue("2");
+            $relationController->dataSave();
+            
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController->setCoreNodeSettingsId("core_list_location");
+            $relationController->setCoreNodeColname("core_list_city_id");
+            $relationController->setCoreRelationTypeId("MTO");
+            $relationController->setCoreNodeParent("core_list_city");
+            $relationController->setDependeeFields("core_list_state");
+            $relationController->setSortValue("3");
+            $relationController->dataSave();
+            
+            
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

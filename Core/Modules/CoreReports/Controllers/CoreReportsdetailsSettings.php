@@ -11,12 +11,14 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreReports_Controllers_CoreReportsdetailsSettings extends Core_Controllers_NodeController
+  namespace Core\Modules\CoreReports\Controllers;
+use \Core\Controllers\NodeController;
+class CoreReportsdetailsSettings extends NodeController
 {
     //put your code here
     public function getStructureAction()
     {
-        $nodeResult=Core::convertJsonToArray($this->_requestedData['noderesult']);
+        $nodeResult=\Core::convertJsonToArray($this->_requestedData['noderesult']);
         $requestedData=$this->_requestedData;
         $defaultValue=$nodeResult[$requestedData['idname']];
         $nodeName=$this->_requestedData['node_id'];
@@ -27,8 +29,8 @@ class Core_Modules_CoreReports_Controllers_CoreReportsdetailsSettings extends Co
         $tb=new Core_Model_TableStructure();
         $tb->setTable($nodestructure['tablename']);
         $tableStructure=$tb->getStructure();
-        $tableStructure=Core::getKeysFromArray($tableStructure);
-        $tableStructure=Core::diffArray($tableStructure, $this->_defaulthideAttributes);
+        $tableStructure=\Core::getKeysFromArray($tableStructure);
+        $tableStructure=\Core::diffArray($tableStructure, $this->_defaulthideAttributes);
         
         $result=array();
         $i=0;

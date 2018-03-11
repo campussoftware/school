@@ -11,7 +11,9 @@
  *
  * @author venkatesh
  */
-class Core_Modules_CoreUsermanagement_Block_User extends Core_Block_Block
+ namespace Core\Modules\CoreUsermanagement\Block;
+ use \Core\Block\Block;
+class User extends Block
 {
 	public function execute()
 	{

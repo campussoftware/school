@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreRelationType
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreRelationType
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_relation_type");
             $registerController->setNodeNameData("core_relation_type");
             $registerController->setDisplayValue("Relation Type");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreRelationType
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_relation_type");           
             $registerController->setTablename("core_relation_type");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreRelationType
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationTypeController=CoreClass::getController("core_relation_type", "core_developmentsettings");
+            $relationTypeController=\CoreClass::getController("core_relation_type", "core_developmentsettings");
             $relationTypeController->setRelationTypeName("MANY TO ONE");
             $relationTypeController->setRelationTypeShortCode("MTO");
             $relationTypeController->dataSave();
@@ -85,7 +86,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreRelationType
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

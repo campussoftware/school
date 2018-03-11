@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreSmsLog 
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreSmsLog 
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_sms_log");
         if(!$setup->tableExists($setup->getTable()))
         {

@@ -1,5 +1,7 @@
 <?php
-    class Core_DataBase_BuildQuery extends Core_DataBase_Query
+namespace Core\DataBase;
+use \Core\DataBase\Query;
+    class BuildQuery extends Query
     {
         public  $sql=NULL;
         public  $joinCondition=NULL;
@@ -45,7 +47,8 @@
         }             
         public function buildProcessData()
         {
-            $db=new Core_DataBase_DbConnect();
+            $cc = new \CoreClass();
+            $db=$cc->getObject("\Core\DataBase\DbConnect");
             $k=0;
             $this->processFieldsData="";
             if(count($this->selectedFieldArray))
@@ -155,8 +158,8 @@
         public function buildDelete()
         {
             $this->actionType=" DELETE ";
-            $this->sql=$this->actionType." FROM ";                     
-            $this->sql.=$this->table;
+            $this->sql=$this->actionType." ".$this->tablealias." FROM ";                     
+            $this->sql.=$this->table." AS ".$this->tablealias;
             $this->buildJoin();
             $this->sql.=$this->joinCondition;
             $this->buildFileterCondition();

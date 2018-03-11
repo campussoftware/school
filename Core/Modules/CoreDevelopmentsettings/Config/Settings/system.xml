@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <tabgroup>
+            <name>New Tab Group1</name>
+        <tab>
+            <name>Configuration</name>
+            <code>Configuration</code>
+            <sortno>Configuration</sortno>
+        </tab>
+        </tabgroup>
+    </tabs>    
+</config>

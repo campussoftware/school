@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreNodeAttributeOption 
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreNodeAttributeOption 
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_node_attribute_option");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -39,14 +40,44 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreNodeAttributeOption
                 "size"=>"255"          
             ));
             $setup->addColumnName(array(
+                "name"=>"core_attribute_name",
+                "displayValue"=>"Attribute Name",            
+                "default"=>false,                
+                "type"=>"varchar",
+                "size"=>"255"          
+            ));
+            $setup->addColumnName(array(
                 "name"=>"core_attribute_option_id",
                 "displayValue"=>"Attribute Code",            
                 "default"=>false,                
                 "type"=>"varchar",
                 "size"=>"255",
                 
-            ));            
-            
+            ));
+            $setup->addColumnName(array(
+                "name"=>"core_node_attributeset_id",
+                "displayValue"=>"Attribute Set Id",            
+                "default"=>false,                
+                "type"=>"int",
+                "size"=>"11",
+                
+            ));
+	    $setup->addColumnName(array(
+                "name"=>"is_filter",
+                "displayValue"=>"Is Filter",            
+                "default"=>NULL,                
+                "type"=>"tinyint",
+                "size"=>"2",
+                
+            ));
+            $setup->addColumnName(array(
+                "name"=>"is_readonly",
+                "displayValue"=>"Is Readonly",            
+                "default"=>false,                
+                "type"=>"tinyint",
+                "size"=>"1",
+                
+            ));
             $setup->addColumnName(array(
                 "name"=>"createdby",
                 "displayValue"=>"Created User Id",            

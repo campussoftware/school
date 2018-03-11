@@ -11,7 +11,9 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreCodebasedsettings_Controllers_CoreNodeFiletypes extends Core_Controllers_NodeController
+namespace Core\Modules\CoreCodebasedsettings\Controllers;
+use \Core\Controllers\NodeController;
+class CoreNodeFiletypes extends NodeController
 {
     //put your code here
     public function getStructureAction()
@@ -23,9 +25,9 @@ class Core_Modules_CoreCodebasedsettings_Controllers_CoreNodeFiletypes extends C
         $i=0;
         if($nodeName)
         {
-            $node= new Core_Model_Node();
+            $node= new \Core\Model\Node();
             $node->setNodeName($nodeName);
-            if(Core::countArray($node->_NodeFieldAttributes)>0)
+            if(\Core::countArray($node->_NodeFieldAttributes)>0)
             {
                 foreach ($node->_NodeFieldAttributes as $key=>$type)
                 {
@@ -39,8 +41,8 @@ class Core_Modules_CoreCodebasedsettings_Controllers_CoreNodeFiletypes extends C
             }
         }        
         $attributeType="select";        
-        $attributeDetails=new Core_Attributes_LoadAttribute($attributeType);				
-        $attributeClass="Core_Attributes_".$attributeDetails->_attributeName;
+        $attributeDetails=new \Core\Attributes\LoadAttribute($attributeType);				
+        $attributeClass="\Core\Attributes\\".$attributeDetails->_attributeName;
         $attribute=new $attributeClass;
         $attribute->setIdName($requestedData['idname']);
         $attribute->setOptions($result);
@@ -48,9 +50,10 @@ class Core_Modules_CoreCodebasedsettings_Controllers_CoreNodeFiletypes extends C
         $attribute->loadAttributeTemplate($attributeType,$requestedData['idname']);
     }
     public function coreNodeFiletypesAfterDataUpdate()
-    {        
-        $nodeName=$requestedData['core_node_settings_id'];
-        $cache=new Core_Cache_Refresh();
+    {    
+        $requestedData=$this->_requestedData;
+        $nodeName= \Core::getValueFromArray($requestedData, 'core_node_settings_id');
+        $cache=new \Core\Cache\Refresh();
         $cache->setNodeName($nodeName);
         $cache->setFilePath();
         return true;

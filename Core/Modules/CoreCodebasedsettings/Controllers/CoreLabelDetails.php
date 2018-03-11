@@ -11,7 +11,9 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreCodebasedsettings_Controllers_CoreLabelDetails extends Core_Controllers_NodeController
+namespace Core\Modules\CoreCodebasedsettings\Controllers;
+use \Core\Controllers\NodeController;
+class CoreLabelDetails extends NodeController
 {
     //put your code here
     public function coreLabelDetailsAfterDataUpdate()

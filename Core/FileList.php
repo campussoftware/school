@@ -1,6 +1,6 @@
 <?php
-
-class Core_FileList 
+namespace Core;
+class FileList 
 {
     protected $_filelist=array();
     protected $_directory=null;
@@ -35,7 +35,7 @@ class Core_FileList
                         }
                         else
                         {
-                            $pathinfo=new SplFileInfo($tempfpname);
+                            $pathinfo=new \SplFileInfo($tempfpname);
                             $extenstion=$pathinfo->getExtension();
                             if($extenstion==$this->_filterExtension || $this->_filterExtension==NULL)
                             {

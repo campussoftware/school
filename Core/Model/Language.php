@@ -1,5 +1,6 @@
 <?php
-class Core_Model_Language 
+namespace Core\Model;
+class Language 
 {
     public $_labelNames=array();
     
@@ -7,7 +8,7 @@ class Core_Model_Language
     {
         
         global $currentNode;
-        $np=new Core_Model_NodeProperties($currentNode);
+        $np=new \Core\Model\NodeProperties($currentNode);
         $lablelist=$np->getDefaultLabels();   
         $modulewise_name=null;
         $modulewise_node_name=null;
@@ -26,7 +27,7 @@ class Core_Model_Language
         }        
         if($modulewise_node_name)
         {            
-            if(Core::keyInArray($modulewise_node_name,$lablelist))
+            if(\Core::keyInArray($modulewise_node_name,$lablelist))
             {
                 return  $lablelist[$modulewise_node_name];
             }
@@ -34,19 +35,19 @@ class Core_Model_Language
         
         if($modulewise_name)
         {            
-            if(Core::keyInArray($modulewise_name,$lablelist))
+            if(\Core::keyInArray($modulewise_name,$lablelist))
             {
                 return  $lablelist[$modulewise_name];
             }
         }
         if($nodewise_name)
         {            
-            if(Core::keyInArray($nodewise_name,$lablelist))
+            if(\Core::keyInArray($nodewise_name,$lablelist))
             {
                 return  $lablelist[$nodewise_name];
             }
         }        
-        if(Core::keyInArray($label,$lablelist))
+        if(\Core::keyInArray($label,$lablelist))
         {
             return  $lablelist[$label];
         }
@@ -54,26 +55,26 @@ class Core_Model_Language
         $customLabels=$np->getLableNames();        
         if($modulewise_node_name)
         {            
-            if(Core::keyInArray($modulewise_node_name,$customLabels))
+            if(\Core::keyInArray($modulewise_node_name,$customLabels))
             {
                 return  $customLabels[$modulewise_node_name];
             }
         }
         if($modulewise_name)
         {            
-            if(Core::keyInArray($modulewise_name,$customLabels))
+            if(\Core::keyInArray($modulewise_name,$customLabels))
             {
                 return  $customLabels[$modulewise_name];
             }
         }
         if($nodewise_name)
         {            
-            if(Core::keyInArray($nodewise_name,$customLabels))
+            if(\Core::keyInArray($nodewise_name,$customLabels))
             {
                 return  $customLabels[$nodewise_name];
             }
         }
-        if(Core::keyInArray($label,$customLabels))
+        if(\Core::keyInArray($label,$customLabels))
         {
             return  $customLabels[$label];
         }

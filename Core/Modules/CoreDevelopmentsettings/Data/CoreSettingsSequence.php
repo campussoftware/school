@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreSettingsSequence
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreSettingsSequence
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_settings_sequence");
             $registerController->setNodeNameData("core_settings_sequence");
             $registerController->setDisplayValue("Settings Sequence");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreSettingsSequence
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_settings_sequence");           
             $registerController->setTablename("core_settings_sequence");
             $registerController->setAutokey("id");
@@ -70,7 +71,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreSettingsSequence
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

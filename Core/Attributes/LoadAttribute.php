@@ -1,11 +1,12 @@
 <?php
-    class Core_Attributes_LoadAttribute 
+namespace Core\Attributes;
+    class LoadAttribute 
 	{        
 		public $_attributeName=NULL;
         
         function __construct($attributeType=NULL) 
         {
-            $className="Core_Attributes_".ucwords($attributeType)."Attribute";
+            $className="\Core\Attributes\\".ucwords($attributeType)."Attribute";
             $classResponse=class_exists($className, true);
             if($classResponse)
             {

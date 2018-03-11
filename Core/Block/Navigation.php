@@ -11,7 +11,9 @@
  *
  * @author venkatesh
  */
-class Core_Block_Navigation extends Core_Block_Block 
+namespace Core\Block;
+use \Core\Block\Block;
+class Navigation extends Block 
 {
 
     public $_navigationPath = Array();
@@ -19,8 +21,10 @@ class Core_Block_Navigation extends Core_Block_Block
 
     public function getNavigationPath() {
         global $currentNode;
-        $wp = new Core_WebsiteSettings();
-        $lb = new Core_Model_Language();
+        global $rootObj;
+        $wp = $rootObj;
+        $cc=new \CoreClass();
+        $lb =$cc->getObject("\Core\Model\Language");
 
         if ($this->_controllerObj->_nodeName) 
         {
@@ -30,17 +34,17 @@ class Core_Block_Navigation extends Core_Block_Block
                 $this->_navigationPath[$i]['url'] = $wp->websiteAdminUrl . $this->_controllerObj->_parentNode;
                 $i++;
 
-                $np = new Core_Model_NodeProperties();
+                $np = new \Core\Model\NodeProperties();
                 $np->setNode($this->_controllerObj->_parentNode);
                 $nodeStructure = $np->currentNodeStructure();
-                $nr = new Core_Model_NodeRelations();
+                $nr = new \Core\Model\NodeRelations();
                 $nr->setNode($this->_controllerObj->_parentNode);
                 $relations = $nr->getCurrentNodeRelation();
-                if (Core::keyInArray($nodeStructure['descriptor'], $relations)) {
-                    $np = new Core_Model_NodeProperties();
+                if (\Core::keyInArray($nodeStructure['descriptor'], $relations)) {
+                    $np = new \Core\Model\NodeProperties();
                     $np->setNode($relations[$nodeStructure['descriptor']]);
                     $nodeStructure = $np->currentNodeStructure();
-                    $db = new Core_DataBase_ProcessQuery();
+                    $db = new \Core\DataBase\ProcessQuery();
                     $db->setTable($nodeStructure['tablename']);
                     $db->addField($nodeStructure['descriptor']);
                     $db->addWhere($nodeStructure['primkey'] . "='" . $this->_controllerObj->_parentValue . "'");
@@ -48,7 +52,7 @@ class Core_Block_Navigation extends Core_Block_Block
 
                     $descriptor = $db->getValue();
                 } else {
-                    $db = new Core_DataBase_ProcessQuery();
+                    $db = new \Core\DataBase\ProcessQuery();
                     $db->setTable($nodeStructure['tablename']);
                     $db->addField($nodeStructure['descriptor']);
                     $db->addWhere($nodeStructure['primkey'] . "='" . $this->_currentDetails->_parentValue . "'");
@@ -68,17 +72,17 @@ class Core_Block_Navigation extends Core_Block_Block
                 $i++;
             }
             if ($this->_controllerObj->_currentSelector) {
-                $np = new Core_Model_NodeProperties();
+                $np = new \Core\Model\NodeProperties();
                 $np->setNode($this->_controllerObj->_nodeName);
                 $nodeStructure = $np->currentNodeStructure();
-                $nr = new Core_Model_NodeRelations();
+                $nr = new \Core\Model\NodeRelations();
                 $nr->setNode($this->_controllerObj->_nodeName);
                 $relations = $nr->getCurrentNodeRelation();
-                if (Core::keyInArray($nodeStructure['descriptor'], $relations)) {
-                    $np = new Core_Model_NodeProperties();
+                if (\Core::keyInArray($nodeStructure['descriptor'], $relations)) {
+                    $np = new \Core\Model\NodeProperties();
                     $np->setNode($relations[$nodeStructure['descriptor']]);
                     $nodeStructure = $np->currentNodeStructure();
-                    $db = new Core_DataBase_ProcessQuery();
+                    $db = new \Core\DataBase\ProcessQuery();
                     $db->setTable($nodeStructure['tablename']);
                     $db->addField($nodeStructure['descriptor']);
                     $db->addWhere($nodeStructure['primkey'] . "='" . $this->_controllerObj->_currentSelector . "'");
@@ -86,7 +90,7 @@ class Core_Block_Navigation extends Core_Block_Block
 
                     $descriptor = $db->getValue();
                 } else {
-                    $db = new Core_DataBase_ProcessQuery();
+                    $db = new \Core\DataBase\ProcessQuery();
                     $db->setTable($nodeStructure['tablename']);
                     $db->addField($nodeStructure['descriptor']);
                     $db->addWhere($nodeStructure['primkey'] . "='" . $this->_controllerObj->_currentSelector . "'");

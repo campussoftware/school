@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetails
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreReportsdetails
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_reportsdetails");
             $registerController->setNodeNameData("core_reportsdetails");
             $registerController->setDisplayValue("Reports Details");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetails
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_reportsdetails");           
             $registerController->setTablename("core_reportsdetails");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetails
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_reportsdetails");
             $relationController->setCoreNodeColname("node_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -76,7 +77,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetails
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_reportsdetails");
             $relationController->setCoreNodeColname("core_output_type_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -84,7 +85,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetails
             $relationController->setSortValue("2");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_reportsdetails");
             $relationController->setCoreNodeColname("db_output_type_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -92,7 +93,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetails
             $relationController->setSortValue("3");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_reportsdetails");
             $relationController->setCoreNodeColname("core_reportsdetails_id");
             $relationController->setCoreRelationTypeId("OTM");
@@ -104,7 +105,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreReportsdetails
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreActionType 
+namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreActionType 
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_action_type");
             $registerController->setNodeNameData("core_action_type");
             $registerController->setDisplayValue("Action Type");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreActionType
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("core_node_settings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_node_settings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_action_type");           
             $registerController->setTablename("core_action_type");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreActionType
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $actionTypeController=CoreClass::getController("core_action_type", "core_developmentsettings");
+            $actionTypeController=\CoreClass::getController("core_action_type", "core_developmentsettings");
             $actionTypeController->setNodeActionName("Individual");
             $actionTypeController->setNodeActionShortCode("IN");
             $actionTypeController->dataSave();
@@ -87,7 +88,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreActionType
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

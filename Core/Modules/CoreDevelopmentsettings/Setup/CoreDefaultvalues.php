@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreDefaultvalues
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreDefaultvalues
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_defaultvalues");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -45,7 +46,7 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreDefaultvalues
                 "size"=>"255"          
             ));
              $setup->addColumnName(array(
-                "name"=>"value	",
+                "name"=>"value",
                 "displayValue"=>"Value",            
                 "default"=>NULL,                
                 "type"=>"varchar",

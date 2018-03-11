@@ -11,7 +11,9 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDashboard_Controllers_CoreUsedashboard extends Core_Controllers_NodeController
+namespace Core\Modules\CoreDashboard\Controllers;
+use \Core\Controllers\NodeController;
+class CoreUsedashboard extends NodeController
 {
     //put your code here
     public function adminAction() 

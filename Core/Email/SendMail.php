@@ -1,6 +1,7 @@
 <?php
-
-class Core_Email_SendMail extends Core_Email_Mailer
+namespace Core\Email;
+use \Core\Email\Mailer;
+class SendMail extends Mailer
 {
     protected $_emailSettings=array();
     protected $_toMails=NULL;
@@ -15,17 +16,23 @@ class Core_Email_SendMail extends Core_Email_Mailer
         $emailSettings->addCustomFilter("active_status='1'");
         $emailSettings->getCollection();
                 
-        if(Core::countArray($emailSettings->_collections)>0)
+        if(\Core::countArray($emailSettings->_collections)>0)
         {
             foreach ($emailSettings->_collections as $collection)
             {
                 $this->_emailSettings=$collection;
+		break;
             }
         }        
     }
     public function setToMail($toMail)
     {
-        $this->_toMails=$toMail;
+        
+	if($this->_toMails)
+	{
+		$this->_toMails.=",";
+	}
+	$this->_toMails.=$toMail;
     }
     public function setCcMail($ccMail)
     {
@@ -48,6 +55,34 @@ class Core_Email_SendMail extends Core_Email_Mailer
         $this->_attachmentFiles[]['path']=$filePath;
         $this->_attachmentFiles[]['name']=$name;
     }
+    public function sendDefaultMail($tomail=NULL,$subject=NULL,$message=NULL)
+    {
+        if($tomail)
+        {
+            if($this->_toMails)
+            {
+                $this->_toMails.=",";
+            }
+            $this->_toMails.=$tomail;
+        }
+        if($subject)
+        {
+            $this->_subject=$subject;
+        }
+        if($message)
+        {
+            $this->_message=$message;
+        }
+$headers = "MIME-Version: 1.0" . "\r\n";
+$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+// More headers
+$headers .= 'From: <'.$this->_emailSettings['fromemail'].'>' . "\r\n";
+//$headers .= 'Cc: myboss@example.com' . "\r\n";
+        mail($this->_toMails,$this->_subject,"Hi",$headers);
+        
+    }
+
     //put your code here
     public function sendmail($tomail=NULL,$subject=NULL,$message=NULL)
     {    
@@ -106,7 +141,7 @@ class Core_Email_SendMail extends Core_Email_Mailer
                     }
                 }
             }
-            if(Core::countArray($this->_attachmentFiles)>0)
+            if(\Core::countArray($this->_attachmentFiles)>0)
             {
                 foreach ($this->_attachmentFiles as $fileData)
                 {

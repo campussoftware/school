@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreNodeActions 
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreNodeActions 
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_node_actions");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -44,6 +45,12 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreNodeActions
                 "prmiary"=>1,
                 "type"=>"varchar",
                 "size"=>"255"                
+            ));
+            $setup->addColumnName(array(
+                "name"=>"is_layout",
+                "displayValue"=>"Is layout",
+                "type"=>"tinyint",
+                "size"=>"1"                
             ));
             $setup->addColumnName(array(
                 "name"=>"core_action_type_id",

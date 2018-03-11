@@ -11,17 +11,19 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreCodebasedsettings_Controllers_CoreCmsUploadfolders extends Core_Controllers_NodeController
+namespace Core\Modules\CoreCodebasedsettings\Controllers;
+use \Core\Controllers\NodeController;
+class CoreCmsUploadfolders extends NodeController
 {
     //put your code here
     public function coreCmsUploadfoldersAfterDataUpdate()
     {        
-        Core::createFolder($this->_requestedData['name'], "U");
+        \Core::createFolder($this->_requestedData['name'], "U");
         return TRUE;        
     }
     public function coreCmsUploadfoldersNodeDataValidateAfter($errorsArray)
     {
-        if(Core::countArray(Core::convertStringToArray($this->_requestedData['name']," "))>1)
+        if(\Core::countArray(\Core::convertStringToArray($this->_requestedData['name']," "))>1)
         {
             $errorsArray['name']="Please Enter Characters Only";
         }

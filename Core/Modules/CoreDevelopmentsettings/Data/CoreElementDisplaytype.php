@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreElementDisplaytype
+namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreElementDisplaytype
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_element_displaytype");
             $registerController->setNodeNameData("core_element_displaytype");
             $registerController->setDisplayValue("Element Display Type");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreElementDisplaytype
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_element_displaytype");           
             $registerController->setTablename("core_element_displaytype");
             $registerController->setAutokey("id");
@@ -66,12 +67,21 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreElementDisplaytype
             $registerController->setDefaultAction("admin"); 
             $registerController->setDefaultCollection('1');
             $registerController->setIsArchive("");  
-            $registerController->dataSave();            
+            $registerController->dataSave();     
             
+            $nodeActionController=\CoreClass::getController("core_element_displaytype", "core_developmentsettings");
+            
+            $nodeActionController->setElementDisplaytypeName("Accordion");
+            $nodeActionController->setElementDisplaytypeShortCode("ACRD");       
+            $nodeActionController->dataSave();
+            
+            $nodeActionController->setElementDisplaytypeName("Tab");
+            $nodeActionController->setElementDisplaytypeShortCode("TAB");       
+            $nodeActionController->dataSave();
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

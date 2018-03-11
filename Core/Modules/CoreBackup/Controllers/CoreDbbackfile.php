@@ -11,7 +11,9 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreBackup_Controllers_CoreDbbackfile extends Core_Controllers_NodeController
+namespace Core\Modules\CoreBackup\Controllers;
+use \Core\Controllers\NodeController;
+class CoreDbbackfile extends NodeController
 {
     //put your code here
     protected $_tableList=array();    
@@ -23,7 +25,7 @@ class Core_Modules_CoreBackup_Controllers_CoreDbbackfile extends Core_Controller
     }
     public function getTableNames() 
     {
-        $db=new Core_DataBase_ProcessQuery();
+        $db=new \Core\DataBase\ProcessQuery();
         $output=$db->getTablesFromDatabase();
         $this->_tableList=$output['tables'];       
     }
@@ -38,7 +40,7 @@ class Core_Modules_CoreBackup_Controllers_CoreDbbackfile extends Core_Controller
         }
         else
         {
-            $db=new Core_DataBase_ProcessQuery();
+            $db=new \Core\DataBase\ProcessQuery();
             $output=$db->getTablesFromDatabase();
             $this->_tableList=$output['tables'];
         }
@@ -54,15 +56,15 @@ class Core_Modules_CoreBackup_Controllers_CoreDbbackfile extends Core_Controller
         $folderName.=date('Y_m_d_H_i_s');
         foreach($this->_tableList as $tableName)
         {
-            $db=new Core_DataBase_ProcessQuery();
+            $db=new \Core\DataBase\ProcessQuery();
             $db->setTable($tableName);
             $createQuery=$db->getTableCreateQuery();
-            $folderPath=Core::createFolder($datetime."/".$tableName, "B");
+            $folderPath=\Core::createFolder($datetime.DIRECTORY_SEPARATOR.$tableName, "B");
             $fp=  fopen($folderPath."create.sql", "w+");            
             fwrite($fp, $createQuery);
             fclose($fp);
             unlink($folderPath."data.sql");
-            $db=new Core_DataBase_ProcessQuery();
+            $db=new \Core\DataBase\ProcessQuery();
             $db->setTable($tableName);
             $db->getTableDataQuery($folderPath."data.sql");
             $content=file_get_contents($folderPath."data.sql");
@@ -70,7 +72,7 @@ class Core_Modules_CoreBackup_Controllers_CoreDbbackfile extends Core_Controller
             if($content)
             {
                 $tableNameStructe=$db->getDescription();
-                $content="INSERT INTO ".$tableName." (".  implode(",", Core::getKeysFromArray($tableNameStructe)).") VALUES (".$content;   
+                $content="INSERT INTO ".$tableName." (".  implode(",", \Core::getKeysFromArray($tableNameStructe)).") VALUES (".$content;   
                 $lines=explode("\n",$content);
                 unset($lines[count($lines)-1]);
                 $lastLine=$lines[count($lines)-1];
@@ -84,13 +86,13 @@ class Core_Modules_CoreBackup_Controllers_CoreDbbackfile extends Core_Controller
         
         try
         {   
-            $targetfilepath=Core::createFolder("DATABASE",'B').$folderName;
+            $targetfilepath=\Core::createFolder("DATABASE",'B').$folderName;
             $codeProcess=new Core_CodeProcess();
-            $codeProcess->createZipFile(Core::createFolder($datetime, "B"), $targetfilepath);            
-            $folderPath=substr_replace(Core::createFolder($datetime,'B'), "", -1);
+            $codeProcess->createZipFile(\Core::createFolder($datetime, "B"), $targetfilepath);            
+            $folderPath=substr_replace(\Core::createFolder($datetime,'B'), "", -1);
             $codeProcess->rmdir_recursive($folderPath);
             $data=array("core_backup_type_id"=>"DB","core_backup_type_id"=>"DB","core_backup_type_id"=>"DB","filepath"=>$folderName,"dateandtime"=>date('Y-m-d H:i:s'));
-            $nodeSave=new Core_Model_NodeSave();
+            $nodeSave=new \Core\Model\NodeSave();
             $nodeSave->setNode($this->_nodeName);
             foreach ($data as $key=>$value)
             {
@@ -101,7 +103,7 @@ class Core_Modules_CoreBackup_Controllers_CoreDbbackfile extends Core_Controller
         }
         catch (Exception $ex)
         {
-            Core::Log(__METHOD__.$ex->getMessage());
+            \Core::Log(__METHOD__.$ex->getMessage());
         }        
         $output=array();
         $output['status']="success";

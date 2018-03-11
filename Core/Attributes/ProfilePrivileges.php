@@ -1,5 +1,6 @@
 <?php
-    class Core_Attributes_ProfilePrivileges
+namespace Core\Attributes;
+    class ProfilePrivileges
     {
         public $_accessbleNode=array();
         public $_rootModules=array();
@@ -11,12 +12,12 @@
         public function __construct() 
         {
             global $currentProfileCode;
-            $np=new Core_Model_NodeProperties();
+            $np=new \Core\Model\NodeProperties();
             $this->_accessbleNode=$np->getCurrentProfilePermission($currentProfileCode);            
         }       
         public function buildMenu()
         {
-            $wp=new Core_WebsiteSettings();
+            $wp=new \Core\WebsiteSettings();
             if(count($this->_accessbleNode)>0)
             {
                 $k=0;                

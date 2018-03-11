@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreAggregateFunction
+namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreAggregateFunction
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_aggregate_function");
             $registerController->setNodeNameData("core_aggregate_function");
             $registerController->setDisplayValue("Aggregate Function");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreAggregateFunction
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_aggregate_function");           
             $registerController->setTablename("core_aggregate_function");
             $registerController->setAutokey("id");
@@ -72,7 +73,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreAggregateFunction
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

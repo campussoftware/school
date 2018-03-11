@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreOrganization
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreOrganization
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_organization");
             $registerController->setNodeNameData("core_organization");
             $registerController->setDisplayValue("Organization");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreOrganization
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_organization");           
             $registerController->setTablename("core_organization");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreOrganization
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_organization");
             $relationController->setCoreNodeColname("core_country_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -76,7 +77,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreOrganization
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_organization");
             $relationController->setCoreNodeColname("core_list_state_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -84,21 +85,21 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreOrganization
             $relationController->setSortValue("2");
             $relationController->dataSave();
             
-            $nodefieldattributes=CoreClass::getController("core_node_fieldattributes","core_developmentsettings");
+            $nodefieldattributes=\CoreClass::getController("core_node_fieldattributes","core_developmentsettings");
             $nodefieldattributes->setCoreNodeSettingsId("core_organization");
             $nodefieldattributes->setFieldname("alternate_phone_no");
             $nodefieldattributes->setCoreRootAttributeId("PHN");
             $nodefieldattributes->setIsEncrypt("0");
             $nodefieldattributes->dataSave();
             
-            $nodefieldattributes=CoreClass::getController("core_node_fieldattributes","core_developmentsettings");
+            $nodefieldattributes=\CoreClass::getController("core_node_fieldattributes","core_developmentsettings");
             $nodefieldattributes->setCoreNodeSettingsId("core_organization");
             $nodefieldattributes->setFieldname("email");
             $nodefieldattributes->setCoreRootAttributeId("EMD");
             $nodefieldattributes->setIsEncrypt("0");
             $nodefieldattributes->dataSave();
             
-            $nodefieldattributes=CoreClass::getController("core_node_fieldattributes","core_developmentsettings");
+            $nodefieldattributes=\CoreClass::getController("core_node_fieldattributes","core_developmentsettings");
             $nodefieldattributes->setCoreNodeSettingsId("core_organization");
             $nodefieldattributes->setFieldname("phone_no");
             $nodefieldattributes->setCoreRootAttributeId("PHN");
@@ -108,7 +109,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreOrganization
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

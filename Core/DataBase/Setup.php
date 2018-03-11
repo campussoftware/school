@@ -11,7 +11,8 @@
  *
  * @author ramesh
  */
-class Core_DataBase_Setup 
+namespace Core\DataBase;
+class Setup 
 {
     //put your code here
     protected $_table=NULL;
@@ -50,8 +51,9 @@ class Core_DataBase_Setup
     }
     public function tableExists()
     {
-        $dbConfig=Core::getDBConfig();
-        $db=new Core_DataBase_ProcessQuery();
+        $dbConfig=\Core::getDBConfig();
+        $cc = new \CoreClass();
+        $db=$cc->getObject("\Core\DataBase\ProcessQuery");
         $db->setDataBaseName('information_schema');
         $db->setTable("TABLES");
         $db->addField("count(TABLES.TABLE_NAME)");
@@ -70,30 +72,30 @@ class Core_DataBase_Setup
     {
         $this->_sql=" Create Table ".$this->_table;
         $this->_sql.=" ( ";
-        $count=Core::countArray($this->_columnNames);
+        $count=\Core::countArray($this->_columnNames);
         $k=0;
         foreach ($this->_columnNames as $columnData)
         {
             $k++;
             $this->_sql.=$columnData['name'];
             $this->_sql.=" ".$columnData['type'];
-            if($columnData['size'])
+            if(\Core::getValueFromArray($columnData,'size'))
             {
                 $this->_sql.="(".$columnData['size'].")";
             }            
-            if($columnData['prmiary'])
+            if(\Core::getValueFromArray($columnData,'prmiary'))
             {
                 $this->_sql.=" NOT NULL ";
             }
-            if($columnData['auto_increment'])
+            if(\Core::getValueFromArray($columnData,'auto_increment'))
             {
                 $this->_sql.=" auto_increment ";
             }
-            if($columnData['key'])
+            if(\Core::getValueFromArray($columnData,'key'))
             {
                 $this->_sql.=" ".$columnData['key']." KEY ";
             }
-            if($columnData['prmiary'])
+            if(\Core::getValueFromArray($columnData,'prmiary'))
             {
                 $this->_sql.=" PRIMARY KEY ";
             }
@@ -109,28 +111,30 @@ class Core_DataBase_Setup
         $this->_sql.="ENGINE=InnoDB DEFAULT CHARACTER SET=utf8 Comment '".$this->_displayValue."'";
         try
         {
-            $db=new Core_DataBase_DbConnect();
+            $cc = new \CoreClass();
+            $db=$cc->getObject("\Core\DataBase\DbConnect");
             $db->executeQuery($this->_sql);        
         }
         catch (Exception $ex)
         {
-            Core::Log(__METHOD__.$this->_sql." ::  ".$ex->getMessage(),"setup");
+            \Core::Log(__METHOD__.$this->_sql." ::  ".$ex->getMessage(),"setup");
         }
     }
     public function alterTable()
     {
-        $db=new Core_DataBase_ProcessQuery();
+        $cc = new \CoreClass();
+        $db=$cc->getObject("\Core\DataBase\ProcessQuery");
         $db->setTable($this->_table);
         $tableDescription=$db->getDescription();
-        if(Core::countArray($this->_columnNames)>0)
+        if(\Core::countArray($this->_columnNames)>0)
         {
-            $count=Core::countArray($this->_columnNames);
+            $count=\Core::countArray($this->_columnNames);
             $k=0;
             $this->_sql=" ALTER TABLE ".$this->_table." ";
             foreach ($this->_columnNames as $columnData)
             {
                 $k++;
-                if(Core::keyInArray($columnData['name'], $tableDescription))
+                if(\Core::keyInArray($columnData['name'], $tableDescription))
                 {
                     $this->_sql.=" CHANGE ".$columnData['name']." ".$columnData['name'];
                 }
@@ -139,23 +143,23 @@ class Core_DataBase_Setup
                     $this->_sql.=" Add ".$columnData['name'];
                 }
                 $this->_sql.=" ".$columnData['type'];
-                if($columnData['size'])
+                if(\Core::getValueFromArray($columnData,'size'))
                 {
                     $this->_sql.="(".$columnData['size'].")";
                 }            
-                if($columnData['prmiary'])
+                if(\Core::getValueFromArray($columnData,'prmiary'))
                 {
                     $this->_sql.=" NOT NULL ";
                 }
-                if($columnData['auto_increment'])
+                if(\Core::getValueFromArray($columnData,'auto_increment'))
                 {
                     $this->_sql.=" auto_increment ";
                 }
-                if($columnData['key'])
+                if(\Core::getValueFromArray($columnData,'key'))
                 {
                     $this->_sql.=" ".$columnData['key']." KEY ";
                 }
-                if($columnData['prmiary'])
+                if(\Core::getValueFromArray($columnData,'prmiary'))
                 {
                     $this->_sql.=" PRIMARY KEY ";
                 }
@@ -163,7 +167,13 @@ class Core_DataBase_Setup
 
                 $this->_sql.=" COMMENT '".$columnData['displayValue']."'";  
 
-                
+                if(\Core::getValueFromArray($columnData,'after'))
+                {
+                    if(\Core::keyInArray($columnData['after'], $tableDescription))
+                    {
+                        $this->_sql.=" AFTER ".$columnData['after'];
+                    }
+                }
                 if($count>$k)
                 {
                     $this->_sql.=" ,";
@@ -176,24 +186,26 @@ class Core_DataBase_Setup
         }
         try
         {
-            $db=new Core_DataBase_DbConnect();
+            $cc = new \CoreClass();
+            $db=$cc->getObject("\Core\DataBase\DbConnect");
             $db->executeQuery($this->_sql);        
         }
         catch (Exception $ex)
         {
-            Core::Log(__METHOD__.$this->_sql." ::  ".$ex->getMessage(),"setup");
+            \Core::Log(__METHOD__.$this->_sql." ::  ".$ex->getMessage(),"setup");
         }
     }
     public function fieldExitsinTable()
     {
-        $db=new Core_DataBase_ProcessQuery();
+        $cc = new \CoreClass();
+        $db=$cc->getObject("\Core\DataBase\ProcessQuery");
         $db->setTable($this->_table);
         if($this->tableExists())
         {            
             $tableDescription=$db->getDescription();
-            if(Core::countArray($tableDescription)>0)
+            if(\Core::countArray($tableDescription)>0)
             {
-                if(Core::keyInArray($this->_fieldName, $tableDescription))
+                if(\Core::keyInArray($this->_fieldName, $tableDescription))
                 {
                     return true;
                 }
@@ -215,18 +227,19 @@ class Core_DataBase_Setup
     public function dropfieldTable()
     {
         
-        $db=new Core_DataBase_ProcessQuery();
+        $cc = new \CoreClass();
+        $db=$cc->getObject("\Core\DataBase\ProcessQuery");
         $db->setTable($this->_table);
         $tableDescription=$db->getDescription();
-        if(Core::countArray($this->_columnNames)>0)
+        if(\Core::countArray($this->_columnNames)>0)
         {
-            $count=Core::countArray($this->_columnNames);
+            $count=\Core::countArray($this->_columnNames);
             $k=0;
             $this->_sql=" ALTER TABLE ".$this->_table." ";
             foreach ($this->_columnNames as $columnData)
             {
                 $k++;
-                if(Core::keyInArray($columnData['name'], $tableDescription))
+                if(\Core::keyInArray($columnData['name'], $tableDescription))
                 {
                     $this->_sql.=" DROP ".$columnData['name'];
                 }
@@ -243,12 +256,13 @@ class Core_DataBase_Setup
         }
         try
         {
-            $db=new Core_DataBase_DbConnect();
+            $cc = new \CoreClass();
+            $db=$cc->getObject("\Core\DataBase\DbConnect");
             $db->executeQuery($this->_sql);        
         }
         catch (Exception $ex)
         {
-            Core::Log(__METHOD__.$this->_sql." ::  ".$ex->getMessage(),"setup");
+            \Core::Log(__METHOD__.$this->_sql." ::  ".$ex->getMessage(),"setup");
         }
        
     }

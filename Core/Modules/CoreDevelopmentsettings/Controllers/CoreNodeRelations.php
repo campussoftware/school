@@ -11,22 +11,24 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Controllers_CoreNodeRelations extends Core_Controllers_NodeController
+namespace Core\Modules\CoreDevelopmentsettings\Controllers;
+use \Core\Controllers\NodeController;
+class CoreNodeRelations extends NodeController
 {
-    private $core_node_settings_id=NULL;
-    private $core_node_colname=NULL;
-    private $core_relation_type_id=NULL;
-    private $core_node_parent=NULL;
-    private $dependee_fields=NULL;
-    private $sort_value=NULL;
+    public $_core_node_settings_id=NULL;
+    public $_core_node_colname=NULL;
+    public $_core_relation_type_id=NULL;
+    public $_core_node_parent=NULL;
+    public $_dependee_fields=NULL;
+    public $_sort_value=NULL;
       
     
     public function coreNodeRelationsAfterDataUpdate()
     {        
-        $cache=new Core_Cache_Refresh();
+        $cache=new \Core\Cache\Refresh();
         $cache->setNodeName($this->_requestedData['core_node_settings_id']);
         $cache->setRelations();  
-        $cache=new Core_Cache_Refresh();
+        $cache=new \Core\Cache\Refresh();
         $cache->setNodeName($this->_requestedData['core_node_parent']);
         $cache->setChildRelations();
         return TRUE;  
@@ -35,15 +37,15 @@ class Core_Modules_CoreDevelopmentsettings_Controllers_CoreNodeRelations extends
     {
         $requestedData=$this->_requestedData;
         $defaultValue=$requestedData['dependee_fields'];
-        $np=new Core_Model_NodeProperties();
+        $np=new \Core\Model\NodeProperties();
         $np->setNode($requestedData['core_node_settings_id']);
         $nodestructure=$np->currentNodeStructure();
         
-        $tb=new Core_Model_TableStructure();
+        $tb=new \Core\Model\TableStructure();
         $tb->setTable($nodestructure['tablename']);
         $tableStructure=$tb->getStructure();
-        $tableStructure=Core::getKeysFromArray($tableStructure);
-        $tableStructure=Core::diffArray($tableStructure, $this->_defaulthideAttributes);
+        $tableStructure=\Core::getKeysFromArray($tableStructure);
+        $tableStructure=\Core::diffArray($tableStructure, $this->_defaulthideAttributes);
         
         $result=array();
         $i=0;
@@ -54,9 +56,9 @@ class Core_Modules_CoreDevelopmentsettings_Controllers_CoreNodeRelations extends
             $i++;
         }
         $attributeType="checkbox";        
-        $attributeDetails=new Core_Attributes_LoadAttribute($attributeType);				
-        $attributeClass=Core_Attributes_.$attributeDetails->_attributeName;
-        $attribute=new $attributeClass;
+        $attributeDetails=new \Core\Attributes\LoadAttribute($attributeType);				
+        $attributeClass = "\Core\Attributes\\".$attributeDetails->_attributeName;
+        $attribute= new $attributeClass;
         $attribute->setIdName($requestedData['idname']);
         $attribute->setOptions($result);
         $attribute->setValue($defaultValue);        
@@ -118,7 +120,8 @@ class Core_Modules_CoreDevelopmentsettings_Controllers_CoreNodeRelations extends
     {        
         try
         {
-            $db1=new Core_DataBase_ProcessQuery();
+            $cc = new \CoreClass();
+            $db1 = $cc->getObject("\Core\DataBase\ProcessQuery");            
             $db1->setTable("core_node_relations");
             $db1->addField("id");
             $db1->addWhere("core_node_settings_id='".$this->getCoreNodeSettingsId()."'");
@@ -132,7 +135,7 @@ class Core_Modules_CoreDevelopmentsettings_Controllers_CoreNodeRelations extends
                 $db1->addWhere("core_node_parent='".$this->getCoreNodeParent()."'");
             }
             $registernodeid=$db1->getValue();
-            $db=new Core_DataBase_ProcessQuery();
+            $db = $cc->getObject("\Core\DataBase\ProcessQuery"); 
             $db->setTable("core_node_relations");
             $db->addFieldArray(array("core_node_settings_id"=>$this->getCoreNodeSettingsId()));
             $db->addFieldArray(array("core_node_colname"=>$this->getCoreNodeColname()));            
@@ -140,7 +143,7 @@ class Core_Modules_CoreDevelopmentsettings_Controllers_CoreNodeRelations extends
             $db->addFieldArray(array("core_node_parent"=>$this->getCoreNodeParent()));            
             $db->addFieldArray(array("dependee_fields"=>$this->getDependeeFields()));            
             $db->addFieldArray(array("sort_value"=>$this->getSortValue()));            
-            $db->addFieldArray(array("updatedat"=>Core::getDateTime()));
+            $db->addFieldArray(array("updatedat"=>\Core::getDateTime()));
             if($registernodeid)
             {
                 $db->addWhere("id='".$registernodeid."'");
@@ -148,14 +151,14 @@ class Core_Modules_CoreDevelopmentsettings_Controllers_CoreNodeRelations extends
             }
             else
             {
-                $db->addFieldArray(array("createdat"=>Core::getDateTime()));
+                $db->addFieldArray(array("createdat"=>\Core::getDateTime()));
                 $db->buildInsert();
             }     
             $db->executeQuery();        
         }
         catch(Exception $ex)
         {
-            Core::Log(__METHOD__.$ex->getMessage(),"installdata.log");
+            \Core::Log(__METHOD__.$ex->getMessage(),"installdata.log");
         }
     }
 }

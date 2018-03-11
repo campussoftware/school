@@ -11,7 +11,8 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_SchemaInstall
+ namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class SchemaInstall
 {
     //put your code here
     function __construct() 
@@ -37,7 +38,9 @@ class Core_Modules_CoreDevelopmentsettings_Setup_SchemaInstall
             // Custom Attributes 
             "CoreAttributeOption"=>"CoreAttributeOption",
             "CoreNodeAttributeOption"=>"CoreNodeAttributeOption",
+            "CoreNodeAttributeOptionList"=>"CoreNodeAttributeOptionList",
             "CoreNodeAttributeOptionValue"=>"CoreNodeAttributeOptionValue",
+            "CoreNodeAttributeset"=>"CoreNodeAttributeset",
             //File Management
             "CoreFileTypes"=>"CoreFileTypes",
             "CoreCmsUploadfolders"=>"CoreCmsUploadfolders",
@@ -57,20 +60,11 @@ class Core_Modules_CoreDevelopmentsettings_Setup_SchemaInstall
             "CoreOutputType"=>"CoreOutputType",
             "CoreReportOutputtypes"=>"CoreReportOutputtypes",
             "CoreReportDetails"=>"CoreReportDetails",
-            "CoreReportsdetailsSettings"=>"CoreReportsdetailsSettings",
-            //User Management
-            "CoreAccess"=>"CoreAccess",
-            "CoreProfileLevel"=>"CoreProfileLevel",
-            "CoreProfile"=>"CoreProfile",
-            "CoreUsers"=>"CoreUsers",
-            "CoreLoginhistory"=>"CoreLoginhistory",
-            "CoreUseronline"=>"CoreUseronline",
-            "CoreWebsiteloginhistory"=>"CoreWebsiteloginhistory",
+            "CoreReportsdetailsSettings"=>"CoreReportsdetailsSettings",            
             // CoreAppSettings
             "CoreAppSettings"=>"CoreAppSettings",
             // Archive Settings
             "CoreArchiveData"=>"CoreArchiveData",
-            "CoreWebsiteusers"=>"CoreWebsiteusers",
             "CoreNodeHistory"=>"CoreNodeHistory",
             //backup
             "CoreBackupType"=>"CoreBackupType",
@@ -78,7 +72,7 @@ class Core_Modules_CoreDevelopmentsettings_Setup_SchemaInstall
             // Email Settings
             "CoreEmailSettings"=>"CoreEmailSettings", 
             "CoreEmailNotifications"=>"CoreEmailNotifications",
-			"CoreEmailVerify"=>"CoreEmailVerify",
+            "CoreEmailVerify"=>"CoreEmailVerify",
                        
             //Label Settings
             "CoreLabelDetails"=>"CoreLabelDetails",
@@ -115,11 +109,14 @@ class Core_Modules_CoreDevelopmentsettings_Setup_SchemaInstall
             "CoreListLocation"=>"CoreListLocation",
             "CoreListState"=>"CoreListState",
             "CorePaymentType"=>"CorePaymentType",
+            "CoreWeekDetails"=>"CoreWeekDetails",
+            "CoreAddressType"=>"CoreAddressType",
             
         );
         foreach ($nodesArray as $node) 
         {
-            $nodeClass="Core_Modules_CoreDevelopmentsettings_Setup_".$node;
+            $nodeClass=str_replace("'","","\Core\Modules\CoreDevelopmentsettings\Setup"."\'".$node);
+            $nodeClass=str_replace("'","",$nodeClass);
             $rnode=new $nodeClass();
             $rnode->execute();
         }               

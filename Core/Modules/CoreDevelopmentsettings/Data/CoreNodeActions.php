@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeActions
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreNodeActions
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_node_actions");
             $registerController->setNodeNameData("core_node_actions");
             $registerController->setDisplayValue("Node Actions");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeActions
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("core_node_settings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_node_settings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_node_actions");           
             $registerController->setTablename("core_node_actions");
             $registerController->setAutokey("id");
@@ -47,7 +48,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeActions
             $registerController->setHideAdmin("");
             $registerController->setReadonlyAdd("");
             $registerController->setReadonlyEdit("");
-            $registerController->setBoolattributes("");
+            $registerController->setBoolattributes("is_layout");
             $registerController->setFile("");
             $registerController->setFck("");
             $registerController->setCheckbox("core_action_type_id");
@@ -68,32 +69,36 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeActions
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $nodeActionController=CoreClass::getController("core_node_actions", "core_developmentsettings");
+            $nodeActionController=\CoreClass::getController("core_node_actions", "core_developmentsettings");
             
             $nodeActionController->setNodeActionName("ADMIN");
             $nodeActionController->setNodeActionShortCode("admin");
             $nodeActionController->setNodeActionType("SN");
-            $nodeActionController->setNodeActionSortNo("1");            
+            $nodeActionController->setNodeActionSortNo("1"); 
+            $nodeActionController->setIsLayout(1);
             $nodeActionController->dataSave();
             
             $nodeActionController->setNodeActionName("ADD");
             $nodeActionController->setNodeActionShortCode("add");
             $nodeActionController->setNodeActionType("SN");
-            $nodeActionController->setNodeActionSortNo("2");            
+            $nodeActionController->setNodeActionSortNo("2");   
+            $nodeActionController->setIsLayout(1);
             $nodeActionController->dataSave();
             
             
             $nodeActionController->setNodeActionName("EDIT");
             $nodeActionController->setNodeActionShortCode("edit");
             $nodeActionController->setNodeActionType("IN");
-            $nodeActionController->setNodeActionSortNo("3");            
+            $nodeActionController->setNodeActionSortNo("3"); 
+            $nodeActionController->setIsLayout(1);
             $nodeActionController->dataSave();
             
             
             $nodeActionController->setNodeActionName("VIEW");
             $nodeActionController->setNodeActionShortCode("view");
             $nodeActionController->setNodeActionType("IN");
-            $nodeActionController->setNodeActionSortNo("4");            
+            $nodeActionController->setNodeActionSortNo("4"); 
+            $nodeActionController->setIsLayout(1);
             $nodeActionController->dataSave();
             
             
@@ -180,7 +185,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeActions
             $nodeActionController->dataSave();
             
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_node_actions");
             $relationController->setCoreNodeColname("core_action_type_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -192,7 +197,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeActions
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

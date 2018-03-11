@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreNodeAttributeOptionValue 
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreNodeAttributeOptionValue 
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_node_attribute_option_value");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -44,16 +45,21 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreNodeAttributeOptionValue
                 "default"=>false,                
                 "type"=>"varchar",
                 "size"=>"255",
-                
+            ));
+            $setup->addColumnName(array(
+                "name"=>"parentid",
+                "displayValue"=>"Parent",            
+                "default"=>false,                
+                "type"=>"varchar",
+                "size"=>"255",
             ));
             $setup->addColumnName(array(
                 "name"=>"attibute_value",
                 "displayValue"=>"Attribute Value",            
                 "default"=>false,                
-                "type"=>"varchar",
+                "type"=>"text",
                 "size"=>"255"                
             ));
-            
             $setup->addColumnName(array(
                 "name"=>"createdby",
                 "displayValue"=>"Created User Id",            

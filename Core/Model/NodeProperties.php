@@ -1,6 +1,6 @@
 <?php
-
-class Core_Model_NodeProperties  
+namespace Core\Model;
+class NodeProperties  
 {
     public $_nodeName;
     public $_globalNodeStructure;
@@ -12,11 +12,11 @@ class Core_Model_NodeProperties
     }
     public function nodeSettings()
     {
-        $filename=Core::createFolder(NULL, "C")."/nodestructure.json";
-        $data=Core::getFileContent($filename);
+        $filename=\Core::createFolder(NULL, "C")."/nodestructure.json";
+        $data=\Core::getFileContent($filename);
         if($data)
         {
-            return Core::JsontoArray($data);            
+            return \Core::JsontoArray($data);            
         }
         else
         {
@@ -25,11 +25,11 @@ class Core_Model_NodeProperties
     }    
     public function getDefaultLabels()
     {
-        $filename=Core::createFolder(NULL, "C")."/language.json";
-        $data=Core::getFileContent($filename);
+        $filename=\Core::createFolder(NULL, "C")."/language.json";
+        $data=\Core::getFileContent($filename);
         if($data)
         {
-            return Core::JsontoArray($data);            
+            return \Core::JsontoArray($data);            
         }
         else
         {
@@ -38,10 +38,10 @@ class Core_Model_NodeProperties
     }
     public function getCurrentProfilePermission($profile_id="ROOT")
     {
-        $filePath=Core::getCachefilePathProfile($profile_id);        
+        $filePath=\Core::getCachefilePathProfile($profile_id);        
         if($filePath)
         {
-            return Core::JsontoArray(Core::getFileContent($filePath));
+            return \Core::JsontoArray(\Core::getFileContent($filePath));
         }
         else 
         {
@@ -50,10 +50,10 @@ class Core_Model_NodeProperties
     }
     public function getCurrentProfilePermissionNodeAction()
     {
-        $filePath=Core::getCachefilePathProfile($this->_profileId,$this->_nodeName);        
+        $filePath=\Core::getCachefilePathProfile($this->_profileId,$this->_nodeName);        
         if($filePath)
         {
-            $actions=Core::JsontoArray(Core::getFileContent($filePath));
+            $actions=\Core::JsontoArray(\Core::getFileContent($filePath));
             return $actions['action_name_code'];
         }
         else 
@@ -64,11 +64,15 @@ class Core_Model_NodeProperties
     }
     public function getLableNames()
     {
-        $filename=Core::createFolder(NULL, "C")."/english.phtml";
-        
-        if(Core::fileExists($filename))
+        $filename=\Core::createFolder(NULL, "C")."english.json";
+        $data=\Core::getFileContent($filename);
+        if($data)
         {
-            include_once $filename;
+            return \Core::JsontoArray($data);            
+        }
+        else
+        {
+            return array();
         }        
         return true;
     }
@@ -87,11 +91,11 @@ class Core_Model_NodeProperties
     public function currentNodeStructure()
     {
         
-        $filePath=Core::getCachefilePath($this->_nodeName, "S");
-        $nodeStructure=Core::getFileContent($filePath);
+        $filePath=\Core::getCachefilePath($this->_nodeName, "S");
+        $nodeStructure=\Core::getFileContent($filePath);
         if($nodeStructure)
         {
-            return Core::JsontoArray($nodeStructure);
+            return \Core::JsontoArray($nodeStructure);
             
         }
         else
@@ -101,11 +105,11 @@ class Core_Model_NodeProperties
     }
     public function getNodeDetails()
     {
-        $filePath=Core::getCachefilePath($this->_nodeName, "N");
-        $nodeStructure=Core::getFileContent($filePath);
+        $filePath=\Core::getCachefilePath($this->_nodeName, "N");
+        $nodeStructure=\Core::getFileContent($filePath);
         if($nodeStructure)
         {
-            return Core::JsontoArray($nodeStructure);            
+            return \Core::JsontoArray($nodeStructure);            
         }
         else
         {
@@ -113,13 +117,12 @@ class Core_Model_NodeProperties
         }         
     }    
     public function getActionType($action=NULL)
-    {
-        $wp=new Core_WebsiteSettings();    
-        $filename=Core::createFolder(NULL, "C")."/actiontype.json";
-        $data=Core::getFileContent($filename);
+    {            
+        $filename=\Core::createFolder(NULL, "C")."/actiontype.json";
+        $data=\Core::getFileContent($filename);
         if($data)
         {
-            $data=Core::JsontoArray($data);
+            $data=\Core::JsontoArray($data);
             return $data[$action];            
         }
         else
@@ -129,11 +132,11 @@ class Core_Model_NodeProperties
     }  
     public function getChildRelations() 
     {
-        $filePath=Core::getCachefilePath($this->_nodeName, "CR");
-        $childRelations=Core::getFileContent($filePath);
+        $filePath=\Core::getCachefilePath($this->_nodeName, "CR");
+        $childRelations=\Core::getFileContent($filePath);
         if($childRelations)
         {
-            return Core::JsontoArray($childRelations);            
+            return \Core::JsontoArray($childRelations);            
         }
         else
         {
@@ -142,11 +145,11 @@ class Core_Model_NodeProperties
     }
     public function getFieldAttributes() 
     {
-        $filePath=Core::getCachefilePath($this->_nodeName, "FA");
-        $fieldAttributes=Core::getFileContent($filePath);
+        $filePath=\Core::getCachefilePath($this->_nodeName, "FA");
+        $fieldAttributes=\Core::getFileContent($filePath);
         if($fieldAttributes)
         {
-            return Core::JsontoArray($fieldAttributes);            
+            return \Core::JsontoArray($fieldAttributes);            
         }
         else
         {
@@ -155,11 +158,11 @@ class Core_Model_NodeProperties
     }
     public function setRelationDependency() 
     {
-        $filePath=Core::getCachefilePath($this->_nodeName, "D");
-        $relationDependency=Core::getFileContent($filePath);
+        $filePath=\Core::getCachefilePath($this->_nodeName, "D");
+        $relationDependency=\Core::getFileContent($filePath);
         if($relationDependency)
         {
-            return Core::JsontoArray($relationDependency);            
+            return \Core::JsontoArray($relationDependency);            
         }
         else
         {
@@ -168,11 +171,11 @@ class Core_Model_NodeProperties
     }
     public function getDefaultValues() 
     {
-        $filePath=Core::getCachefilePath($this->_nodeName, "DF");
-        $defaultValues=Core::getFileContent($filePath);
+        $filePath=\Core::getCachefilePath($this->_nodeName, "DF");
+        $defaultValues=\Core::getFileContent($filePath);
         if($defaultValues)
         {
-            return Core::JsontoArray($defaultValues);            
+            return \Core::JsontoArray($defaultValues);            
         }
         else
         {
@@ -181,11 +184,11 @@ class Core_Model_NodeProperties
     }
     public function getUniqueSetValues() 
     {
-        $filePath=Core::getCachefilePath($this->_nodeName, "UFS");
-        $uniqueFields=Core::getFileContent($filePath);
+        $filePath=\Core::getCachefilePath($this->_nodeName, "UFS");
+        $uniqueFields=\Core::getFileContent($filePath);
         if($uniqueFields)
         {
-            return Core::JsontoArray($uniqueFields);            
+            return \Core::JsontoArray($uniqueFields);            
         }
         else
         {
@@ -194,11 +197,11 @@ class Core_Model_NodeProperties
     }
     public function getFieldAttributesValues() 
     {
-        $filePath=Core::getCachefilePath($this->_nodeName, "FA");
-        $uniqueFields=Core::getFileContent($filePath);
+        $filePath=\Core::getCachefilePath($this->_nodeName, "FA");
+        $uniqueFields=\Core::getFileContent($filePath);
         if($uniqueFields)
         {
-            return Core::JsontoArray($uniqueFields);            
+            return \Core::JsontoArray($uniqueFields);            
         }
         else
         {
@@ -207,11 +210,11 @@ class Core_Model_NodeProperties
     }
     public function getFilePath() 
     {
-        $filePath=Core::getCachefilePath($this->_nodeName, "FP");
-        $uniqueFields=Core::getFileContent($filePath);
+        $filePath=\Core::getCachefilePath($this->_nodeName, "FP");
+        $uniqueFields=\Core::getFileContent($filePath);
         if($uniqueFields)
         {
-            return Core::JsontoArray($uniqueFields);            
+            return \Core::JsontoArray($uniqueFields);            
         }
         else
         {
@@ -221,13 +224,14 @@ class Core_Model_NodeProperties
     public function getNodeDetailsBasedonRouter()
     {
 	$nodeData=array();
-	$node=new Core_Model_Node();
+        $cc = new \CoreClass();
+        $node=$cc->getObject("\Core\Model\Node");
 	$node->setNodeName("core_registernode");
 	$node->addCustomFilter("nodefile='".$this->_routerName."'");
 	$node->addCustomFilter("is_module='0'");	
 	$node->getCollection();		
 	$registerNodeData=$node->getRecord();
-	if(Core::countArray($registerNodeData)>0)
+	if(\Core::countArray($registerNodeData)>0)
 	{
 		$nodeData['nodename']=$registerNodeData['nodename'];
 		$nodeData['module']=$registerNodeData['core_module_id'];

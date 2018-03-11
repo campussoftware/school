@@ -1,6 +1,7 @@
 <?php
-
-    class Core_Attributes_TextAttribute extends Core_Attributes_Attribute
+	namespace Core\Attributes;
+	use \Core\Attributes\Attribute;
+    class TextAttribute extends Attribute
     {        
         
         public function valiadte($action, $mode) 

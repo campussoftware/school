@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeAttributes
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreNodeAttributes
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_node_attributes");
             $registerController->setNodeNameData("core_node_attributes");
             $registerController->setDisplayValue("Node Attributes");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeAttributes
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_node_attributes");           
             $registerController->setTablename("core_node_attributes");
             $registerController->setAutokey("id");
@@ -68,10 +69,18 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreNodeAttributes
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController->setCoreNodeSettingsId("core_node_attributes");
+            $relationController->setCoreNodeColname("core_root_attributes_id");
+            $relationController->setCoreRelationTypeId("MTO");
+            $relationController->setCoreNodeParent("core_root_attributes");
+            $relationController->setSortValue("1");
+            $relationController->dataSave();
+            
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

@@ -11,26 +11,28 @@
  *
  * @author ramesh
  */
-class Core_Controllers_AccessController 
+
+namespace Core\Controllers;
+class AccessController 
 {
     //put your code here
     public function NodeCheckForProfile($nodeRelations) 
     {
-        $session=new Core_Session();
+        $session=new \Core\Session();
         $sessionData=$session->getSessionMaganager();        
-        $np = new Core_Model_NodeProperties();
+        $np = new \Core\Model\NodeProperties();
         
-        $nodeStructureData=$np->getCurrentProfilePermission(Core::getValueFromArray($sessionData,'profile_id'));
+        $nodeStructureData=$np->getCurrentProfilePermission(\Core::getValueFromArray($sessionData,'profile_id'));
         $output=array();
         if($nodeRelations!="")
         {
-            if(!Core::isArray($nodeRelations))
+            if(!\Core::isArray($nodeRelations))
             {
                 $nodeRelations=array($nodeRelations);
             }
             foreach ($nodeRelations as $key => $data) 
             {
-                if(Core::keyInArray($key, $nodeStructureData))
+                if(\Core::keyInArray($key, $nodeStructureData))
                 {
                     $output[$key]=$data;
                 }

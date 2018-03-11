@@ -11,14 +11,15 @@
  *
  * @author venkatesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreUrlRewrite 
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreUrlRewrite 
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_url_rewrite");
             $registerController->setNodeNameData("core_url_rewrite");
             $registerController->setDisplayValue("Url Rewrite");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreUrlRewrite
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_url_rewrite");           
             $registerController->setTablename("core_url_rewrite");
             $registerController->setAutokey("id");
@@ -50,7 +51,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreUrlRewrite
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

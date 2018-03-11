@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreOutputType 
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreOutputType 
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_output_type");
         if(!$setup->tableExists($setup->getTable()))
         {

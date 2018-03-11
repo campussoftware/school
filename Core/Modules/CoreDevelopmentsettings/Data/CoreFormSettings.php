@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreFormSettings
+namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreFormSettings
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_form_settings");
             $registerController->setNodeNameData("core_form_settings");
             $registerController->setDisplayValue("Form Settings");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreFormSettings
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_form_settings");           
             $registerController->setTablename("core_form_settings");
             $registerController->setAutokey("id");
@@ -68,7 +69,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreFormSettings
             $registerController->setIsArchive("");  
             $registerController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_form_settings");
             $relationController->setCoreNodeColname("core_node_settings_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -76,7 +77,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreFormSettings
             $relationController->setSortValue("1");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_form_settings");
             $relationController->setCoreNodeColname("core_element_displaytype_id");
             $relationController->setCoreRelationTypeId("MTO");
@@ -84,7 +85,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreFormSettings
             $relationController->setSortValue("2");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_form_settings");
             $relationController->setCoreNodeColname("parent");
             $relationController->setCoreRelationTypeId("MTO");
@@ -92,7 +93,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreFormSettings
             $relationController->setSortValue("3");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_form_settings");
             $relationController->setCoreNodeColname("parent");
             $relationController->setCoreRelationTypeId("MTO");
@@ -100,7 +101,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreFormSettings
             $relationController->setSortValue("4");
             $relationController->dataSave();
             
-            $relationController=  CoreClass::getController("core_node_relations","core_developmentsettings");
+            $relationController=  \CoreClass::getController("core_node_relations","core_developmentsettings");
             $relationController->setCoreNodeSettingsId("core_form_settings");
             $relationController->setCoreNodeColname("core_form_settings_id");
             $relationController->setCoreRelationTypeId("OTM");
@@ -111,7 +112,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreFormSettings
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

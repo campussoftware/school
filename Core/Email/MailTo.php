@@ -11,7 +11,8 @@
  *
  * @author venkatesh
  */
-class Core_Email_MailTo 
+namespace Core\Email;
+class MailTo 
 {
     //put your code here
     public function sendMail()

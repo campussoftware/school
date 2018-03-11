@@ -11,7 +11,9 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreBackup_Controllers_CoreCodebackup extends Core_Controllers_NodeController
+namespace Core\Modules\CoreBackup\Controllers;
+use \Core\Controllers\NodeController;
+class CoreCodebackup extends NodeController
 {       
     public function savedbtoseverAction() 
     {
@@ -21,12 +23,12 @@ class Core_Modules_CoreBackup_Controllers_CoreCodebackup extends Core_Controller
         {  
             
             $folderName="uploadData".strtotime(date('Y-m-d H:i:s'));
-            $targetfilepath=Core::createFolder("uploads",'B').$folderName;
-            $codeProcess=new Core_CodeProcess();
-            $codeProcess->createZipFile(Core::createFolder(""), $targetfilepath);            
+            $targetfilepath=\Core::createFolder("uploads",'B').$folderName;
+            $codeProcess=new \Core\CodeProcess();
+            $codeProcess->createZipFile(\Core::createFolder(""), $targetfilepath);            
             
             $data=array("core_backup_type_id"=>"UP","filepath"=>$folderName,"dateandtime"=>date('Y-m-d H:i:s'));
-            $nodeSave=new Core_Model_NodeSave();
+            $nodeSave=new \Core\Model\NodeSave();
             $nodeSave->setNode($this->_nodeName);
             foreach ($data as $key=>$value)
             {
@@ -37,7 +39,7 @@ class Core_Modules_CoreBackup_Controllers_CoreCodebackup extends Core_Controller
         }
         catch (Exception $ex)
         {
-            Core::Log(__METHOD__.$ex->getMessage());
+            \Core::Log(__METHOD__.$ex->getMessage());
         }        
         $output=array();
         $output['status']="success";

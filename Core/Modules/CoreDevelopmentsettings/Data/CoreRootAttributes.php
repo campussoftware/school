@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CoreRootAttributes
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CoreRootAttributes
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_root_attributes");
             $registerController->setNodeNameData("core_root_attributes");
             $registerController->setDisplayValue("Root Attributes");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreRootAttributes
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_root_attributes");           
             $registerController->setTablename("core_root_attributes");
             $registerController->setAutokey("id");
@@ -67,11 +68,20 @@ class Core_Modules_CoreDevelopmentsettings_Data_CoreRootAttributes
             $registerController->setDefaultCollection('1');
             $registerController->setIsArchive("");  
             $registerController->dataSave();
+			
+			$attributetypeData=array("Text"=>"text","Boolean"=>"checkbox","File"=>"file","Image"=>"image","Video"=>"video","Url"=>"url","Select"=>"select","Radio"=>"radio","Date"=>"date","Time"=>"time","Date and Time"=>"datetime","Time Zone"=>"timezone","IP Address"=>"ipaddress","HTML Editor"=>"htmleditor","Color"=>"color","Number"=>"number","Integer"=>"integer","Email"=>"email","Password"=>"password","Range"=>"range");
+			foreach($attributetypeData as $name=>$key)
+			{
+				$attributeController=\CoreClass::getController("core_root_attributes", "core_developmentsettings");           
+				$attributeController->setAttributeName($name);
+				$attributeController->setAttributeCode($key);
+				$attributeController->dataSave();
+			}
             
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

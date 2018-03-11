@@ -11,7 +11,8 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_DataInstall 
+namespace Core\Modules\CoreDevelopmentsettings\Data;
+class DataInstall 
 {
     //put your code here
     function __construct() 
@@ -43,11 +44,6 @@ class Core_Modules_CoreDevelopmentsettings_Data_DataInstall
             "CoreFormLayout"=>"CoreFormLayout",
             "CoreDefaultvalues"=>"CoreDefaultvalues",
             "CoreNodeFieldattributes"=>"CoreNodeFieldattributes",
-            "CoreAccess"=>"CoreAccess",
-            "CoreLoginhistory"=>"CoreLoginhistory",
-            "CoreProfile"=>"CoreProfile",
-            "CoreProfileLevel"=>"CoreProfileLevel",
-            "CoreUsers"=>"CoreUsers",
             "CoreCmsImageSettings"=>"CoreCmsImageSettings",
             "CoreCmsMediatype"=>"CoreCmsMediatype",            
             "CoreFileTypes"=>"CoreFileTypes",
@@ -85,13 +81,17 @@ class Core_Modules_CoreDevelopmentsettings_Data_DataInstall
             // node for url rewrite
             "CoreUrlRewrite"=>"CoreUrlRewrite",
             "CoreWhatsappSettings"=>"CoreWhatsappSettings",
-            
-            
-            
+            "CoreAttributeOption"=>"CoreAttributeOption",
+            "CoreNodeAttributeset"=>"CoreNodeAttributeset",
+            "CoreNodeAttributeOption"=>"CoreNodeAttributeOption",
+            "CoreNodeAttributeOptionList"=>"CoreNodeAttributeOptionList",
+            "CoreNodeAttributeOptionValue"=>"CoreNodeAttributeOptionValue",
+            "CoreWeekDetails"=>"CoreWeekDetails",
+            "CoreAddressType"=>"CoreAddressType",
         );
         foreach ($nodesArray as $node) 
         {
-            $nodeClass="Core_Modules_CoreDevelopmentsettings_Data_".$node;
+            $nodeClass=str_replace("'","","\Core\Modules\CoreDevelopmentsettings\Data\'".$node);
             $rnode=new $nodeClass();
             $rnode->execute();
         } 

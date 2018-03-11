@@ -11,14 +11,15 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Data_CorePaymenType
+ namespace Core\Modules\CoreDevelopmentsettings\Data;
+class CorePaymenType
 {
     //put your code here
     public function execute()
     {
         try
         {            
-            $registerController=CoreClass::getController("core_registernode", "core_developmentsettings");
+            $registerController=\CoreClass::getController("core_registernode", "core_developmentsettings");
             $registerController->setNodeFileName("core_payment_type");
             $registerController->setNodeNameData("core_payment_type");
             $registerController->setDisplayValue("Payment Type");
@@ -32,7 +33,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CorePaymenType
             $registerController->setIsNotification("0");
             $registerController->dataSave();
             
-            $registerController=CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
+            $registerController=\CoreClass::getController("CoreNodeSettings", "core_developmentsettings");
             $registerController->setRegisternodeId("core_payment_type");           
             $registerController->setTablename("core_payment_type");
             $registerController->setAutokey("id");
@@ -70,7 +71,7 @@ class Core_Modules_CoreDevelopmentsettings_Data_CorePaymenType
         }
         catch (Exception $ex)
         {
-            Core::Log($ex->getMessage(),"installdataexception.log");
+            \Core::Log($ex->getMessage(),"installdataexception.log");
         }
     }
 }

@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreListCity
+ namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreListCity
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_list_city");
         if(!$setup->tableExists($setup->getTable()))
         {

@@ -1,5 +1,6 @@
 <?php
-    class Core_Attributes_BuildMenu 
+namespace Core\Attributes;
+    class BuildMenu 
     {
         public $_accessbleNode=array();
         public $_rootModules=array();
@@ -11,12 +12,14 @@
         public function __construct() 
         {
             global $currentProfileCode;
-            $np=new Core_Model_NodeProperties();
+            $cc=new \CoreClass();
+            $np=$cc->getObject("\Core\Model\NodeProperties");
             $this->_accessbleNode=$np->getCurrentProfilePermission($currentProfileCode);            
         }       
         public function buildMenu()
         {
-            $wp=new Core_WebsiteSettings();
+            global $rootObj;
+            $wp=$rootObj;
             if(count($this->_accessbleNode)>0)
             {
                 $k=0;                

@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreSmsVerify
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreSmsVerify
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_sms_verify");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -57,7 +58,7 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreSmsVerify
                 "type"=>"varchar",
                 "size"=>"255"          
             ));
-			$setup->addColumnName(array(
+            $setup->addColumnName(array(
                 "name"=>"status",
                 "displayValue"=>"status",            
                 "default"=>NULL,                

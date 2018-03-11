@@ -32,7 +32,7 @@
                     $nr=new Core_Model_NodeRelations();
                     $nr->setNode($this->_currentDetails->_parentNode);
                     $relations=$nr->getCurrentNodeRelation();
-                    if(Core::keyInArray($nodeStructure['descriptor'], $relations))
+                    if(\Core::keyInArray($nodeStructure['descriptor'], $relations))
                     {
                         $np=new Core_Model_NodeProperties();
                         $np->setNode($relations[$nodeStructure['descriptor']]);
@@ -76,7 +76,7 @@
                     $nr=new Core_Model_NodeRelations();
                     $nr->setNode($this->_currentDetails->_currentNode);
                     $relations=$nr->getCurrentNodeRelation();
-                    if(Core::keyInArray($nodeStructure['descriptor'], $relations))
+                    if(\Core::keyInArray($nodeStructure['descriptor'], $relations))
                     {
                         $np=new Core_Model_NodeProperties();
                         $np->setNode($relations[$nodeStructure['descriptor']]);

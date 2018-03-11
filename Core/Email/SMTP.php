@@ -45,8 +45,8 @@
  * to an SMTP server.
  * original author: Chris Ryan
  */
-
-class Core_Email_SMTP 
+namespace Core\Email;
+class SMTP 
 {
   /**
    *  SMTP server port

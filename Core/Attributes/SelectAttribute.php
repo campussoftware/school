@@ -1,5 +1,7 @@
 <?php
-    class Core_Attributes_SelectAttribute extends Core_Attributes_Attribute
+namespace Core\Attributes;
+use Core\Attributes\Attribute;
+    class SelectAttribute extends Attribute
     {        
         public $_options=array();
        

@@ -11,12 +11,14 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Controllers_CoreUniquefieldset extends Core_Controllers_NodeController
+namespace Core\Modules\CoreDevelopmentsettings\Controllers;
+use \Core\Controllers\NodeController;
+class CoreUniquefieldset extends NodeController
 {
     //put your code here
     public function coreUniquefieldsetAfterDataUpdate()
     {        
-        $cache=new Core_Cache_Refresh();
+        $cache=new \Core\Cache\Refresh();
         $cache->setNodeName($this->_requestedData['core_node_settings_id']);
         $cache->setUniqueSetValues();         
         return TRUE;  
@@ -25,15 +27,15 @@ class Core_Modules_CoreDevelopmentsettings_Controllers_CoreUniquefieldset extend
     {
         $requestedData=$this->_requestedData;
         $defaultValue=$requestedData['uniquefieldset'];
-        $np=new Core_Model_NodeProperties();
+        $np=new \Core\Model\NodeProperties();
         $np->setNode($requestedData['core_node_settings_id']);
         $nodestructure=$np->currentNodeStructure();
         
-        $tb=new Core_Model_TableStructure();
+        $tb=new \Core\Model\TableStructure();
         $tb->setTable($nodestructure['tablename']);
         $tableStructure=$tb->getStructure();
-        $tableStructure=Core::getKeysFromArray($tableStructure);
-        $tableStructure=Core::diffArray($tableStructure, $this->_defaulthideAttributes);
+        $tableStructure=\Core::getKeysFromArray($tableStructure);
+        $tableStructure=\Core::diffArray($tableStructure, $this->_defaulthideAttributes);
         
         $result=array();
         $i=0;
@@ -44,8 +46,8 @@ class Core_Modules_CoreDevelopmentsettings_Controllers_CoreUniquefieldset extend
             $i++;
         }
         $attributeType="checkbox";        
-        $attributeDetails=new Core_Attributes_LoadAttribute($attributeType);				
-        $attributeClass=Core_Attributes_.$attributeDetails->_attributeName;
+        $attributeDetails=new \Core\Attributes\LoadAttribute($attributeType);				
+        $attributeClass="\Core\Attributes\\".$attributeDetails->_attributeName;
         $attribute=new $attributeClass;
         $attribute->setIdName($requestedData['idname']);
         $attribute->setOptions($result);

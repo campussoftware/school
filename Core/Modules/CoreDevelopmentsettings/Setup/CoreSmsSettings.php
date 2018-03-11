@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreSmsSettings 
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreSmsSettings 
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_sms_settings");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -98,7 +99,8 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreSmsSettings
             ));
              $setup->create();
         }
-        $setup=new Core_DataBase_Setup();
+        $cc = new \CoreClass();
+        $setup=$cc->getObject("\Core\DataBase\Setup");
         $setup->setTable("core_sms_settings");
         if($setup->tableExists($setup->getTable()))
         {
@@ -116,7 +118,8 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreSmsSettings
             ));
             $setup->alterTable();
         }
-        $setup=new Core_DataBase_Setup();
+        
+        $setup=$cc->getObject("\Core\DataBase\Setup");
         $setup->setTable("core_sms_settings");
         $setup->setFieldName("ramesh");
         if($setup->fieldExitsinTable())

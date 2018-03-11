@@ -11,7 +11,9 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreReports_Controllers_CoreReportsdetails extends Core_Controllers_NodeController
+  namespace Core\Modules\CoreReports\Controllers;
+use \Core\Controllers\NodeController;
+class CoreReportsdetails extends NodeController
 {
     //put your code here
     public function coreReportsdetailsAfterDataUpdate()
@@ -60,7 +62,7 @@ class Core_Modules_CoreReports_Controllers_CoreReportsdetails extends Core_Contr
                     $selectFields[]=$SettingsData['displayname'];
                     if($SettingsData['node_id']==$reportNode)
                     {
-                        if(Core::keyInArray($SettingsData['fieldsdata'],$reportNodeRelations))
+                        if(\Core::keyInArray($SettingsData['fieldsdata'],$reportNodeRelations))
                         {
                             $relationcol=$SettingsData['fieldsdata'];
                             $tempnode=new Core_Model_Node();
@@ -80,7 +82,7 @@ class Core_Modules_CoreReports_Controllers_CoreReportsdetails extends Core_Contr
                         $relationcol=$nodeToCol[$SettingsData['node_id']];
                         
                         $db->addJoin($relationcol,$tempnode->_tableName,$relationcol,$reportNode.".".$relationcol."=".$relationcol.".".$tempnode->_primaryKey);
-                        if(Core::keyInArray($tempnode->_descriptor, $tempnode->_nodeMTORelations))
+                        if(\Core::keyInArray($tempnode->_descriptor, $tempnode->_nodeMTORelations))
                         {
                             $parentColNode=$tempnode->_nodeMTORelations[$tempnode->_descriptor];
                             $tempparentnode=new Core_Model_Node();
@@ -98,9 +100,9 @@ class Core_Modules_CoreReports_Controllers_CoreReportsdetails extends Core_Contr
             }
             $db->buildSelect();
             $querysql=$db->sql;   
-            $reportFolder=Core::createFolder($reportNode, "R");
-            Core::createFile($reportFolder.$requestedData['id']."_query.log", 1, $querysql);
-            Core::createFile($reportFolder.$requestedData['id']."_selectfields.log", 1, Core::convertArrayToJson($selectFields));            
+            $reportFolder=\Core::createFolder($reportNode, "R");
+            \Core::createFile($reportFolder.$requestedData['id']."_query.log", 1, $querysql);
+            \Core::createFile($reportFolder.$requestedData['id']."_selectfields.log", 1, \Core::convertArrayToJson($selectFields));            
             $db=new Core_DataBase_ProcessQuery();
             $db->setTable("core_reportsdetails");
             $db->addFieldArray(array("is_custom"=>"1"));

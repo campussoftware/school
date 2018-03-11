@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreAttributeOption 
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreAttributeOption 
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_attribute_option");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -46,7 +47,7 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreAttributeOption
                 "prmiary"=>1,
             ));
             $setup->addColumnName(array(
-                "name"=>"inputtype",
+                "name"=>"core_root_attributes_id",
                 "displayValue"=>"Input Type",            
                 "default"=>false,                
                 "type"=>"varchar",

@@ -11,12 +11,13 @@
  *
  * @author ramesh
  */
-class Core_Modules_CoreDevelopmentsettings_Setup_CoreFileTypes
+  namespace Core\Modules\CoreDevelopmentsettings\Setup;
+class CoreFileTypes
 {
     //put your code here
     function execute()
     {
-        $setup=new Core_DataBase_Setup();   
+        $cc = new \CoreClass();         $setup=$cc->getObject("\Core\DataBase\Setup");  
         $setup->setTable("core_file_types");
         if(!$setup->tableExists($setup->getTable()))
         {
@@ -46,7 +47,7 @@ class Core_Modules_CoreDevelopmentsettings_Setup_CoreFileTypes
                 "size"=>"255"          
             ));
             $setup->addColumnName(array(
-                "name"=>"core_mediatype_id",
+                "name"=>"core_cms_mediatype_id",
                 "displayValue"=>"Mediatype Id",            
                 "default"=>NULL,
                 "type"=>"varchar",
